@@ -30,7 +30,7 @@ public class Facility {
     @NotBlank
     private String email;
 
-    private Map<DayOfWeek, List<OfficeHours>> openingTimes = new HashMap<>(); //value is a list in order to handle duplicate opening hours if a building closes at lunch and reopens at noon
+    private Map<DayOfWeek, List<OfficeHours>> openingHours = new HashMap<>(); //value is a list in order to handle duplicate opening hours if a building closes at lunch and reopens at noon
 
     private List<Building> buildings = new ArrayList<>();
 
@@ -72,12 +72,12 @@ public class Facility {
         this.email = email;
     }
 
-    public Map<DayOfWeek, List<OfficeHours>> getOpeningTimes() {
-        return openingTimes;
+    public Map<DayOfWeek, List<OfficeHours>> getOpeningHours() {
+        return openingHours;
     }
 
-    public void setOpeningTimes(Map<DayOfWeek, List<OfficeHours>> openingTimes) {
-        this.openingTimes = openingTimes;
+    public void setOpeningHours(Map<DayOfWeek, List<OfficeHours>> openingTimes) {
+        this.openingHours = openingHours;
     }
 
     public List<Building> getBuildings() {
@@ -98,8 +98,8 @@ public class Facility {
 
     /////////////       AUXILIARY METHODS       ////////////////////
 
-    public void updateOpeningTimes(DayOfWeek day, List<OfficeHours> officeHours) {
-        this.openingTimes.put(day, officeHours);
+    public void updateOpeningHours(DayOfWeek day, List<OfficeHours> officeHours) {
+        this.openingHours.put(day, officeHours);
     }
 
     public void addBuilding(Building building) {
