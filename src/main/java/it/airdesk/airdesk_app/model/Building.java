@@ -23,6 +23,8 @@ public class Building {
     @NotBlank
     private String address;
 
+    private Facility facility;
+    
     private List<Floor> floors = new ArrayList<>();
 
     public Building(){}
@@ -43,7 +45,15 @@ public class Building {
     public void setAddress(String address) {
         this.address = address;
     }
-    
+
+    public Facility getFacility() {
+        return facility;
+    }
+
+    public void setFacility(Facility facility) {
+        this.facility = facility;
+    }
+
     public List<Floor> getFloors() {
         return floors;
     }
@@ -84,6 +94,7 @@ public class Building {
             return false;
         return true;
     }
+
 
     
 }
