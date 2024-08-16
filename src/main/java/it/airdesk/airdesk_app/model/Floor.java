@@ -57,7 +57,9 @@ public class Floor {
         this.rooms = rooms;
     }
     /////////////       AUXILIARY METHODS       ////////////////////
-
+    public void addRoom(Room room) {
+        this.rooms.add(room);
+    }
 
     /////////////       HashCode + equals METHODS       ////////////
     @Override
