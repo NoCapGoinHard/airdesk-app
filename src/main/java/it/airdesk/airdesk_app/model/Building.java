@@ -1,12 +1,9 @@
 package it.airdesk.airdesk_app.model;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
+import it.airdesk.airdesk_app.model.dataTypes.Address;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +18,7 @@ public class Building {
     private Long id;
 
     @NotBlank
-    private String address;
+    private Address address;
 
     private Facility facility;
     
@@ -38,11 +35,11 @@ public class Building {
         this.id = id;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
