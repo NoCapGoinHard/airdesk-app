@@ -3,11 +3,13 @@ package it.airdesk.airdesk_app.model.dataTypes;
 import java.time.LocalTime;
 
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
 
 @Embeddable
 public class OfficeHours {
-    
+    @NotNull
     private LocalTime startTime;
+    @NotNull
     private LocalTime endTime;
 
     public OfficeHours(LocalTime startTime, LocalTime endTime) {

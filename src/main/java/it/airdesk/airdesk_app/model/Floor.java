@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Floor {
@@ -15,10 +16,11 @@ public class Floor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private Integer number;
-
+    @NotNull
     private Building building;
-
+    @NotNull
     private List<Room> rooms = new ArrayList<>();
 
     public Floor(){}

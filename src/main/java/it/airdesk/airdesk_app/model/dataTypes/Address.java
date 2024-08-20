@@ -1,15 +1,22 @@
 package it.airdesk.airdesk_app.model.dataTypes;
 
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotNull;
 
 @Embeddable
 public class Address {
     
+    @NotNull
     private String country;
+    @NotNull
     private String state;
+    @NotNull
     private String city;
+    
     private String postalcode;
+    @NotNull
     private String street;
+    @NotNull
     private String number;
 
     public Address(){}
