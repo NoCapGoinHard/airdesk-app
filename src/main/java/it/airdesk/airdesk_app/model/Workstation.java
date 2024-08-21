@@ -1,5 +1,8 @@
 package it.airdesk.airdesk_app.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +15,7 @@ public class Workstation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String workstationId;
+    private String workstationId;   //common name in the office for employees
 
     private Room room;
 
@@ -21,6 +24,8 @@ public class Workstation {
     public static final String MEETING_ROOM = "area designated as a meeting room";    
 
     private String workstationType;
+
+    private List<Booking> bookings = new ArrayList<>();
 
     public Workstation(){}
 
@@ -67,6 +72,14 @@ public class Workstation {
 
     public void setWorkstationType(String workstationType) {
         this.workstationType = workstationType;
+    }
+    
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
     /////////////       AUXILIARY METHODS       ////////////////////
 

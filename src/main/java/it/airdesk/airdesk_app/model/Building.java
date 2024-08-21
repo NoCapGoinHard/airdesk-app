@@ -1,9 +1,13 @@
 package it.airdesk.airdesk_app.model;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.airdesk.airdesk_app.model.dataTypes.Address;
+import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +27,8 @@ public class Building {
     private Address address;
 
     private Facility facility;
+
+    private Map<DayOfWeek, List<OfficeHours>> openingHours = new HashMap<>(); //value is a list in order to handle duplicate opening hours if a building closes at lunch and reopens at noon
     
     private List<Floor> floors = new ArrayList<>();
 
@@ -53,6 +59,14 @@ public class Building {
         this.facility = facility;
     }
 
+    public Map<DayOfWeek, List<OfficeHours>> getOpeningHours() {
+        return openingHours;
+    }
+
+    public void setOpeningHours(Map<DayOfWeek, List<OfficeHours>> openingTimes) {
+        this.openingHours = openingHours;
+    }
+
     public List<Floor> getFloors() {
         return floors;
     }
@@ -63,6 +77,10 @@ public class Building {
 
 
     /////////////       AUXILIARY METHODS       ////////////////////
+    public void updateOpeningHours(DayOfWeek day, List<OfficeHours> officeHours) {
+        this.openingHours.put(day, officeHours);
+    }
+
     public void addFloor(Floor floor) {
         this.floors.add(floor);
     }

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,8 +30,6 @@ public class Facility {
 
     @NotBlank
     private String email;
-
-    private Map<DayOfWeek, List<OfficeHours>> openingHours = new HashMap<>(); //value is a list in order to handle duplicate opening hours if a building closes at lunch and reopens at noon
 
     private List<Building> buildings = new ArrayList<>();
 
@@ -72,14 +71,6 @@ public class Facility {
         this.email = email;
     }
 
-    public Map<DayOfWeek, List<OfficeHours>> getOpeningHours() {
-        return openingHours;
-    }
-
-    public void setOpeningHours(Map<DayOfWeek, List<OfficeHours>> openingTimes) {
-        this.openingHours = openingHours;
-    }
-
     public List<Building> getBuildings() {
         return buildings;
     }
@@ -98,15 +89,12 @@ public class Facility {
 
     /////////////       AUXILIARY METHODS       ////////////////////
 
-    public void updateOpeningHours(DayOfWeek day, List<OfficeHours> officeHours) {
-        this.openingHours.put(day, officeHours);
-    }
 
     public void addBuilding(Building building) {
         this.buildings.add(building);
     }
 
-    public void addAuthorizedAdministrator(User user) throws Exception{
+    public void addAuthorizedAdministrator(User user) throws Exception{  //TODO: DA RIVEDERE ORA CON LE CLASSI CAMBIATE
         if(user.getRole == "ADMIN") this.authorizedAdministrators.add(user);
         else throw new Exception(
             "eccezione dentro classe Facility, metodo addAuthorizedAdministrator, non puoi aggiungerlo"
