@@ -2,35 +2,43 @@ package it.airdesk.airdesk_app.model.dataTypes;
 
 import java.time.LocalTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Embeddable
 public class OfficeHours {
-    @NotNull
-    private LocalTime startTime;
-    @NotNull
-    private LocalTime endTime;
 
-    public OfficeHours(LocalTime startTime, LocalTime endTime) {
-        this.startTime = startTime;
-        this.endTime = endTime;
+    @NotNull(message = "starting time field must not be null")
+    @Column(nullable = false)
+    private LocalTime startingTime;
+    
+    @NotNull(message = "ending time field must not be null")
+    @Column(nullable = false)
+    private LocalTime endingTime;
+
+    public OfficeHours(){}
+    
+    public OfficeHours(LocalTime startingTime, LocalTime endingTime) {
+        this.startingTime = startingTime;
+        this.endingTime = endingTime;
     }
 
-    public LocalTime getStartTime() {
-        return startTime;
+    public LocalTime getStartingTime() {
+        return startingTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
-        this.startTime = startTime;
+    public void setStartingTime(LocalTime startingTime) {
+        this.startingTime = startingTime;
     }
 
-    public LocalTime getEndTime() {
-        return endTime;
+    public LocalTime getEndingTime() {
+        return endingTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
-        this.endTime = endTime;
+    public void setEndingTime(LocalTime endingTime) {
+        this.endingTime = endingTime;
     }
 
 /////////////       AUXILIARY METHODS       /////////////////////
@@ -41,8 +49,8 @@ public class OfficeHours {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
-        result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
+        result = prime * result + ((startingTime == null) ? 0 : startingTime.hashCode());
+        result = prime * result + ((endingTime == null) ? 0 : endingTime.hashCode());
         return result;
     }
 
@@ -55,15 +63,15 @@ public class OfficeHours {
         if (getClass() != obj.getClass())
             return false;
         OfficeHours other = (OfficeHours) obj;
-        if (startTime == null) {
-            if (other.startTime != null)
+        if (startingTime == null) {
+            if (other.startingTime != null)
                 return false;
-        } else if (!startTime.equals(other.startTime))
+        } else if (!startingTime.equals(other.startingTime))
             return false;
-        if (endTime == null) {
-            if (other.endTime != null)
+        if (endingTime == null) {
+            if (other.endingTime != null)
                 return false;
-        } else if (!endTime.equals(other.endTime))
+        } else if (!endingTime.equals(other.endingTime))
             return false;
         return true;
     }

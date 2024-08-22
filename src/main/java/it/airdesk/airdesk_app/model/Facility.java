@@ -8,12 +8,14 @@ import java.util.Map;
 
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -23,16 +25,24 @@ public class Facility {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "name field must not be blank")
+    @Column(nullable = false)
     private String name;
 
+    @NotBlank(message = "phone field must not be blank")
+    @Column(nullable = false)
     private String phone;
 
-    @NotBlank
+    @NotBlank(message = "email field must not be blank")
+    @Column(nullable = false)
     private String email;
 
+    @NotNull(message = "buildings field must not be null")
+    @Column(nullable = false)
     private List<Building> buildings = new ArrayList<>();
 
+    @NotNull(message = "companies field must not be null")
+    @Column(nullable = false)
     private List<Company> companies = new ArrayList<>();
 
     public Facility(){}

@@ -1,10 +1,11 @@
 package it.airdesk.airdesk_app.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
-import jakarta.persistence.Embedded;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,15 +19,24 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "day field must not be null")
+    @Column(nullable = false)
     private LocalDate day;
 
-    @NotNull
-    @Embedded
-    private OfficeHours bookingPeriod;
+    @NotNull(message = "starting time field must not be null")
+    @Column(nullable = false)
+    private LocalTime startingTime;
 
+    @NotNull(message = "ending time field must not be null")
+    @Column(nullable = false)
+    private LocalTime endingTime;
+
+    @NotNull(message = "workstation field must not be null")
+    @Column(nullable = false)
     private Workstation workstation;
 
+    @NotNull(message = "user must not be null")
+    @Column(nullable = false)
     private User user;
 
     public Booking(){}
@@ -47,13 +57,21 @@ public class Booking {
     public void setDay(LocalDate day) {
         this.day = day;
     }
-
-    public OfficeHours getBookingPeriod() {
-        return bookingPeriod;
+    
+    public LocalTime getStartingTime() {
+        return startingTime;
     }
 
-    public void setBookingPeriod(OfficeHours bookingPeriod) {
-        this.bookingPeriod = bookingPeriod;
+    public void setStartingTime(LocalTime startingTime) {
+        this.startingTime = startingTime;
+    }
+
+    public LocalTime getEndingTime() {
+        return endingTime;
+    }
+
+    public void setEndingTime(LocalTime endingTime) {
+        this.endingTime = endingTime;
     }
 
     public Workstation getWorkstation() {
@@ -72,16 +90,15 @@ public class Booking {
         this.user = user;
     }
     /////////////       AUXILIARY METHODS       ////////////////////
-
     
     /////////////       HashCode + equals METHODS       ////////////
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((day == null) ? 0 : day.hashCode());
-        result = prime * result + ((bookingPeriod == null) ? 0 : bookingPeriod.hashCode());
+        result = prime * result + ((startingTime == null) ? 0 : startingTime.hashCode());
+        result = prime * result + ((endingTime == null) ? 0 : endingTime.hashCode());
         result = prime * result + ((workstation == null) ? 0 : workstation.hashCode());
         result = prime * result + ((user == null) ? 0 : user.hashCode());
         return result;
@@ -97,14 +114,19 @@ public class Booking {
             return false;
         Booking other = (Booking) obj;
         if (day == null) {
+            if (startingTime == null) {
             if (other.day != null)
                 return false;
         } else if (!day.equals(other.day))
             return false;
-        if (bookingPeriod == null) {
-            if (other.bookingPeriod != null)
+            if (other.startingTime != null)
                 return false;
-        } else if (!bookingPeriod.equals(other.bookingPeriod))
+        } else if (!startingTime.equals(other.startingTime))
+            return false;
+        if (endingTime == null) {
+            if (other.endingTime != null)
+                return false;
+        } else if (!endingTime.equals(other.endingTime))
             return false;
         if (workstation == null) {
             if (other.workstation != null)
@@ -118,6 +140,10 @@ public class Booking {
             return false;
         return true;
     }
+
+    
+
+
 
 
     

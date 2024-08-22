@@ -1,22 +1,35 @@
 package it.airdesk.airdesk_app.model.dataTypes;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Embeddable
 public class Address {
     
-    @NotNull
+    @NotBlank(message = "country field must not be blank")
+    @Column(nullable = false)
     private String country;
-    @NotNull
+
+    @NotBlank(message = "state field must not be blank")
+    @Column(nullable = false)
     private String state;
-    @NotNull
+
+    @NotBlank(message = "city field must not be blank")
+    @Column(nullable = false)
     private String city;
     
+    @NotBlank(message = "postal code field must not be blank")
+    @Column(nullable = false)
     private String postalcode;
-    @NotNull
+
+    @NotBlank(message = "street field must not be blank")
+    @Column(nullable = false)
     private String street;
-    @NotNull
+
+    @NotBlank(message = "number field must not be blank")
+    @Column(nullable = false)
     private String number;
 
     public Address(){}

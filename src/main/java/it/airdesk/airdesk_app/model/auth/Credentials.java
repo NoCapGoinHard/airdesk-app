@@ -1,9 +1,12 @@
 package it.airdesk.airdesk_app.model.auth;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Credentials {
@@ -12,15 +15,23 @@ public class Credentials {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "username must not be blank")
+    @Column(nullable = false)
     private String username;
 
+    @NotBlank(message = "password must not be blank")
+    @Column(nullable = false)
     private String password;
 
 
     public static final String ADMIN = "ADMIN";
     public static final String USER = "USER";
+    @NotBlank(message = "role field must not be null")
+    @Column(nullable = false)
     private String role;
 
+    @NotNull(message = "user field must not be null")
+    @Column(nullable = false)
     private User user;
 
     public Credentials(){}
@@ -69,7 +80,7 @@ public class Credentials {
     public boolean isAdmin(){
         return this.role.equals("ADMIN");
     }
-    
+
     /////////////       HashCode + equals METHODS       ////////////
     @Override
     public int hashCode() {

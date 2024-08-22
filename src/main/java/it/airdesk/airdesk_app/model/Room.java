@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Room {
@@ -20,13 +22,20 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "name field must not be blank")
+    @Column(nullable = false)
     private String name;
 
+    @NotNull(message = "floor field must not be null")
+    @Column(nullable = false)
     private Floor floor;
 
+    @NotNull(message = "opening hours must not be null")
+    @Column(nullable = false)
     private Map<DayOfWeek, List<OfficeHours>> openingHours = new HashMap<>();
 
+    @NotNull(message = "workstations field must not be null")
+    @Column(nullable = false)
     private List<Workstation> workstations = new ArrayList<>();
 
 

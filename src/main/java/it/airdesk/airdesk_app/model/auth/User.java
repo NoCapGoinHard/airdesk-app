@@ -4,10 +4,13 @@ import java.time.LocalDate;
 
 import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.dataTypes.Address;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class User {
@@ -16,14 +19,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "name field must not be blank")
+    @Column(nullable = false)
     private String name;
     
+    @NotBlank(message = "surname field must not be blank")
+    @Column(nullable = false)
     private String surname;
 
+    @NotBlank(message = "email field must not be blank")
+    @Column(nullable = false)
     private String email;
 
     private LocalDate birthDate;
     
+    @NotNull(message = "address field must not be null")
+    @Column(nullable = false)
     private Address address;
 
     private Company company;
@@ -88,7 +99,7 @@ public class User {
     }
 
     /////////////       AUXILIARY METHODS       ////////////////////
-    
+
     /////////////       HashCode + equals METHODS       ////////////
     @Override
     public int hashCode() {

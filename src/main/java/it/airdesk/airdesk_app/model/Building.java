@@ -8,6 +8,7 @@ import java.util.Map;
 
 import it.airdesk.airdesk_app.model.dataTypes.Address;
 import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,14 +23,21 @@ public class Building {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "address field must not be null")
+    @Column(nullable = false)
     @Embedded
     private Address address;
 
+    @NotNull(message = "facility field must not be null")
+    @Column(nullable = false)
     private Facility facility;
 
+    @NotNull(message = "opening hours must not be null")
+    @Column(nullable = false)
     private Map<DayOfWeek, List<OfficeHours>> openingHours = new HashMap<>(); //value is a list in order to handle duplicate opening hours if a building closes at lunch and reopens at noon
     
+    @NotNull(message = "facility field must not be null")
+    @Column(nullable = false)
     private List<Floor> floors = new ArrayList<>();
 
     public Building(){}

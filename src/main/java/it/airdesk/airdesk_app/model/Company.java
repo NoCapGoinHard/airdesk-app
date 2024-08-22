@@ -3,10 +3,13 @@ package it.airdesk.airdesk_app.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -16,8 +19,12 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @NotBlank(message = "name field must not be blank")
+    @Column(nullable = false)
     private String name;
 
+    @NotNull(message = "facilities field must not be null")
+    @Column(nullable = false)
     private List<Facility> facilities = new ArrayList<>();
 
     public Company(){}

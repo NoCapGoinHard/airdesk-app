@@ -3,6 +3,7 @@ package it.airdesk.airdesk_app.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,11 +17,16 @@ public class Floor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "number field must not be null")
+    @Column(nullable = false)
     private Integer number;
-    @NotNull
+
+    @NotNull(message = "building field must not be null")
+    @Column(nullable = false)
     private Building building;
-    @NotNull
+
+    @NotNull(message = "rooms field must not be null")
+    @Column(nullable = false)
     private List<Room> rooms = new ArrayList<>();
 
     public Floor(){}
