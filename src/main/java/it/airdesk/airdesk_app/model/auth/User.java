@@ -50,7 +50,7 @@ public class User {
     private Address address;
 
     @ManyToOne
-    @JoinColumn(name = "company_id", nullable = true) //the software supports freelance workers
+    @JoinColumn(name = "company_id", nullable = true) //the software logic supports freelance workers
     private Company company;
 
     public User(){}
