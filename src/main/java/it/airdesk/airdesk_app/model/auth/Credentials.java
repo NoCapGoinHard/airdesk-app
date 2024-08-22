@@ -1,10 +1,13 @@
 package it.airdesk.airdesk_app.model.auth;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -26,12 +29,12 @@ public class Credentials {
 
     public static final String ADMIN = "ADMIN";
     public static final String USER = "USER";
-    @NotBlank(message = "role field must not be null")
     @Column(nullable = false)
     private String role;
 
     @NotNull(message = "user field must not be null")
     @Column(nullable = false)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private User user;
 
     public Credentials(){}

@@ -2,6 +2,8 @@ package it.airdesk.airdesk_app.model.auth;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.dataTypes.Address;
 import jakarta.persistence.Column;
@@ -11,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 
 @Entity
 public class User {
@@ -31,6 +34,8 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    @Past
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
     
     @NotNull(message = "address field must not be null")

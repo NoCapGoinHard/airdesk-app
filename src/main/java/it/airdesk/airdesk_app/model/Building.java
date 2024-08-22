@@ -8,12 +8,16 @@ import java.util.Map;
 
 import it.airdesk.airdesk_app.model.dataTypes.Address;
 import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -24,20 +28,24 @@ public class Building {
     private Long id;
 
     @NotNull(message = "address field must not be null")
-    @Column(nullable = false)
     @Embedded
     private Address address;
 
     @NotNull(message = "facility field must not be null")
     @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "facility_id", nullable = false)
     private Facility facility;
 
     @NotNull(message = "opening hours must not be null")
     @Column(nullable = false)
-    private Map<DayOfWeek, List<OfficeHours>> openingHours = new HashMap<>(); //value is a list in order to handle duplicate opening hours if a building closes at lunch and reopens at noon
-    
-    @NotNull(message = "facility field must not be null")
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "building_id")
+    private List<OfficeHours> openingHours = new ArrayList<>();
+
     @Column(nullable = false)
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Floor> floors = new ArrayList<>();
 
     public Building(){}
@@ -67,11 +75,11 @@ public class Building {
         this.facility = facility;
     }
 
-    public Map<DayOfWeek, List<OfficeHours>> getOpeningHours() {
+    public List<OfficeHours> getOpeningHours() {
         return openingHours;
     }
 
-    public void setOpeningHours(Map<DayOfWeek, List<OfficeHours>> openingTimes) {
+    public void setOpeningHours(List<OfficeHours> openingHours) {
         this.openingHours = openingHours;
     }
 
@@ -85,10 +93,6 @@ public class Building {
 
 
     /////////////       AUXILIARY METHODS       ////////////////////
-    public void updateOpeningHours(DayOfWeek day, List<OfficeHours> officeHours) {
-        this.openingHours.put(day, officeHours);
-    }
-
     public void addFloor(Floor floor) {
         this.floors.add(floor);
     }

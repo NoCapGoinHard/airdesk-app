@@ -7,11 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -30,9 +33,9 @@ public class Room {
     @Column(nullable = false)
     private Floor floor;
 
-    @NotNull(message = "opening hours must not be null")
-    @Column(nullable = false)
-    private Map<DayOfWeek, List<OfficeHours>> openingHours = new HashMap<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "room_id")
+    private List<OfficeHours> openingHours = new ArrayList<>();
 
     @NotNull(message = "workstations field must not be null")
     @Column(nullable = false)
@@ -66,11 +69,11 @@ public class Room {
         this.floor = floor;
     }
     
-    public Map<DayOfWeek, List<OfficeHours>> getOpeningHours() {
+    public List<OfficeHours> getOpeningHours() {
         return openingHours;
     }
-    
-    public void setOpeningHours(Map<DayOfWeek, List<OfficeHours>> openingHours) {
+
+    public void setOpeningHours(List<OfficeHours> openingHours) {
         this.openingHours = openingHours;
     }
 
@@ -84,9 +87,6 @@ public class Room {
 
 
     /////////////       AUXILIARY METHODS       ////////////////////
-    public void updateOpeningHours(DayOfWeek day, List<OfficeHours> officeHours) {
-        this.openingHours.put(day, officeHours);
-    }
 
     public void addWorkstation(Workstation workstation) {
         this.workstations.add(workstation);

@@ -4,12 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import it.airdesk.airdesk_app.model.auth.User;
-import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -33,6 +34,8 @@ public class Booking {
 
     @NotNull(message = "workstation field must not be null")
     @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "workstation_id", nullable = false)
     private Workstation workstation;
 
     @NotNull(message = "user must not be null")
