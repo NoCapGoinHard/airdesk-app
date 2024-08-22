@@ -54,18 +54,6 @@ public class Workstation {
         this.room = room;
     }
 
-    public static String getSeatingArea() {
-        return SEATING_AREA;
-    }
-
-    public static String getPcWorkstation() {
-        return PC_WORKSTATION;
-    }
-
-    public static String getMeetingRoom() {
-        return MEETING_ROOM;
-    }
-
     public String getWorkstationType() {
         return workstationType;
     }

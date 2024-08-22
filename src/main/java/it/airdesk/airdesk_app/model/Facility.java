@@ -33,12 +33,11 @@ public class Facility {
 
     private List<Building> buildings = new ArrayList<>();
 
-    List<User> authorizedAdministrators = new ArrayList<>();
+    private List<Company> companies = new ArrayList<>();
 
     public Facility(){}
     
     /////////////       GETTERS+SETTERS       //////////////////////
-
     public Long getId() {
         return id;
     }
@@ -79,38 +78,31 @@ public class Facility {
         this.buildings = buildings;
     }
 
-    public List<User> getAuthorizedAdministrators() {
-        return authorizedAdministrators;
+    public List<Company> getCompanies() {
+        return companies;
     }
 
-    public void setAuthorizedAdministrators(List<User> authorizedAdministrators) {
-        this.authorizedAdministrators = authorizedAdministrators;
+    public void setCompanies(List<Company> companies) {
+        this.companies = companies;
     }
 
     /////////////       AUXILIARY METHODS       ////////////////////
-
 
     public void addBuilding(Building building) {
         this.buildings.add(building);
     }
 
-    public void addAuthorizedAdministrator(User user) throws Exception{  //TODO: DA RIVEDERE ORA CON LE CLASSI CAMBIATE
-        if(user.getRole == "ADMIN") this.authorizedAdministrators.add(user);
-        else throw new Exception(
-            "eccezione dentro classe Facility, metodo addAuthorizedAdministrator, non puoi aggiungerlo"
-            );
+    public void addCompany(Company company) {
+        this.companies.add(company);
     }
 
-
     /////////////       HashCode + equals METHODS       ////////////
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((phone == null) ? 0 : phone.hashCode());
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
+        result = prime * result + ((buildings == null) ? 0 : buildings.hashCode());
         return result;
     }
 
@@ -128,18 +120,15 @@ public class Facility {
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (phone == null) {
-            if (other.phone != null)
+        if (buildings == null) {
+            if (other.buildings != null)
                 return false;
-        } else if (!phone.equals(other.phone))
-            return false;
-        if (email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!email.equals(other.email))
+        } else if (!buildings.equals(other.buildings))
             return false;
         return true;
     }
+
+
     
 
     
