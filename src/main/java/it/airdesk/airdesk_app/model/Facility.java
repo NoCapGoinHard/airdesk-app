@@ -1,19 +1,16 @@
 package it.airdesk.airdesk_app.model;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import it.airdesk.airdesk_app.model.auth.User;
-import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -38,11 +35,11 @@ public class Facility {
     private String email;
 
     @NotNull(message = "buildings field must not be null")
-    @Column(nullable = false)
+    @OneToMany(mappedBy = "facility", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Building> buildings = new ArrayList<>();
 
     @NotNull(message = "companies field must not be null")
-    @Column(nullable = false)
+    @ManyToMany(mappedBy = "facilities")
     private List<Company> companies = new ArrayList<>();
 
     public Facility(){}

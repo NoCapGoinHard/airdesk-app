@@ -32,7 +32,6 @@ public class Building {
     private Address address;
 
     @NotNull(message = "facility field must not be null")
-    @Column(nullable = false)
     @ManyToOne
     @JoinColumn(name = "facility_id", nullable = false)
     private Facility facility;
@@ -44,7 +43,6 @@ public class Building {
     @JoinColumn(name = "building_id")
     private List<OfficeHours> openingHours = new ArrayList<>();
 
-    @Column(nullable = false)
     @OneToMany(mappedBy = "building", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Floor> floors = new ArrayList<>();
 

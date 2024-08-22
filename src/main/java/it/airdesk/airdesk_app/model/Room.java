@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,7 +31,8 @@ public class Room {
     private String name;
 
     @NotNull(message = "floor field must not be null")
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -38,7 +40,7 @@ public class Room {
     private List<OfficeHours> openingHours = new ArrayList<>();
 
     @NotNull(message = "workstations field must not be null")
-    @Column(nullable = false)
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Workstation> workstations = new ArrayList<>();
 
 

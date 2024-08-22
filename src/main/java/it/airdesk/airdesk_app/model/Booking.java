@@ -33,7 +33,6 @@ public class Booking {
     private LocalTime endingTime;
 
     @NotNull(message = "workstation field must not be null")
-    @Column(nullable = false)
     @ManyToOne
     @JoinColumn(name = "workstation_id", nullable = false)
     private Workstation workstation;

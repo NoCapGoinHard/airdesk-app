@@ -7,34 +7,35 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Credentials {
+    
+    public static final String ADMIN = "ADMIN";
+    public static final String USER = "USER";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "username must not be blank")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @NotBlank(message = "password must not be blank")
     @Column(nullable = false)
     private String password;
 
-
-    public static final String ADMIN = "ADMIN";
-    public static final String USER = "USER";
+    @NotBlank(message = "role field must not be blank")
     @Column(nullable = false)
     private String role;
 
-    @NotNull(message = "user field must not be null")
-    @Column(nullable = false)
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
     public Credentials(){}

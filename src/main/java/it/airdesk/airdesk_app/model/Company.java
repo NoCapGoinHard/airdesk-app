@@ -8,6 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -24,7 +27,12 @@ public class Company {
     private String name;
 
     @NotNull(message = "facilities field must not be null")
-    @Column(nullable = false)
+    @ManyToMany
+    @JoinTable(
+        name = "company_facility",
+        joinColumns = @JoinColumn(name = "company_id"),
+        inverseJoinColumns = @JoinColumn(name = "facility_id")
+    )
     private List<Facility> facilities = new ArrayList<>();
 
     public Company(){}

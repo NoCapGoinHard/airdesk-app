@@ -7,15 +7,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.dataTypes.Address;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
@@ -31,15 +35,16 @@ public class User {
     private String surname;
 
     @NotBlank(message = "email field must not be blank")
-    @Column(nullable = false)
+    @Email(message = "email should be valid")
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Past
+    @Past(message = "birth date must be in the past")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
     
     @NotNull(message = "address field must not be null")
-    @Column(nullable = false)
+    @Embedded
     private Address address;
 
     private Company company;
