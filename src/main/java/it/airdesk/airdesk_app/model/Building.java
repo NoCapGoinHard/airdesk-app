@@ -1,10 +1,7 @@
 package it.airdesk.airdesk_app.model;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import it.airdesk.airdesk_app.model.dataTypes.Address;
 import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;

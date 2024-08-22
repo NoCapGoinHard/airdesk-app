@@ -3,7 +3,6 @@ package it.airdesk.airdesk_app.model.dataTypes;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Embeddable
 public class Address {
