@@ -12,6 +12,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -47,6 +49,8 @@ public class User {
     @Embedded
     private Address address;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id", nullable = true) //the software supports freelance workers
     private Company company;
 
     public User(){}
