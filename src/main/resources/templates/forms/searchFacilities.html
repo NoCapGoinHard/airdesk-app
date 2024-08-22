@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facilities in ${city}</title>
+</head>
+<body>
+    <h1>Facilities found in ${city}</h1>
+
+    <ul>
+        <li th:each="facility : ${facilities}">
+            <p th:text="${facility.name}"></p>
+            <p th:text="${facility.address.toString()}"></p>
+            <!--qua per esempio potresti aggiungere il conto di quante postazioni totali ci sono in ogni struttura-->
+        </li>
+    </ul>
+
+    <a href="/">Back to Home</a>
+</body>
+</html>
