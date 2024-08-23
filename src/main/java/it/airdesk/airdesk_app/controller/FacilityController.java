@@ -1,6 +1,8 @@
 package it.airdesk.airdesk_app.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +21,10 @@ public class FacilityController {
     @GetMapping("/searchFacilities")
     public String searchFacilities(@RequestParam("city") String city, Model model) {
         List<Facility> facilities = facilityService.findAllByCity(city);
+        Map<Long, Integer> facility2workstations = facilityService.findWorkstationCountByFacility();
         model.addAttribute("facilities", facilities);
         model.addAttribute("city", city);
+        model.addAttribute("facility2workstations", facility2workstations);
         return "forms/searchFacilities";
     }
 }

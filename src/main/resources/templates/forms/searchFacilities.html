@@ -10,8 +10,10 @@
 
     <ul>
         <li th:each="facility : ${facilities}">
+            <a th:href=""></a>
             <p th:text="${facility.name}"></p>
             <p th:text="${facility.address.toString()}"></p>
+            <p>Total Workstations: <span th:text = "${facility2workstations[facility.id]}"></span></p>
             <!--qua per esempio potresti aggiungere il conto di quante postazioni totali ci sono in ogni struttura-->
         </li>
     </ul>
