@@ -22,7 +22,7 @@ public class Booking {
 
     @NotNull(message = "day field must not be null")
     @Column(nullable = false)
-    private LocalDate day;
+    private LocalDate date;
 
     @NotNull(message = "starting time field must not be null")
     @Column(nullable = false)
@@ -52,12 +52,12 @@ public class Booking {
         this.id = id;
     }
 
-    public LocalDate getDay() {
-        return day;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setDay(LocalDate day) {
-        this.day = day;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
     
     public LocalTime getStartingTime() {
@@ -98,7 +98,7 @@ public class Booking {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((day == null) ? 0 : day.hashCode());
+        result = prime * result + ((date == null) ? 0 : date.hashCode());
         result = prime * result + ((startingTime == null) ? 0 : startingTime.hashCode());
         result = prime * result + ((endingTime == null) ? 0 : endingTime.hashCode());
         result = prime * result + ((workstation == null) ? 0 : workstation.hashCode());
@@ -115,11 +115,11 @@ public class Booking {
         if (getClass() != obj.getClass())
             return false;
         Booking other = (Booking) obj;
-        if (day == null) {
+        if (date == null) {
             if (startingTime == null) {
-            if (other.day != null)
+            if (other.date != null)
                 return false;
-        } else if (!day.equals(other.day))
+        } else if (!date.equals(other.date))
             return false;
             if (other.startingTime != null)
                 return false;
