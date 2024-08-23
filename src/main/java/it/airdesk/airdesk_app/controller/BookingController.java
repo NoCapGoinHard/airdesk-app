@@ -4,6 +4,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,8 @@ import it.airdesk.airdesk_app.service.FacilityService;
 
 @Controller
 public class BookingController {
+
+    private static final Logger logger = LoggerFactory.getLogger(BookingController.class);
     
     @Autowired
     private FacilityService facilityService;
@@ -37,7 +41,9 @@ public class BookingController {
 
     @GetMapping("/bookingMenu/{facility_id}")
     public String bookingMenu(@PathVariable("facility_id") Long facilityId, Model model) {
+        logger.info("Loading booking menu for facility ID: {}", facilityId);
         Facility facility = facilityService.findById(facilityId);
+        logger.debug("Facility found: {}", facility);
         model.addAttribute("booking", new Booking());
         model.addAttribute("facility", facility);
         return "forms/bookingMenu";
@@ -48,9 +54,10 @@ public class BookingController {
         @RequestParam Long facilityId,
         @RequestParam LocalDate bookingDate,
         Model model) {
+        logger.info("Filtering buildings for facility ID: {} on date: {}", facilityId, bookingDate);
         DayOfWeek dayOfWeek = bookingDate.getDayOfWeek();
-
         List<Building> openBuildings = buildingRepository.findBuildingsOpenOnDate(facilityId, dayOfWeek);
+        logger.debug("Open buildings found: {}", openBuildings);
         model.addAttribute("openBuildings", openBuildings);
         model.addAttribute("bookingDate", bookingDate);
         model.addAttribute("facility_id", facilityId);
@@ -67,18 +74,22 @@ public class BookingController {
             @RequestParam LocalDate bookingDate,
             Model model) {
         try {
+            logger.info("Attempting to book workstation for facility ID: {}, building ID: {}, date: {}, type: {}", facilityId, buildingId, bookingDate, workstationType);
             booking.setDate(bookingDate);
             Booking confirmedBooking = bookingService.createBooking(booking, buildingId, workstationType);
+            logger.info("Booking successful: {}", confirmedBooking);
             model.addAttribute("confirmedBooking", confirmedBooking);
             return "forms/bookingReceipt";
         } catch (NoAvailableWorkstationException exc) {
+            logger.error("No available workstation for facility ID: {}, building ID: {}, date: {}, type: {}. Error: {}", facilityId, buildingId, bookingDate, workstationType, exc.getMessage());
             model.addAttribute("error", exc.getMessage());
             model.addAttribute("booking", booking);
             model.addAttribute("facility_id", facilityId);
             model.addAttribute("building_id", buildingId);
 
             DayOfWeek dayOfWeek = bookingDate.getDayOfWeek();
-            List<Building> openBuildings = buildingRepository.findBuildingsOpenOnDate(facilityId, dayOfWeek);
+            List<Building> openBuildings = buildingRepository.findBuildingsOpenOnDateWithLogging(facilityId, dayOfWeek);
+            logger.debug("Reloading open buildings: {}", openBuildings);
             model.addAttribute("openBuildings", openBuildings);
             return "forms/bookingMenu";
         }
