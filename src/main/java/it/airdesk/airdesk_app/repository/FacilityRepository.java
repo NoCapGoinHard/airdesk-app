@@ -13,11 +13,11 @@ public interface FacilityRepository extends CrudRepository<Facility, Long>{
     public List<Facility> findByAddress_CityContainingIgnoreCase(String city); //it will search in the embedded addresses for the facilities
 
     @Query("SELECT fc.id, COUNT(w.id)" +
-            "FROM Facility fc" +
-            "JOIN fc.buildings b" +
-            "JOIN b.floors f" +
-            "JOIN f.rooms r" +
-            "JOIN r.workstations w" +
-            "GROUP BY fc.id")
+            "FROM Facility fc " +
+            "JOIN fc.buildings b " +
+            "JOIN b.floors f " +
+            "JOIN f.rooms r " +
+            "JOIN r.workstations w " +
+            "GROUP BY fc.id ")
     public List<Object[]> findWorkstationCountByFacility();
 }

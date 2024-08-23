@@ -43,6 +43,9 @@ public class BookingService {
             booking.getEndingTime()
         );
 
+        logger.debug("Number of available workstations found: {}", availableWorkstations.size());
+
+
         if(availableWorkstations.isEmpty()) {
             logger.warn("No available workstations found for building ID: {}, workstation type: {}, date: {}, start time: {}, end time: {}",
                     buildingId, workstationType, booking.getDate(), booking.getStartingTime(), booking.getEndingTime()
