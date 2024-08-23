@@ -5,11 +5,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import it.airdesk.airdesk_app.exceptions.NoAvailableWorkstationException;
 import it.airdesk.airdesk_app.model.Booking;
 import it.airdesk.airdesk_app.model.Workstation;
+import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.repository.BookingRepository;
 import it.airdesk.airdesk_app.repository.WorkstationRepository;
 import jakarta.transaction.Transactional;
@@ -50,6 +53,11 @@ public class BookingService {
         Workstation assignedWorkstation = availableWorkstations.get(0);
         booking.setWorkstation(assignedWorkstation);
         logger.debug("Assigned workstation: {}", assignedWorkstation);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+        booking.setUser(currentUser);
+        logger.info("Booking created by user: {}", currentUser.toString());
 
         Booking savedBooking = bookingRepository.save(booking);
         logger.info("Booking saved: {}", savedBooking);

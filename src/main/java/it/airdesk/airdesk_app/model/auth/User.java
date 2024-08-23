@@ -1,11 +1,15 @@
 package it.airdesk.airdesk_app.model.auth;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import it.airdesk.airdesk_app.model.Booking;
 import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.dataTypes.Address;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -14,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -52,6 +57,9 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "company_id", nullable = true) //the software logic supports freelance workers
     private Company company;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking> bookings = new ArrayList<>();
 
     public User(){}
 
@@ -111,9 +119,19 @@ public class User {
     public void setCompany(Company company) {
         this.company = company;
     }
+    
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
 
     /////////////       AUXILIARY METHODS       ////////////////////
-
+    public void addBooking(Booking booking) {
+        this.bookings.add(booking);
+    }
     /////////////       HashCode + equals METHODS       ////////////
     @Override
     public int hashCode() {
@@ -150,6 +168,11 @@ public class User {
         } else if (!address.equals(other.address))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User [name=" + name + ", surname=" + surname + ", company=" + company + "]";
     }
 
     

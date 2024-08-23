@@ -86,9 +86,12 @@ public class Workstation {
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
     }
+
     /////////////       AUXILIARY METHODS       ////////////////////
-
-
+    public void addBooking(Booking booking) {
+        this.bookings.add(booking);
+    }
+    
     /////////////       HashCode + equals METHODS       ////////////
     @Override
     public int hashCode() {

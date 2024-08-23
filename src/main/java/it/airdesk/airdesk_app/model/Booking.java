@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -20,8 +21,9 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "day field must not be null")
+    @NotNull(message = "date field must not be null")
     @Column(nullable = false)
+    @FutureOrPresent(message = "date field must be today or a future one")
     private LocalDate date;
 
     @NotNull(message = "starting time field must not be null")
@@ -38,7 +40,8 @@ public class Booking {
     private Workstation workstation;
 
     @NotNull(message = "user must not be null")
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public Booking(){}
@@ -92,7 +95,7 @@ public class Booking {
         this.user = user;
     }
     /////////////       AUXILIARY METHODS       ////////////////////
-    
+
     /////////////       HashCode + equals METHODS       ////////////
     @Override
     public int hashCode() {
