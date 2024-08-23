@@ -7,4 +7,5 @@ import it.airdesk.airdesk_app.model.auth.Credentials;
 @Repository
 public interface CredentialsRepository extends CrudRepository<Credentials, Long>{
     
+    public Credentials findByUsername(String username);
 }
