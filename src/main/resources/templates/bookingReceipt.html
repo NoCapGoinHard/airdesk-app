@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Receipt</title>
+    <link rel="stylesheet" href="/static/css/bookingReceipt.css"> <!-- Add a custom stylesheet if needed -->
+</head>
+<body>
+    <div class="container">
+        <h1>Booking Confirmation</h1>
+        <p>Thank you for your booking! Here are the details:</p>
+
+        <!-- Display Booking Information -->
+        <div class="booking-details">
+            <h2>Booking Details</h2>
+            <p><strong>Facility:</strong> <span th:text="${confirmedBooking.workstation.room.floor.building.facility.name}"></span></p>
+            <p><strong>Building:</strong> <span th:text="${confirmedBooking.workstation.room.floor.building.name}"></span></p>
+            <p><strong>Address:</strong> <span th:text="${confirmedBooking.workstation.room.floor.building.address.toString()}"></span></p>
+            <p><strong>Floor:</strong> <span th:text="${confirmedBooking.workstation.room.floor.number}"></span></p>
+            <p><strong>Room:</strong> <span th:text="${confirmedBooking.workstation.room.name}"></span></p>
+            <p><strong>Workstation:</strong> <span th:text="${confirmedBooking.workstation.workstationId}"></span> (<span th:text="${confirmedBooking.workstation.workstationType}"></span>)</p>
+            <p><strong>Date:</strong> <span th:text="${confirmedBooking.day}"></span></p>
+            <p><strong>Time:</strong> <span th:text="${confirmedBooking.startingTime}"></span> - <span th:text="${confirmedBooking.endingTime}"></span></p>
+        </div>
+
+        <!-- Option to Make Another Booking or Return Home -->
+        <div class="actions">
+            <a href="/" class="button">Return Home</a>
+            <a th:href="@{/bookingMenu/{facility_id}(facility_id=${confirmedBooking.workstation.room.floor.building.facility.id})}" class="button">Make Another Booking</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -39,7 +39,7 @@
                 <option value="" disabled selected>Select a building</option>
                 <option th:each="building : ${openBuildings}" 
                         th:value="${building.id}" 
-                        th:text="${building.address.toString()}">
+                        th:text="${building.name + ' - ' + building.address.toString()}">
                 </option>
             </select>
 
