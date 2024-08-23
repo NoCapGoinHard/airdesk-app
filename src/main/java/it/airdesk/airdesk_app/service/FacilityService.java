@@ -16,6 +16,10 @@ public class FacilityService {
     @Autowired
     private FacilityRepository facilityRepository;
 
+    public Facility findById(Long id) {
+        return facilityRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Facility not found with the ID:" + id));
+    }
+
     public List<Facility> findAllByCity(String city) {
         return facilityRepository.findByAddress_CityContainingIgnoreCase(city);
     }
