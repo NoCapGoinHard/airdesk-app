@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -23,6 +24,10 @@ public class Building {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "name field must not be blank")
+    @Column(nullable = false)
+    private String name;
 
     @NotNull(message = "address field must not be null")
     @Embedded
@@ -52,6 +57,14 @@ public class Building {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Address getAddress() {
@@ -91,13 +104,13 @@ public class Building {
     public void addFloor(Floor floor) {
         this.floors.add(floor);
     }
-
+    
     /////////////       HashCode + equals METHODS       ////////////
-
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((address == null) ? 0 : address.hashCode());
         return result;
     }
@@ -111,6 +124,11 @@ public class Building {
         if (getClass() != obj.getClass())
             return false;
         Building other = (Building) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
         if (address == null) {
             if (other.address != null)
                 return false;
@@ -118,7 +136,6 @@ public class Building {
             return false;
         return true;
     }
-
 
     
 }

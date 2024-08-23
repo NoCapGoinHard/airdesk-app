@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Menu</title>
+    <!-- Add any necessary CSS for layout -->
+</head>
+<body>
+    <h1>Book Your Workstation</h1>
+
+    <!-- Display Facility Information -->
+    <div>
+        <h2>Facility: <span th:text="${facility.name}"></span></h2>
+        <p th:text="${facility.address.toString()}"></p>
+    </div>
+
+    <!-- Display any error messages -->
+    <div th:if="${error}" class="error">
+        <p th:text="${error}"></p>
+    </div>
+
+    <!-- Date Selection Form -->
+    <form th:action="@{/bookingMenu/filter}" method="post">
+        <input type="hidden" th:value="${facility.id}" name="facilityId">
+        <label for="bookingDate">Select a Date:</label>
+        <input type="date" id="bookingDate" name="bookingDate" th:value="${bookingDate}">
+        <button type="submit">Filter Buildings</button>
+    </form>
+
+    <!-- Building Selection -->
+    <div th:if="${openBuildings != null}">
+        <h3>Select a Building</h3>
+        <form th:action="@{/bookWorkstation}" method="post">
+            <input type="hidden" th:value="${facility.id}" name="facilityId">
+            <input type="hidden" th:value="${bookingDate}" name="bookingDate">
+
+            <select name="buildingId" required>
+                <option value="" disabled selected>Select a building</option>
+                <option th:each="building : ${openBuildings}" 
+                        th:value="${building.id}" 
+                        th:text="${building.address.toString()}">
+                </option>
+            </select>
+
+            <!-- Workstation Type Selection -->
+            <h3>Select Workstation Type</h3>
+            <select name="workstationType" required>
+                <option value="" disabled selected>Select a workstation type</option>
+                <option th:text="${T(it.airdesk.airdesk_app.model.Workstation).SEATING_AREA}" 
+                        th:value="${T(it.airdesk.airdesk_app.model.Workstation).SEATING_AREA}">
+                </option>
+                <option th:text="${T(it.airdesk.airdesk_app.model.Workstation).PC_WORKSTATION}" 
+                        th:value="${T(it.airdesk.airdesk_app.model.Workstation).PC_WORKSTATION}">
+                </option>
+                <option th:text="${T(it.airdesk.airdesk_app.model.Workstation).MEETING_ROOM}" 
+                        th:value="${T(it.airdesk.airdesk_app.model.Workstation).MEETING_ROOM}">
+                </option>
+            </select>
+
+            <!-- Time Picker for Start and End Time -->
+            <h3>Select Booking Time</h3>
+            <label for="startTime">Start Time:</label>
+            <input type="time" id="startTime" name="startingTime" required>
+            
+            <label for="endTime">End Time:</label>
+            <input type="time" id="endTime" name="endingTime" required>
+
+            <!-- Submit Button -->
+            <button type="submit">Book Workstation</button>
+        </form>
+    </div>
+</body>
+</html>
