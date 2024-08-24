@@ -51,13 +51,13 @@ public class AuthConfiguration {
                                                 // register,
                                                 // ai css e alle immagini
                                                 .requestMatchers(HttpMethod.GET, "/", "/index", "/register", "/css/**",
-                                                                "/images/**",
+                                                                "/images/**", "/searchFacilities", "/bookingMenu/**",
                                                                 "favicon.ico", "/error")
                                                 .permitAll()
                                                 // chiunque (autenticato o no) può mandare richieste POST al punto di
                                                 // accesso
                                                 // per login e register
-                                                .requestMatchers(HttpMethod.POST, "/register", "/login")
+                                                .requestMatchers(HttpMethod.POST, "/register", "/login","/bookingMenu/**", "/bookWorkstation")
                                                 .permitAll()
                                                 // solo gli utenti autenticati con ruolo ADMIN possono accedere a
                                                 // risorse
