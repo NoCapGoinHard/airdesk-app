@@ -21,7 +21,7 @@ public class FacilityService {
     }
 
     public List<Facility> findAllByCity(String city) {
-        return facilityRepository.findByAddress_CityContainingIgnoreCase(city);
+        return facilityRepository.findByBuildingCityContainingIgnoreCase(city);
     }
 
     public Map<Long, Integer> findWorkstationCountByFacility() {

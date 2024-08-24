@@ -4,13 +4,15 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import it.airdesk.airdesk_app.model.Facility;
 @Repository
 public interface FacilityRepository extends CrudRepository<Facility, Long>{
 
-    public List<Facility> findByAddress_CityContainingIgnoreCase(String city); //it will search in the embedded addresses for the facilities
+    @Query("SELECT f FROM Facility f JOIN f.buildings b WHERE LOWER(b.address.city) LIKE LOWER(CONCAT('%', :city, '%'))")
+    public List<Facility> findByBuildingCityContainingIgnoreCase(@Param("city") String city); //it will search in the embedded addresses for the facilities
 
     @Query("SELECT fc.id, COUNT(w.id)" +
             "FROM Facility fc " +
