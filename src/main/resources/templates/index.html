@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,8 +23,8 @@
         <h1>AirDesk</h1>
         
         <!-- Search Form -->
-        <form action="/searchFacilities" method="#">
-            <input type="text" name="location" placeholder="Where do you live? Look for a workstation near you!">
+        <form action="/searchFacilities" method="get">
+            <input type="text" name="city" placeholder="Where do you live? Look for a workstation near you!">
             <button type="submit">Search</button>
         </form>
 

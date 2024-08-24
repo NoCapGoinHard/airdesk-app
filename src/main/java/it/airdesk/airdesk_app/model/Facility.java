@@ -135,6 +135,20 @@ public class Facility {
         return true;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder companiesNames = new StringBuilder();
+        for (Company company : companies) {
+            companiesNames.append(company.getName()).append(", ");
+        }
+        // Remove the trailing comma and space if any companies were added
+        if (companiesNames.length() > 0) {
+            companiesNames.setLength(companiesNames.length() - 2);
+        }
+
+        return "Facility [name: " + name + ", companies: " + companiesNames.toString() + "]";
+    }
+
 
     
 

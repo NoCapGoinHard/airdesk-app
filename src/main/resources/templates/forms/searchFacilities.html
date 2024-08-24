@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facilities in ${city}</title>
+    <title th:text="'Facilities in ' + ${city}">Facilities in City</title>
 </head>
 <body>
-    <h1>Facilities found in ${city}</h1>
+    <h1 th:text="'Facilities found in ' + ${city}">Facilities found in City</h1>
 
     <ul>
         <li th:each="facility : ${facilities}">
             <a th:href="@{/bookingMenu/{facility_id}(facility_id=${facility.id})}">
                 <p th:text="${facility.name}"></p>
-                <p th:text="${facility.address.toString()}"></p>
-                <p>Total Workstations: <span th:text = "${facility2workstations[facility.id]}"></span></p>
             </a>
+                <p th:text="${facility.toString()}"></p>
+                <p>Total Workstations: <span th:text = "${facility2workstations[facility.id]}"></span></p>
         </li>
     </ul>
 
