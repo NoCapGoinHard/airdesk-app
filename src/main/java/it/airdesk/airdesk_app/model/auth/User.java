@@ -47,7 +47,6 @@ public class User {
     private String email;
 
     @Past(message = "birth date must be in the past")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate birthDate;
     
     @NotNull(message = "address field must not be null")

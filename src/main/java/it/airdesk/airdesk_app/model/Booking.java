@@ -3,6 +3,8 @@ package it.airdesk.airdesk_app.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import it.airdesk.airdesk_app.model.auth.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

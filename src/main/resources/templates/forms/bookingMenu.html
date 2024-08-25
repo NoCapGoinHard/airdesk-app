@@ -46,16 +46,9 @@
             <!-- Workstation Type Selection -->
             <h3>Select Workstation Type</h3>
             <select name="workstationType" required>
-                <option value="" disabled selected>Select a workstation type</option>
-                <option th:text="${T(it.airdesk.airdesk_app.model.Workstation).SEATING_AREA}" 
-                        th:value="${T(it.airdesk.airdesk_app.model.Workstation).SEATING_AREA}">
-                </option>
-                <option th:text="${T(it.airdesk.airdesk_app.model.Workstation).PC_WORKSTATION}" 
-                        th:value="${T(it.airdesk.airdesk_app.model.Workstation).PC_WORKSTATION}">
-                </option>
-                <option th:text="${T(it.airdesk.airdesk_app.model.Workstation).MEETING_ROOM}" 
-                        th:value="${T(it.airdesk.airdesk_app.model.Workstation).MEETING_ROOM}">
-                </option>
+                <option value="PC_WORKSTATION">Workstation with PC and internet connection</option>
+                <option value="SEATING_AREA">Seating area with table</option>
+                <option value="MEETING_ROOM">Area designated as a meeting room</option>
             </select>
 
             <!-- Time Picker for Start and End Time -->
@@ -69,6 +62,7 @@
             <!-- Submit Button -->
             <button type="submit">Book Workstation</button>
         </form>
+
     </div>
 </body>
 </html>

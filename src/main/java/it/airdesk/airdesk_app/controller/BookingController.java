@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,8 +53,8 @@ public class BookingController {
 
     @PostMapping("/bookingMenu/filter")
     public String filterBuildingsByDate(
-        @RequestParam Long facilityId,
-        @RequestParam LocalDate bookingDate,
+        @RequestParam("facilityId") Long facilityId,
+        @RequestParam("bookingDate") LocalDate bookingDate,
         Model model) {
         logger.info("Filtering buildings for facility ID: {} on date: {}", facilityId, bookingDate);
 
@@ -88,15 +89,30 @@ public class BookingController {
             @RequestParam String workstationType,
             @RequestParam LocalDate bookingDate,
             Model model) {
+            
+            Facility facility = facilityService.findById(facilityId);
         try {
+            model.addAttribute("facility", facility);
             logger.info("Attempting to book workstation for facility ID: {}, building ID: {}, date: {}, type: {}", facilityId, buildingId, bookingDate, workstationType);
             booking.setDate(bookingDate);
             Booking confirmedBooking = bookingService.createBooking(booking, buildingId, workstationType);
             logger.info("Booking successful: {}", confirmedBooking);
             model.addAttribute("confirmedBooking", confirmedBooking);
+            logger.info("Building ID: {}", buildingId);
+            logger.info("Workstation Type: {}", workstationType);
+            logger.info("Date: {}", booking.getDate());
+            logger.info("Start Time: {}", booking.getStartingTime());
+            logger.info("End Time: {}", booking.getEndingTime());
+
             return "forms/bookingReceipt";
         } catch (NoAvailableWorkstationException exc) {
+            model.addAttribute("facility", facility);
             logger.error("No available workstation for facility ID: {}, building ID: {}, date: {}, type: {}. Error: {}", facilityId, buildingId, bookingDate, workstationType, exc.getMessage());
+            logger.info("Building ID: {}", buildingId);
+            logger.info("Workstation Type: {}", workstationType);
+            logger.info("Date: {}", booking.getDate());
+            logger.info("Start Time: {}", booking.getStartingTime());
+            logger.info("End Time: {}", booking.getEndingTime());
             model.addAttribute("error", exc.getMessage());
             model.addAttribute("booking", booking);
             model.addAttribute("facility_id", facilityId);
