@@ -2,6 +2,7 @@ package it.airdesk.airdesk_app.controller;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -55,12 +56,26 @@ public class BookingController {
         @RequestParam LocalDate bookingDate,
         Model model) {
         logger.info("Filtering buildings for facility ID: {} on date: {}", facilityId, bookingDate);
+
         DayOfWeek dayOfWeek = bookingDate.getDayOfWeek();
         List<Building> openBuildings = buildingRepository.findBuildingsOpenOnDate(facilityId, dayOfWeek);
+
+        // Check for null or empty list
+        if (openBuildings == null || openBuildings.isEmpty()) {
+            model.addAttribute("error", "No buildings are open on the selected date.");
+            return "forms/bookingMenu";
+        }
+        for (Iterator<Building> iterator = openBuildings.iterator(); iterator.hasNext(); ) {
+            if (iterator.next() == null) {
+                iterator.remove();
+            }
+        }
         logger.debug("Open buildings found: {}", openBuildings);
         model.addAttribute("openBuildings", openBuildings);
         model.addAttribute("bookingDate", bookingDate);
         model.addAttribute("facility_id", facilityId);
+        Facility facility = facilityService.findById(facilityId);
+        model.addAttribute("facility", facility);
 
         return "forms/bookingMenu";
     }
