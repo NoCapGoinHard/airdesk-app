@@ -21,7 +21,7 @@ public class Address {
     
     @NotBlank(message = "postal code field must not be blank")
     @Column(nullable = false)
-    private String postalcode;
+    private String postalCode;
 
     @NotBlank(message = "street field must not be blank")
     @Column(nullable = false)
@@ -60,12 +60,12 @@ public class Address {
         this.city = city;
     }
 
-    public String getPostalcode() {
-        return postalcode;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostalcode(String postalcode) {
-        this.postalcode = postalcode;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getStreet() {
@@ -91,7 +91,7 @@ public class Address {
         result = prime * result + ((country == null) ? 0 : country.hashCode());
         result = prime * result + ((state == null) ? 0 : state.hashCode());
         result = prime * result + ((city == null) ? 0 : city.hashCode());
-        result = prime * result + ((postalcode == null) ? 0 : postalcode.hashCode());
+        result = prime * result + ((postalCode == null) ? 0 : postalCode.hashCode());
         result = prime * result + ((street == null) ? 0 : street.hashCode());
         result = prime * result + ((number == null) ? 0 : number.hashCode());
         return result;
@@ -124,10 +124,10 @@ public class Address {
                 return false;
         } else if (!city.equals(other.city))
             return false;
-        if (postalcode == null) {
-            if (other.postalcode != null)
+        if (postalCode == null) {
+            if (other.postalCode != null)
                 return false;
-        } else if (!postalcode.equals(other.postalcode))
+        } else if (!postalCode.equals(other.postalCode))
             return false;
         if (street == null) {
             if (other.street != null)
@@ -147,7 +147,7 @@ public class Address {
         return
             street + ", " 
             + number + ", "
-            + postalcode + ", "
+            + postalCode + ", "
             + city + ", "
             + state + ", "
             + country;

@@ -3,13 +3,8 @@ INSERT INTO facility (id, name, phone, email) VALUES (1, 'newyork offices', '123
 INSERT INTO facility (id, name, phone, email) VALUES (2, 'cali offices', '987-654-3210', 'contact@secondaryfacility.com');
 
 -- Insert multiple buildings
-INSERT INTO building (id, name, facility_id, country, state, city, postalcode, street, number) VALUES (1, 'Building A ny', 1, 'USA', 'NY', 'New York', '10001', '5th Avenue', '1');
-INSERT INTO building (id, name, facility_id, country, state, city, postalcode, street, number) VALUES (2, 'Building B cali', 2, 'USA', 'CA', 'Los Angeles', '90001', 'Sunset Blvd', '100');
-
--- Insert multiple office hours for a building
-INSERT INTO office_hours (id, day, starting_time, ending_time, building_id) VALUES (1, 'MONDAY', '09:00', '18:00', 1);
-INSERT INTO office_hours (id, day, starting_time, ending_time, building_id) VALUES (2, 'TUESDAY', '09:00', '18:00', 1);
-INSERT INTO office_hours (id, day, starting_time, ending_time, building_id) VALUES (3, 'WEDNESDAY', '09:00', '18:00', 2);
+INSERT INTO building (id, name, facility_id, country, state, city, postal_code, street, number) VALUES (1, 'Building A ny', 1, 'USA', 'NY', 'New York', '10001', '5th Avenue', '1');
+INSERT INTO building (id, name, facility_id, country, state, city, postal_code, street, number) VALUES (2, 'Building B cali', 2, 'USA', 'CA', 'Los Angeles', '90001', 'Sunset Blvd', '100');
 
 -- Insert multiple floors
 INSERT INTO floor (id, number, building_id) VALUES (1, 1, 1);
@@ -37,4 +32,8 @@ INSERT INTO office_hours (id, day, starting_time, ending_time, room_id) VALUES (
 -- For rooms in Building B (Cali)
 INSERT INTO office_hours (id, day, starting_time, ending_time, room_id) VALUES (8, 'WEDNESDAY', '09:00', '18:00', 3);  -- Room 201 (Floor 1)
 
+-- Insert multiple office hours for a building
+INSERT INTO office_hours (id, day, starting_time, ending_time, building_id) VALUES (1, 'MONDAY', '09:00', '18:00', 1);
+INSERT INTO office_hours (id, day, starting_time, ending_time, building_id) VALUES (2, 'TUESDAY', '09:00', '18:00', 1);
+INSERT INTO office_hours (id, day, starting_time, ending_time, building_id) VALUES (3, 'WEDNESDAY', '09:00', '18:00', 2);
 

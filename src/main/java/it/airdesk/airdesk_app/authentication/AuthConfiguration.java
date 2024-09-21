@@ -57,7 +57,7 @@ public class AuthConfiguration {
                                                 // chiunque (autenticato o no) può mandare richieste POST al punto di
                                                 // accesso
                                                 // per login e register
-                                                .requestMatchers(HttpMethod.POST, "/register", "/login","/bookingMenu/**", "/bookWorkstation")
+                                                .requestMatchers(HttpMethod.POST, "/register", "auth/login","/bookingMenu/**", "/bookWorkstation")
                                                 .permitAll()
                                                 // solo gli utenti autenticati con ruolo ADMIN possono accedere a
                                                 // risorse

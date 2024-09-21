@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Register</h2>
+
+        <!-- Display validation errors for user -->
+        <div th:if="${#fields.hasErrors('user')}">
+            <p th:each="error : ${#fields.errors('user')}" th:text="${error}"></p>
+        </div>
+
+        <!-- Display validation errors for credentials -->
+        <div th:if="${#fields.hasErrors('credentials')}">
+            <p th:each="error : ${#fields.errors('credentials')}" th:text="${error}"></p>
+        </div>
+
+        <!-- Single form for both user and credentials -->
+        <form th:action="@{/register}" method="post">
+            
+            <!-- User Information Section -->
+            <div>
+                <label for="name">First Name</label>
+                <input type="text" id="name" th:field="*{user.name}" placeholder="Enter your first name" required>
+                <p th:if="${#fields.hasErrors('user.name')}" th:errors="*{user.name}"></p>
+            </div>
+
+            <div>
+                <label for="surname">Last Name</label>
+                <input type="text" id="surname" th:field="*{user.surname}" placeholder="Enter your last name" required>
+                <p th:if="${#fields.hasErrors('user.surname')}" th:errors="*{user.surname}"></p>
+            </div>
+
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" th:field="*{user.email}" placeholder="Enter your email" required>
+                <p th:if="${#fields.hasErrors('user.email')}" th:errors="*{user.email}"></p>
+            </div>
+
+            <div>
+                <label for="birthDate">Birth Date</label>
+                <input type="date" id="birthDate" th:field="*{user.birthDate}" required>
+                <p th:if="${#fields.hasErrors('user.birthDate')}" th:errors="*{user.birthDate}"></p>
+            </div>
+
+            <!-- Address Information Section -->
+            <h3>Address Information</h3>
+
+            <div>
+                <label for="country">Country</label>
+                <input type="text" id="country" th:field="*{user.address.country}" placeholder="Enter your country" required>
+                <p th:if="${#fields.hasErrors('user.address.country')}" th:errors="*{user.address.country}"></p>
+            </div>
+
+            <div>
+                <label for="state">State</label>
+                <input type="text" id="state" th:field="*{user.address.state}" placeholder="Enter your state" required>
+                <p th:if="${#fields.hasErrors('user.address.state')}" th:errors="*{user.address.state}"></p>
+            </div>
+
+            <div>
+                <label for="city">City</label>
+                <input type="text" id="city" th:field="*{user.address.city}" placeholder="Enter your city" required>
+                <p th:if="${#fields.hasErrors('user.address.city')}" th:errors="*{user.address.city}"></p>
+            </div>
+
+            <div>
+                <label for="postalCode">Postal Code</label>
+                <input type="text" id="postalCode" th:field="*{user.address.postalCode}" placeholder="Enter your postal code" required>
+                <p th:if="${#fields.hasErrors('user.address.postalCode')}" th:errors="*{user.address.postalCode}"></p>
+            </div>
+
+            <div>
+                <label for="street">Street</label>
+                <input type="text" id="street" th:field="*{user.address.street}" placeholder="Enter your street" required>
+                <p th:if="${#fields.hasErrors('user.address.street')}" th:errors="*{user.address.street}"></p>
+            </div>
+
+            <div>
+                <label for="number">Street Number</label>
+                <input type="text" id="number" th:field="*{user.address.number}" placeholder="Enter your street number" required>
+                <p th:if="${#fields.hasErrors('user.address.number')}" th:errors="*{user.address.number}"></p>
+            </div>
+
+            <!-- Credentials Information Section -->
+            <div>
+                <label for="username">Username</label>
+                <input type="text" id="username" th:field="*{credentials.username}" placeholder="Choose a username" required>
+                <p th:if="${#fields.hasErrors('credentials.username')}" th:errors="*{credentials.username}"></p>
+            </div>
+
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" th:field="*{credentials.password}" placeholder="Choose a password" required>
+                <p th:if="${#fields.hasErrors('credentials.password')}" th:errors="*{credentials.password}"></p>
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button type="submit">Register</button>
+            </div>
+
+        </form>
+
+        <div>
+            <p>Already have an account? <a href="/login">Login here</a></p>
+        </div>
+    </div>
+</body>
+</html>
