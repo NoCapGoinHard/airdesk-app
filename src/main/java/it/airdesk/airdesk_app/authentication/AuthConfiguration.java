@@ -69,6 +69,7 @@ public class AuthConfiguration {
                                                 .hasAnyAuthority("ADMIN", "USER")
                                                 // tutti gli utenti autenticati possono accere alle pag
                                                 .anyRequest().authenticated())
+                                                
 
                                 // LOGIN: qui definiamo come è gestita l'autenticazione
                                 // usiamo il protocollo formlogin

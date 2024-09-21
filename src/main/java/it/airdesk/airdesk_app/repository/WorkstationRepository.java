@@ -1,5 +1,6 @@
 package it.airdesk.airdesk_app.repository;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -14,11 +15,17 @@ import it.airdesk.airdesk_app.model.Workstation;
 public interface WorkstationRepository extends CrudRepository<Workstation, Long> {
     
     @Query(
-        "SELECT w FROM Workstation w WHERE w.room.floor.building.id =:buildingId " +
+        "SELECT w FROM Workstation w " +
+        "JOIN w.room r " +
+        "JOIN r.openingHours oh " +
+        "WHERE w.room.floor.building.id = :buildingId " +
         "AND w.workstationType = :workstationType " +
+        "AND oh.day = :dayOfWeek " +
+        "AND oh.startingTime <= :startingTime " +
+        "AND oh.endingTime >= :endingTime " +
         "AND w.id NOT IN ( " +
             "SELECT b.workstation.id FROM Booking b " +
-            "WHERE b.date =:date " +
+            "WHERE b.date = :date " +
             "AND ( " +
             "(:startingTime < b.endingTime AND :endingTime > b.startingTime)" +
             ")" +
@@ -28,6 +35,7 @@ public interface WorkstationRepository extends CrudRepository<Workstation, Long>
                                                 @Param("workstationType") String workstationType,
                                                 @Param("date") LocalDate date,
                                                 @Param("startingTime") LocalTime startingTime,
-                                                @Param("endingTime") LocalTime endingTime);
+                                                @Param("endingTime") LocalTime endingTime,
+                                                @Param("dayOfWeek") DayOfWeek dayOfWeek);
 
 }

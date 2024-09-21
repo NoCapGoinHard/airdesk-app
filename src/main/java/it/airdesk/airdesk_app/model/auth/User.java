@@ -57,9 +57,9 @@ public class User {
     @JoinColumn(name = "company_id", nullable = true) //the software logic supports freelance workers
     private Company company;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Booking> bookings = new ArrayList<>();
-
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Booking> bookings = new ArrayList<>();
+//
     public User(){}
 
     /////////////       GETTERS+SETTERS       //////////////////////
@@ -119,18 +119,18 @@ public class User {
         this.company = company;
     }
     
-    public List<Booking> getBookings() {
-        return bookings;
-    }
-
-    public void setBookings(List<Booking> bookings) {
-        this.bookings = bookings;
-    }
-
-    /////////////       AUXILIARY METHODS       ////////////////////
-    public void addBooking(Booking booking) {
-        this.bookings.add(booking);
-    }
+//    public List<Booking> getBookings() {
+//        return bookings;
+//    }
+//
+//    public void setBookings(List<Booking> bookings) {
+//        this.bookings = bookings;
+//    }
+//
+//    /////////////       AUXILIARY METHODS       ////////////////////
+//    public void addBooking(Booking booking) {
+//        this.bookings.add(booking);
+//    }
     /////////////       HashCode + equals METHODS       ////////////
     @Override
     public int hashCode() {

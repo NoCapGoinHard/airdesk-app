@@ -1,5 +1,6 @@
 package it.airdesk.airdesk_app.service;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -40,7 +41,8 @@ public class BookingService {
             workstationType,
             booking.getDate(),
             booking.getStartingTime(),
-            booking.getEndingTime()
+            booking.getEndingTime(),
+            booking.getDate().getDayOfWeek()
         );
 
         logger.debug("Number of available workstations found: {}", availableWorkstations.size());
@@ -57,11 +59,11 @@ public class BookingService {
         booking.setWorkstation(assignedWorkstation);
         logger.debug("Assigned workstation: {}", assignedWorkstation);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) authentication.getPrincipal();
-        booking.setUser(currentUser);
-        logger.info("Booking created by user: {}", currentUser.toString());
-
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        User currentUser = (User) authentication.getPrincipal();
+//        booking.setUser(currentUser);
+//        logger.info("Booking created by user: {}", currentUser.toString());
+//
         Booking savedBooking = bookingRepository.save(booking);
         logger.info("Booking saved: {}", savedBooking);
         

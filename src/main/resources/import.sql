@@ -26,5 +26,15 @@ INSERT INTO workstation (id, workstation_id, workstation_type, room_id) VALUES (
 INSERT INTO workstation (id, workstation_id, workstation_type, room_id) VALUES (2, 'WS-102', 'SEATING_AREA', 2);
 INSERT INTO workstation (id, workstation_id, workstation_type, room_id) VALUES (3, 'WS-201', 'MEETING_ROOM', 3);
 
+-- Insert office hours for rooms (matching the opening hours of their buildings)
+-- For rooms in Building A (New York)
+INSERT INTO office_hours (id, day, starting_time, ending_time, room_id) VALUES (4, 'MONDAY', '09:00', '18:00', 1);  -- Room 101 (Floor 1)
+INSERT INTO office_hours (id, day, starting_time, ending_time, room_id) VALUES (5, 'TUESDAY', '09:00', '18:00', 1);  -- Room 101 (Floor 1)
+
+INSERT INTO office_hours (id, day, starting_time, ending_time, room_id) VALUES (6, 'MONDAY', '09:00', '18:00', 2);  -- Room 102 (Floor 2)
+INSERT INTO office_hours (id, day, starting_time, ending_time, room_id) VALUES (7, 'TUESDAY', '09:00', '18:00', 2);  -- Room 102 (Floor 2)
+
+-- For rooms in Building B (Cali)
+INSERT INTO office_hours (id, day, starting_time, ending_time, room_id) VALUES (8, 'WEDNESDAY', '09:00', '18:00', 3);  -- Room 201 (Floor 1)
 
 
