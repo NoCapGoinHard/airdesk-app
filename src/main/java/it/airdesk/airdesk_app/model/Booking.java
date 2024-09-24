@@ -3,8 +3,6 @@ package it.airdesk.airdesk_app.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import it.airdesk.airdesk_app.model.auth.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -41,10 +39,10 @@ public class Booking {
     @JoinColumn(name = "workstation_id", nullable = false)
     private Workstation workstation;
 
-//    @NotNull(message = "user must not be null")
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;
+    @NotNull(message = "user must not be null")
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     public Booking(){}
 
@@ -89,14 +87,14 @@ public class Booking {
         this.workstation = workstation;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-    /////////////       AUXILIARY METHODS       ////////////////////
+   /////////////       AUXILIARY METHODS       ////////////////////
 
     /////////////       HashCode + equals METHODS       ////////////
     @Override
@@ -107,7 +105,6 @@ public class Booking {
         result = prime * result + ((startingTime == null) ? 0 : startingTime.hashCode());
         result = prime * result + ((endingTime == null) ? 0 : endingTime.hashCode());
         result = prime * result + ((workstation == null) ? 0 : workstation.hashCode());
-//        result = prime * result + ((user == null) ? 0 : user.hashCode());
         return result;
     }
 

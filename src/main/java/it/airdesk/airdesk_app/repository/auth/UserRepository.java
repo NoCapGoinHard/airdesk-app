@@ -7,6 +7,8 @@ import it.airdesk.airdesk_app.model.auth.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {
 
+
+
     
     
 }
