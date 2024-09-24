@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
@@ -43,23 +44,24 @@ public class AuthenticationController {
 
     @GetMapping("/register")
     public String register(Model model) {
+        
         logger.info("Accessing registration page");
+
         model.addAttribute("user", new User());
-        model.addAttribute("credentials", new Credentials());
         return "auth/register.html";
     }
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, BindingResult userBindingResult,
-                                @ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult,
+                                @RequestParam("username") String username,
+                                @RequestParam("password") String password,
                                 Model model) {
         
         logger.info("Attempting to register user: {} {}", user.getName(), user.getSurname());
 
         logger.debug("User object: {}", user);
-        logger.debug("Credentials object: {}", credentials);  // needed to check if credentials was null here during registration implementation
         
-        if(!userBindingResult.hasErrors() && !credentialsBindingResult.hasErrors()){
+        if(!userBindingResult.hasErrors()){
             logger.debug("User address details: {}, {}, {}, {}, {}", 
             user.getAddress().getStreet(),
             user.getAddress().getCity(),
@@ -67,9 +69,14 @@ public class AuthenticationController {
             user.getAddress().getCountry(),
             user.getAddress().getPostalCode());
 
+            Credentials credentials = new Credentials();
+            credentials.setUsername(username);  // Set username
+            credentials.setPassword(password);  // Set password (you might hash it here)
+            credentials.setUser(user);  // Link credentials to the user
+            credentials.setRole(Credentials.USER);  // Set default role to USER
+        
+            // Save user and credentials
             userService.save(user);
-            credentials.setUser(user);
-            credentials.setRole(Credentials.USER);
             credentialsService.save(credentials);
 
             logger.info("Successfully registered user: {} with username: {}", user.getName(), credentials.getUsername());
@@ -80,7 +87,6 @@ public class AuthenticationController {
         else {
             logger.warn("User registration failed due to validation errors");
             if (userBindingResult.hasErrors()) logger.debug("User form validation errors: {}", userBindingResult.getAllErrors());
-            if (credentialsBindingResult.hasErrors()) logger.debug("Credentials form validation errors: {}", credentialsBindingResult.getAllErrors());
 
             return "auth/register.html";
         }

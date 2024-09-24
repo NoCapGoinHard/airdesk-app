@@ -29,12 +29,10 @@ public class Credentials {
     @Column(nullable = false)
     private String password;
 
-    @NotBlank(message = "role field must not be blank")
     @Column(nullable = false)
     private String role;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
     public Credentials(){}
@@ -84,12 +82,12 @@ public class Credentials {
         return this.role.equals("ADMIN");
     }
 
-    /////////////       HashCode + equals METHODS       ////////////
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((username == null) ? 0 : username.hashCode());
+        result = prime * result + ((password == null) ? 0 : password.hashCode());
         return result;
     }
 
@@ -106,6 +104,11 @@ public class Credentials {
             if (other.username != null)
                 return false;
         } else if (!username.equals(other.username))
+            return false;
+        if (password == null) {
+            if (other.password != null)
+                return false;
+        } else if (!password.equals(other.password))
             return false;
         return true;
     }
