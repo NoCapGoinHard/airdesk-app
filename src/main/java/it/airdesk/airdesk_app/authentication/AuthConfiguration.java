@@ -45,19 +45,19 @@ public class AuthConfiguration {
                                                               // richiesto
                                 .cors(cors -> cors.disable()) // Disabilita CORS se necessario, o configuralo come
                                                               // richiesto
-                                // AUTORIZZAZIONE: qui definiamo chi può accedere a cosa
+                                // AUTORIZZAZIONE: here we define who can access what
                                 .authorizeHttpRequests(authorize -> authorize
                                                 // chiunque (autenticato o no) può accedere alle pagine index, login,
                                                 // register,
                                                 // ai css e alle immagini
-                                                .requestMatchers(HttpMethod.GET, "/", "/index", "/register", "/css/**",
+                                                .requestMatchers(HttpMethod.GET, "/", "/oauth2/**", "/index", "/register", "/css/**",
                                                                 "/images/**", "/searchFacilities", "/bookingMenu/**",
                                                                 "favicon.ico", "/error")
                                                 .permitAll()
                                                 // chiunque (autenticato o no) può mandare richieste POST al punto di
                                                 // accesso
                                                 // per login e register
-                                                .requestMatchers(HttpMethod.POST, "/register", "auth/login","/bookingMenu/**", "/bookWorkstation")
+                                                .requestMatchers(HttpMethod.POST, "/register", "/login","/bookingMenu/**", "/bookWorkstation")
                                                 .permitAll()
                                                 // solo gli utenti autenticati con ruolo ADMIN possono accedere a
                                                 // risorse
@@ -71,17 +71,22 @@ public class AuthConfiguration {
                                                 .anyRequest().authenticated())
                                                 
 
-                                // LOGIN: qui definiamo come è gestita l'autenticazione
+                                // LOGIN: here we define how the authentication gets handled
                                 // usiamo il protocollo formlogin
                                 .formLogin(formLogin -> formLogin
-                                                // la pagina di login si trova a /login
+                                                // the login page is /login
                                                 .loginPage("/login")
                                                 .permitAll()
                                                 // se il login ha successo, si viene rediretti al path /default
                                                 .defaultSuccessUrl("/success", true)
                                                 .failureUrl("/login?error=true"))
+                                
+                                //OAUTH: here we define the OAuth2.0 login
+                                .oauth2Login(oauth2Login -> oauth2Login
+                                                .loginPage("/login")
+                                                .defaultSuccessUrl("/", true))
 
-                                // LOGOUT: qui definiamo il logout
+                                // LOGOUT: here we define the logout
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")
                                                 .logoutSuccessUrl("/")

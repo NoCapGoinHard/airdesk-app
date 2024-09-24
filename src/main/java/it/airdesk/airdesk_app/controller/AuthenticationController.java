@@ -3,8 +3,10 @@ package it.airdesk.airdesk_app.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,14 +34,40 @@ public class AuthenticationController {
     @GetMapping("/login")
     public String login() {
         return "auth/login.html";
-    }
-
+        }
     @GetMapping("/success")
     public String getIndexAfterLogin(Model model) {
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Credentials credentials = this.credentialsService.findByUsername(userDetails.getUsername());
-        logger.info("User '{}' logged in successfully with role '{}'", credentials.getUsername(), credentials.getRole());
-        return "index.html";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication.getPrincipal() instanceof DefaultOidcUser) {
+            // Handle OAuth2 OIDC user
+            DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
+            
+            String username = oidcUser.getEmail();  // You can retrieve the email or another field as username
+            Credentials credentials = this.credentialsService.findByUsername(username);
+
+            // Log the user login info and roles
+            logger.info("OAuth2 User '{}' logged in successfully with role '{}'", credentials.getUsername(), credentials.getRole());
+
+            // Add user information to the model if needed
+            model.addAttribute("name", oidcUser.getFullName());
+            model.addAttribute("email", oidcUser.getEmail());
+
+        } else if (authentication.getPrincipal() instanceof UserDetails) {
+            // Handle traditional login (UserDetails)
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            
+            Credentials credentials = this.credentialsService.findByUsername(userDetails.getUsername());
+
+            // Log the user login info and roles
+            logger.info("User '{}' logged in successfully with role '{}'", credentials.getUsername(), credentials.getRole());
+
+            // Add user information to the model if needed
+            model.addAttribute("name", credentials.getUser().getName());
+            model.addAttribute("email", credentials.getUser().getEmail());
+        }
+
+        return "index.html";  // Return the main page after successful login
     }
 
     @GetMapping("/register")
