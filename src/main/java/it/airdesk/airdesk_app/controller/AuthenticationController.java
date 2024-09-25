@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +34,10 @@ public class AuthenticationController {
     
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @GetMapping("/login")
     public String login() {
@@ -68,7 +73,7 @@ public class AuthenticationController {
         return "index.html";
     }
 
-     @GetMapping("/register")
+    @GetMapping("/register")
     public String register(Model model) {
         logger.info("Accessing registration page");
 
@@ -103,7 +108,9 @@ public class AuthenticationController {
         if (!userBindingResult.hasErrors()) {
             Credentials credentials = new Credentials();
             credentials.setUsername(username);
-            credentials.setPassword(password);
+
+            String encodedPassword = this.passwordEncoder.encode(password);
+            credentials.setPassword(encodedPassword);
             credentials.setUser(user);
             credentials.setRole(Credentials.USER);
 

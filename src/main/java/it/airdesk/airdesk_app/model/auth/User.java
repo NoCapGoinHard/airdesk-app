@@ -22,7 +22,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
 @Entity
@@ -49,8 +48,8 @@ public class User {
     @Past(message = "birth date must be in the past")
     private LocalDate birthDate;
     
-    @NotNull(message = "address field must not be null")
     @Embedded
+    @Column(nullable = true)
     private Address address;
 
     @ManyToOne

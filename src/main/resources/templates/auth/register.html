@@ -37,51 +37,12 @@
                 <input type="email" id="email" th:field="*{user.email}" th:readonly="${isOidc}" placeholder="Enter your email" required>
                 <p th:if="${#fields.hasErrors('user.email')}" th:errors="*{user.email}"></p>
             </div>
-
+            
             <div>
                 <label for="birthDate">Birth Date</label>
                 <!-- Make field readonly if OIDC user (optional) -->
-                <input type="date" id="birthDate" th:field="*{user.birthDate}" th:readonly="${isOidc}" required>
+                <input type="date" id="birthDate" th:field="*{user.birthDate}" th:readonly="${isOidc}">
                 <p th:if="${#fields.hasErrors('user.birthDate')}" th:errors="*{user.birthDate}"></p>
-            </div>
-
-            <!-- Address Information Section -->
-            <h3>Address Information</h3>
-
-            <div>
-                <label for="country">Country</label>
-                <input type="text" id="country" th:field="*{user.address.country}" placeholder="Enter your country" required>
-                <p th:if="${#fields.hasErrors('user.address.country')}" th:errors="*{user.address.country}"></p>
-            </div>
-
-            <div>
-                <label for="state">State</label>
-                <input type="text" id="state" th:field="*{user.address.state}" placeholder="Enter your state" required>
-                <p th:if="${#fields.hasErrors('user.address.state')}" th:errors="*{user.address.state}"></p>
-            </div>
-
-            <div>
-                <label for="city">City</label>
-                <input type="text" id="city" th:field="*{user.address.city}" placeholder="Enter your city" required>
-                <p th:if="${#fields.hasErrors('user.address.city')}" th:errors="*{user.address.city}"></p>
-            </div>
-
-            <div>
-                <label for="postalCode">Postal Code</label>
-                <input type="text" id="postalCode" th:field="*{user.address.postalCode}" placeholder="Enter your postal code" required>
-                <p th:if="${#fields.hasErrors('user.address.postalCode')}" th:errors="*{user.address.postalCode}"></p>
-            </div>
-
-            <div>
-                <label for="street">Street</label>
-                <input type="text" id="street" th:field="*{user.address.street}" placeholder="Enter your street" required>
-                <p th:if="${#fields.hasErrors('user.address.street')}" th:errors="*{user.address.street}"></p>
-            </div>
-
-            <div>
-                <label for="number">Street Number</label>
-                <input type="text" id="number" th:field="*{user.address.number}" placeholder="Enter your street number" required>
-                <p th:if="${#fields.hasErrors('user.address.number')}" th:errors="*{user.address.number}"></p>
             </div>
 
             <!-- Credentials fields without model binding (shown only for non-OIDC users) -->
@@ -94,6 +55,47 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Choose a password" required>
             </div>
+
+            <!-- Address Information Section -->
+            <h3>Address Information</h3>
+            <h4>not mandatory, but entering this information will be helpful to suggest facilities in the area where you live!</h4>
+
+            <div>
+                <label for="country">Country</label>
+                <input type="text" id="country" th:field="*{user.address.country}" placeholder="Enter your country">
+                <p th:if="${#fields.hasErrors('user.address.country')}" th:errors="*{user.address.country}"></p>
+            </div>
+
+            <div>
+                <label for="state">State</label>
+                <input type="text" id="state" th:field="*{user.address.state}" placeholder="Enter your state">
+                <p th:if="${#fields.hasErrors('user.address.state')}" th:errors="*{user.address.state}"></p>
+            </div>
+
+            <div>
+                <label for="city">City</label>
+                <input type="text" id="city" th:field="*{user.address.city}" placeholder="Enter your city">
+                <p th:if="${#fields.hasErrors('user.address.city')}" th:errors="*{user.address.city}"></p>
+            </div>
+
+            <div>
+                <label for="postalCode">Postal Code</label>
+                <input type="text" id="postalCode" th:field="*{user.address.postalCode}" placeholder="Enter your postal code">
+                <p th:if="${#fields.hasErrors('user.address.postalCode')}" th:errors="*{user.address.postalCode}"></p>
+            </div>
+
+            <div>
+                <label for="street">Street</label>
+                <input type="text" id="street" th:field="*{user.address.street}" placeholder="Enter your street">
+                <p th:if="${#fields.hasErrors('user.address.street')}" th:errors="*{user.address.street}"></p>
+            </div>
+
+            <div>
+                <label for="number">Street Number</label>
+                <input type="text" id="number" th:field="*{user.address.number}" placeholder="Enter your street number">
+                <p th:if="${#fields.hasErrors('user.address.number')}" th:errors="*{user.address.number}"></p>
+            </div>
+
 
             <!-- Submit Button -->
             <div>

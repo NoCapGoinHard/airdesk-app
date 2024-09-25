@@ -19,7 +19,7 @@
         </div>
 
         <!-- Login form for username and password -->
-        <form th:action="@{/perform_login}" method="post">
+        <form th:action="@{/login}" method="post">
             <div>
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" placeholder="Enter your username" required>
@@ -53,12 +53,13 @@
                     <path d="M0 0v24h24v-24h-24zm8 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.397-2.586 7-2.777 7 2.476v6.759z"/>
                 </svg>
             </a> -->
-           
 
         </div>
 
+
+
         <div>
-            <p>Don't have an account? <a href="/register">Register here</a></p>
+            <p>Don't have an account? <a href="/register">Sign Up with username and password</a></p>
         </div>
     </div>
 </body>
