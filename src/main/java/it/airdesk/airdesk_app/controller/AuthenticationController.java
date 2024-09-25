@@ -1,5 +1,7 @@
 package it.airdesk.airdesk_app.controller;
 
+import java.time.LocalDate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.airdesk.airdesk_app.exceptions.NoSuchUserException;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
@@ -34,90 +37,85 @@ public class AuthenticationController {
     @GetMapping("/login")
     public String login() {
         return "auth/login.html";
-        }
+    }
+
     @GetMapping("/success")
     public String getIndexAfterLogin(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        
+
         if (authentication.getPrincipal() instanceof DefaultOidcUser) {
             // Handle OAuth2 OIDC user
             DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
             
-            String username = oidcUser.getEmail();  // You can retrieve the email or another field as username
-            Credentials credentials = this.credentialsService.findByUsername(username);
+            String email = oidcUser.getEmail();
+            try {
+                User existingUser = userService.findByEmail(email);
+                logger.info("OAuth2 User '{}' logged in successfully", existingUser.getEmail());
 
-            // Log the user login info and roles
-            logger.info("OAuth2 User '{}' logged in successfully with role '{}'", credentials.getUsername(), credentials.getRole());
-
-            // Add user information to the model if needed
-            model.addAttribute("name", oidcUser.getFullName());
-            model.addAttribute("email", oidcUser.getEmail());
-
+                model.addAttribute("name", existingUser.getName());
+                model.addAttribute("email", existingUser.getEmail());
+            } catch (NoSuchUserException e) {
+                logger.info("New OAuth2 user detected, redirecting to registration page");
+                return "redirect:/register";  // Redirect to registration
+            }
         } else if (authentication.getPrincipal() instanceof UserDetails) {
-            // Handle traditional login (UserDetails)
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            
-            Credentials credentials = this.credentialsService.findByUsername(userDetails.getUsername());
-
-            // Log the user login info and roles
-            logger.info("User '{}' logged in successfully with role '{}'", credentials.getUsername(), credentials.getRole());
-
-            // Add user information to the model if needed
-            model.addAttribute("name", credentials.getUser().getName());
-            model.addAttribute("email", credentials.getUser().getEmail());
+            Credentials credentials = credentialsService.findByUsername(userDetails.getUsername());
+            User user = credentials.getUser();
+            model.addAttribute("name", user.getName());
+            model.addAttribute("email", user.getEmail());
         }
-
-        return "index.html";  // Return the main page after successful login
+        return "index.html";
     }
 
-    @GetMapping("/register")
+     @GetMapping("/register")
     public String register(Model model) {
-        
         logger.info("Accessing registration page");
 
-        model.addAttribute("user", new User());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = new User();
+
+        if (authentication.getPrincipal() instanceof DefaultOidcUser) {
+            // Pre-fill fields for OIDC users
+            DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
+            user.setName(oidcUser.getGivenName());
+            user.setSurname(oidcUser.getFamilyName());
+            user.setEmail(oidcUser.getEmail());
+            if (oidcUser.getClaims().containsKey("birthdate")) {
+                user.setBirthDate(LocalDate.parse(oidcUser.getClaim("birthdate")));  // If birthdate is shared
+            }
+            model.addAttribute("isOidc", true); // For conditional display in the form
+        } else {
+            model.addAttribute("isOidc", false); // Standard user, fields are empty
+        }
+
+        model.addAttribute("user", user);
         return "auth/register.html";
     }
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, BindingResult userBindingResult,
-                                @RequestParam("username") String username,
-                                @RequestParam("password") String password,
-                                Model model) {
-        
+                               @RequestParam("username") String username,
+                               @RequestParam("password") String password,
+                               Model model) {
         logger.info("Attempting to register user: {} {}", user.getName(), user.getSurname());
 
-        logger.debug("User object: {}", user);
-        
-        if(!userBindingResult.hasErrors()){
-            logger.debug("User address details: {}, {}, {}, {}, {}", 
-            user.getAddress().getStreet(),
-            user.getAddress().getCity(),
-            user.getAddress().getState(),
-            user.getAddress().getCountry(),
-            user.getAddress().getPostalCode());
-
+        if (!userBindingResult.hasErrors()) {
             Credentials credentials = new Credentials();
-            credentials.setUsername(username);  // Set username
-            credentials.setPassword(password);  // Set password (you might hash it here)
-            credentials.setUser(user);  // Link credentials to the user
-            credentials.setRole(Credentials.USER);  // Set default role to USER
-        
-            // Save user and credentials
+            credentials.setUsername(username);
+            credentials.setPassword(password);
+            credentials.setUser(user);
+            credentials.setRole(Credentials.USER);
+
             userService.save(user);
             credentialsService.save(credentials);
 
             logger.info("Successfully registered user: {} with username: {}", user.getName(), credentials.getUsername());
-
-            model.addAttribute("user", user);
             return "redirect:/";
-        }
-        else {
+        } else {
             logger.warn("User registration failed due to validation errors");
-            if (userBindingResult.hasErrors()) logger.debug("User form validation errors: {}", userBindingResult.getAllErrors());
-
             return "auth/register.html";
         }
-
     }
 }
+

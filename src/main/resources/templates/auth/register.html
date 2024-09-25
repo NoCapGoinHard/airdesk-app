@@ -15,29 +15,33 @@
 
         <!-- Form for both user and credentials -->
         <form th:action="@{/register}" method="post">
-            
+
             <!-- User Information Section -->
             <div>
                 <label for="name">First Name</label>
-                <input type="text" id="name" th:field="*{user.name}" placeholder="Enter your first name" required>
+                <!-- Make field readonly if OIDC user -->
+                <input type="text" id="name" th:field="*{user.name}" th:readonly="${isOidc}" placeholder="Enter your first name" required>
                 <p th:if="${#fields.hasErrors('user.name')}" th:errors="*{user.name}"></p>
             </div>
 
             <div>
                 <label for="surname">Last Name</label>
-                <input type="text" id="surname" th:field="*{user.surname}" placeholder="Enter your last name" required>
+                <!-- Make field readonly if OIDC user -->
+                <input type="text" id="surname" th:field="*{user.surname}" th:readonly="${isOidc}" placeholder="Enter your last name" required>
                 <p th:if="${#fields.hasErrors('user.surname')}" th:errors="*{user.surname}"></p>
             </div>
 
             <div>
                 <label for="email">Email</label>
-                <input type="email" id="email" th:field="*{user.email}" placeholder="Enter your email" required>
+                <!-- Make field readonly if OIDC user -->
+                <input type="email" id="email" th:field="*{user.email}" th:readonly="${isOidc}" placeholder="Enter your email" required>
                 <p th:if="${#fields.hasErrors('user.email')}" th:errors="*{user.email}"></p>
             </div>
 
             <div>
                 <label for="birthDate">Birth Date</label>
-                <input type="date" id="birthDate" th:field="*{user.birthDate}" required>
+                <!-- Make field readonly if OIDC user (optional) -->
+                <input type="date" id="birthDate" th:field="*{user.birthDate}" th:readonly="${isOidc}" required>
                 <p th:if="${#fields.hasErrors('user.birthDate')}" th:errors="*{user.birthDate}"></p>
             </div>
 
@@ -80,13 +84,13 @@
                 <p th:if="${#fields.hasErrors('user.address.number')}" th:errors="*{user.address.number}"></p>
             </div>
 
-            <!-- Credentials fields without model binding -->
-            <div>
+            <!-- Credentials fields without model binding (shown only for non-OIDC users) -->
+            <div th:if="${!isOidc}">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" placeholder="Choose a username" required>
             </div>
 
-            <div>
+            <div th:if="${!isOidc}">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="Choose a password" required>
             </div>

@@ -12,12 +12,12 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
 import it.airdesk.airdesk_app.exceptions.NoAvailableWorkstationException;
+import it.airdesk.airdesk_app.exceptions.NoSuchUserException;
 import it.airdesk.airdesk_app.model.Booking;
 import it.airdesk.airdesk_app.model.Workstation;
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.repository.BookingRepository;
-import it.airdesk.airdesk_app.repository.WorkstationRepository;
-import it.airdesk.airdesk_app.repository.auth.CredentialsRepository;
+import it.airdesk.airdesk_app.service.auth.CredentialsService;
 import it.airdesk.airdesk_app.service.auth.UserService;
 import jakarta.transaction.Transactional;
 
@@ -30,11 +30,13 @@ public class BookingService {
     private BookingRepository bookingRepository;
 
     @Autowired
-    private WorkstationRepository workstationRepository;
-
+    private WorkstationService workstationService;
 
     @Autowired
-    private CredentialsRepository credentialsRepository;
+    private CredentialsService credentialsService;
+
+    @Autowired
+    private UserService userService;
 
     @Transactional
     public Booking createBooking(Booking booking, Long buildingId, String workstationType) throws NoAvailableWorkstationException {
@@ -43,7 +45,7 @@ public class BookingService {
                     buildingId, workstationType, booking.getDate(), booking.getStartingTime(), booking.getEndingTime());
 
         // Fetch available workstations logic
-        List<Workstation> availableWorkstations = workstationRepository.findAvailableWorkstations(
+        List<Workstation> availableWorkstations = workstationService.findAvailableWorkstations(
             buildingId,
             workstationType,
             booking.getDate(),
@@ -65,24 +67,24 @@ public class BookingService {
         if (authentication.getPrincipal() instanceof UserDetails) {
             // Standard login case (from DB)
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            User currentUser = credentialsRepository.findByUsername(userDetails.getUsername()).getUser();
+            User currentUser = credentialsService.findByUsername(userDetails.getUsername()).getUser();
             booking.setUser(currentUser);
-            logger.info("Booking created by standard user: {} {}", currentUser.getName(), currentUser.getSurname());
+            logger.info("Booking created by STANDARD user: {} {}", currentUser.getName(), currentUser.getSurname());
         } else if (authentication.getPrincipal() instanceof OidcUser) {
             // OIDC login case (from OAuth provider)
             OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
-            String name = oidcUser.getGivenName(); // OIDC standard claims
-            String surname = oidcUser.getFamilyName(); // OIDC standard claims
             String email = oidcUser.getEmail();
 
-            logger.info("Booking created by OIDC user: {} {} (Email: {})", name, surname, email);
+            try {
+                User existingUser = userService.findByEmail(email);  // Throws NoSuchUserException if not found
+                booking.setUser(existingUser);
+                logger.info("Booking created by OIDC user: {} {}", existingUser.getName(), existingUser.getSurname());
 
-            // Optionally, create a temporary user to associate with the booking
-            User oAuthUser = new User();
-            oAuthUser.setName(name != null ? name : "OIDC User");
-            oAuthUser.setSurname(surname != null ? surname : "Unknown Surname");
-            oAuthUser.setEmail(email != null ? email : "Unknown Email");
-            booking.setUser(oAuthUser);
+            } catch (NoSuchUserException e) {
+                logger.error("User not found for OIDC email: {}", email);
+                throw new IllegalStateException("User not found for OIDC login");
+            }
+
         } else {
             throw new IllegalStateException("Unable to determine the user type.");
         }
