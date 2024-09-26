@@ -1,5 +1,6 @@
 package it.airdesk.airdesk_app.service.auth;
 
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class UserService {
     public void save(User user) {
         this.userRepository.save(user);
     }
-
+    
     // Find user by email or throw NoSuchUserException if not found
     public User findByEmail(String email) throws NoSuchUserException {
 

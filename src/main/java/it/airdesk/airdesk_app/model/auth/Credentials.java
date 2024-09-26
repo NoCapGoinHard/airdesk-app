@@ -32,7 +32,7 @@ public class Credentials {
     @Column(nullable = false)
     private String role;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private User user;
 
     public Credentials(){}

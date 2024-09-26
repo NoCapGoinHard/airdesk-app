@@ -8,27 +8,21 @@ import jakarta.validation.constraints.NotBlank;
 public class Address {
     
     @NotBlank(message = "country field must not be blank")
-    @Column(nullable = false)
     private String country;
 
     @NotBlank(message = "state field must not be blank")
-    @Column(nullable = false)
     private String state;
 
     @NotBlank(message = "city field must not be blank")
-    @Column(nullable = false)
     private String city;
     
     @NotBlank(message = "postal code field must not be blank")
-    @Column(nullable = false)
     private String postalCode;
 
     @NotBlank(message = "street field must not be blank")
-    @Column(nullable = false)
     private String street;
 
     @NotBlank(message = "number field must not be blank")
-    @Column(nullable = false)
     private String number;
 
     public Address(){}

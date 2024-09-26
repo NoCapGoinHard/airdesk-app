@@ -1,7 +1,5 @@
 package it.airdesk.airdesk_app.authentication;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -35,6 +34,11 @@ public class AuthConfiguration {
         @Bean
         public PasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder();
+        }
+
+        @Bean
+        public AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler() {
+                return new OAuth2AuthenticationSuccessHandler(); // Register your custom success handler
         }
 
         @SuppressWarnings({ "removal", "deprecation" })
@@ -84,7 +88,7 @@ public class AuthConfiguration {
                                 //OAUTH: here we define the OAuth2.0 login
                                 .oauth2Login(oauth2Login -> oauth2Login
                                                 .loginPage("/login")
-                                                .defaultSuccessUrl("/", true))
+                                                .successHandler(oAuth2AuthenticationSuccessHandler()))
 
                                 // LOGOUT: here we define the logout
                                 .logout(logout -> logout
