@@ -69,7 +69,7 @@ public class BookingService {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             User currentUser = credentialsService.findByUsername(userDetails.getUsername()).getUser();
             booking.setUser(currentUser);
-            logger.info("Booking created by STANDARD user: {} {}", currentUser.getName(), currentUser.getSurname());
+            logger.info("Booking created by STANDARD user: {} {} {}", currentUser.getName(), currentUser.getSurname(), currentUser.getEmail());
         } else if (authentication.getPrincipal() instanceof OidcUser) {
             // OIDC login case (from OAuth provider)
             OidcUser oidcUser = (OidcUser) authentication.getPrincipal();

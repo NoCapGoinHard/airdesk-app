@@ -24,6 +24,13 @@
             <p><strong>Time:</strong> <span th:text="${confirmedBooking.startingTime}"></span> - <span th:text="${confirmedBooking.endingTime}"></span></p>
         </div>
 
+        <!-- Display User Information (Works for both OIDC and Standard Users) -->
+        <div class="user-details" th:if="${userDetails}">
+            <h2>Booking performed by:</h2>
+            <p><strong>Name:</strong> <span th:text="${userDetails.name}"></span> <span th:text="${userDetails.surname}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${userDetails.email}"></span></p>
+        </div>
+
         <!-- Option to Make Another Booking or Return Home -->
         <div class="actions">
             <a href="/" class="button">Return Home</a>

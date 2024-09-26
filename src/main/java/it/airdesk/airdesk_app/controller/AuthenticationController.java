@@ -38,6 +38,9 @@ public class AuthenticationController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private String encodePassword(String password) {
+        return this.passwordEncoder.encode(password);
+    }
 
     @GetMapping("/login")
     public String login() {
@@ -100,26 +103,42 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, BindingResult userBindingResult,
-                               @RequestParam("username") String username,
-                               @RequestParam("password") String password,
-                               Model model) {
+                            @RequestParam(value = "username", required = false) String username,
+                            @RequestParam(value = "password", required = false) String password,
+                            @RequestParam(value = "isOidc", required = false) boolean isOidc,
+                            Model model) {
         logger.info("Attempting to register user: {} {}", user.getName(), user.getSurname());
 
+        // Check if userBindingResult has validation errors (not OIDC specific)
         if (!userBindingResult.hasErrors()) {
             Credentials credentials = new Credentials();
-            credentials.setUsername(username);
 
-            String encodedPassword = this.passwordEncoder.encode(password);
-            credentials.setPassword(encodedPassword);
             credentials.setUser(user);
             credentials.setRole(Credentials.USER);
 
+            if (isOidc) {
+                // Handle OIDC users (no password needed, so use placeholder)
+                credentials.setUsername(user.getEmail()); // Use email as username for OIDC
+                credentials.setPassword(this.encodePassword("OIDC_USER"));
+            } else {
+                // Handle standard users (with username and password)
+                credentials.setUsername(username);
+                credentials.setPassword(this.encodePassword(password));
+            }
+
+            // Save the user and credentials
             userService.save(user);
             credentialsService.save(credentials);
 
-            logger.info("Successfully registered user: {} with username: {}", user.getName(), credentials.getUsername());
+            logger.info("Successfully registered user with username: {}", credentials.getUsername());
             return "redirect:/";
-        } else {
+
+        } else if(!isOidc && (username == null || password == null)){
+            logger.warn("Username or password missing for standard user registration");
+            model.addAttribute("error", "Username and password are required for standard users.");
+            return "auth/register.html";
+        }
+        else {
             logger.warn("User registration failed due to validation errors");
             return "auth/register.html";
         }

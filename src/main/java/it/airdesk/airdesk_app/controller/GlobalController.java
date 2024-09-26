@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,24 @@ public class GlobalController { // Facade controller to handle index mapping glo
         }
         return null;  // Return null if no user is authenticated
     }
+
+//    @ModelAttribute("oidcUserInfo")
+//    public OidcUserInfo getOidcUserInfo() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+//            Object principal = authentication.getPrincipal();
+//            if (principal instanceof DefaultOidcUser) {
+//                DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
+//                OidcUserInfo oidcUserInfo = OidcUserInfo.builder() //returns new Builder()
+//                    .givenName(oidcUser.getGivenName()) 
+//                    .familyName(oidcUser.getFamilyName())
+//                    .email(oidcUser.getEmail())
+//                    .build();
+//                return oidcUserInfo;
+//            }
+//        }
+//        return null;
+//    }
 
     // Returns the credentials of the logged-in user
     @ModelAttribute("credentials")
