@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
+import it.airdesk.airdesk_app.service.CompanyService;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
 import it.airdesk.airdesk_app.service.auth.UserService;
 
@@ -19,6 +23,11 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CompanyService companyService;
+
+    private static final String FREELANCER_COMPANY_NAME = "FREELANCER";
 
     // Display the user's profile page
     @GetMapping("/userPage")
@@ -59,17 +68,20 @@ public class UserController {
             user.setSurname(updatedUser.getSurname());
             user.setEmail(updatedUser.getEmail());
             user.setBirthDate(updatedUser.getBirthDate());
-            user.setCompany(updatedUser.getCompany());
-            user.setAddress(updatedUser.getAddress());
+
+            // Save or find company and then associate it with the user
+            Company company = companyService.findOrCreateCompanyByName(updatedUser.getCompany().getName());
+            user.setCompany(company);
 
             // Save the updated user to the database
             userService.save(user);
 
             // Add a success message or redirect
             model.addAttribute("success", "User details updated successfully.");
-            return "redirect:/editUser";
+            return "redirect:/userPage";
         }
         return "redirect:/login";
     }
+
 
 }

@@ -1,20 +1,22 @@
 package it.airdesk.airdesk_app.authentication;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
+import it.airdesk.airdesk_app.model.dataTypes.Address;
+import it.airdesk.airdesk_app.repository.CompanyRepository;
+import it.airdesk.airdesk_app.service.CompanyService;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
 import it.airdesk.airdesk_app.service.auth.UserService;
 import jakarta.servlet.ServletException;
@@ -34,6 +36,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CompanyService companyService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -62,7 +67,18 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             user.setSurname(familyName);
             user.setEmail(email);
 
-            userService.save(user);  // Save the new user
+            Company company = companyService.findByName("UNKNOWN").orElseGet(() -> {
+                Company newCompany = new Company("UNKNOWN");
+                companyService.save(newCompany);
+                return newCompany;
+            });
+            user.setCompany(company);  // Assign "FREELANCER" as default
+
+            // Handle default address if missing
+            Address address = new Address("Unknown Street", "Unknown City", "Unknown Country", "");
+            user.setAddress(address);
+
+            userService.save(user);  //USER'S PERSISTENCE
             credentials = new Credentials();
             credentials.setUsername(username);
             credentials.setPassword(passwordEncoder.encode("OIDC_USER"));  // Placeholder password

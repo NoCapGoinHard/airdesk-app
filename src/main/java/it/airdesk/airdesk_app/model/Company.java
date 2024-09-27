@@ -36,6 +36,10 @@ public class Company {
     private List<Facility> facilities = new ArrayList<>();
 
     public Company(){}
+
+    public Company(String name) {
+        this.name = name;
+    }
     /////////////       GETTERS+SETTERS       //////////////////////
 
     public Long getId() {

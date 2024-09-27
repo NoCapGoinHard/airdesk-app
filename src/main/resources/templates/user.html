@@ -15,20 +15,28 @@
         <p><strong>Birthdate:</strong> <span th:text="${user.birthDate}"></span></p>
         
         <!-- Display Company if available, else show a warning -->
-        <div th:if="${user.company == null or user.company.trim() == ''}">
+        <div th:if="${user.company == null or (user.company.name != null and user.company.name.trim() == '')}">
             <p style="color: red; font-weight: bold;">
                 You haven't added your company name yet! You can also specify if you work as a freelancer.
             </p>
         </div>
-        <div th:if="${user.company != null and user.company.trim() != ''}">
-            <p><strong>Company:</strong> <span th:text="${user.company}"></span></p>
+        <div th:if="${user.company.name != null and user.company.name.trim() != ''}">
+            <p><strong>Company:</strong> <span th:text="${user.company.name}"></span></p>
         </div>
 
-        <p><strong>Address:</strong> 
-            <span th:text="${user.address.street}"></span>, 
-            <span th:text="${user.address.city}"></span>, 
-            <span th:text="${user.address.postalCode}"></span>
-        </p>
+        <!-- Check if the user's address is not null before displaying its fields -->
+        <div th:if="${user.address != null}">
+            <p><strong>Street:</strong> <span th:text="${user.address.street}"></span></p>
+            <p><strong>City:</strong> <span th:text="${user.address.city}"></span></p>
+            <p><strong>State:</strong> <span th:text="${user.address.state}"></span></p>
+            <p><strong>Country:</strong> <span th:text="${user.address.country}"></span></p>
+            <p><strong>Postal Code:</strong> <span th:text="${user.address.postalCode}"></span></p>
+        </div>
+
+        <!-- Optionally, display a message when the address is not available -->
+        <div th:if="${user.address == null}">
+            <p>No address information available.</p>
+        </div>
     </div>
 
     <!-- Button to edit the user profile -->

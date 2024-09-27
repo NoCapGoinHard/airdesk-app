@@ -41,12 +41,12 @@
             <!-- Company Field (wrapped in a div to show/hide) -->
             <div id="companyFieldDiv">
                 <label for="company">Company (or Freelancer)</label>
-                <input type="text" id="companyField" th:field="*{company}" placeholder="Company Name">
+                <input type="text" id="companyField" th:field="*{company.name}" placeholder="Company Name">
             </div>
 
             <!-- Freelancer Checkbox -->
             <div>
-                <input type="checkbox" id="freelancerCheckbox" onclick="toggleFreelancer()">
+                <input type="checkbox" id="freelancerCheckbox" name="freelancerCheckbox" onclick="toggleFreelancer()">
                 <label for="freelancerCheckbox">Check this box if working as a freelancer</label>
             </div>
 

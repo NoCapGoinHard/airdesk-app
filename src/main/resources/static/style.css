@@ -102,3 +102,20 @@
     opacity: 8%;
   }
   
+
+
+  /* Styling for suggestions dropdown */
+.suggestions-list {
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background-color: #f0f0f0;
+}

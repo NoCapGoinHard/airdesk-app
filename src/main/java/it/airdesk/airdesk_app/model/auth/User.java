@@ -51,7 +51,7 @@ public class User {
     @Column(nullable = true)
     private Address address;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "company_id", nullable = true) //the software logic supports freelance workers
     private Company company;
 
