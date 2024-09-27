@@ -57,34 +57,13 @@ public class BookingService {
         Workstation assignedWorkstation = availableWorkstations.get(0);
         booking.setWorkstation(assignedWorkstation);
 
-        // Retrieve the authenticated user (either standard user or OIDC user)
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication.getPrincipal() instanceof UserDetails) {
-            // Standard login case (from DB)
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            User currentUser = credentialsService.findByUsername(userDetails.getUsername()).orElseThrow(() ->
-                    new IllegalStateException("Credentials not found for username: " + userDetails.getUsername())
-            ).getUser();
-            booking.setUser(currentUser);
-            logger.info("Booking created by STANDARD user: {} {} {}", currentUser.getName(), currentUser.getSurname(), currentUser.getEmail());
-
-        } else if (authentication.getPrincipal() instanceof OidcUser) {
-            // OIDC login case (from OAuth provider)
-            OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
-            // Fetch user by username (based on the email)
-            User currentUser = credentialsService.findByUsername("USERNAMEof" + oidcUser.getEmail()).orElseThrow(() ->
-                    new IllegalStateException("Credentials not found for OIDC user with username: USERNAMEof" + oidcUser.getEmail())
-            ).getUser();
-
-            booking.setUser(currentUser);
-            logger.info("Booking created by OIDC user: {} {}", currentUser.getName(), currentUser.getSurname());
-
-        } else {
-            throw new IllegalStateException("Unable to determine the user type.");
-        }
+        User currentUser = credentialsService.getAuthenticatedUserCredentials().orElse(null).getUser();
+        booking.setUser(currentUser);
+        logger.info("Booking created by user: {} {} {}", currentUser.getName(), currentUser.getSurname(), currentUser.getEmail());
 
         Booking savedBooking = bookingRepository.save(booking);
+        currentUser.addBooking(savedBooking);
+        assignedWorkstation.addBooking(savedBooking);
         logger.info("Booking saved: {}", savedBooking);
 
         return savedBooking;

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -38,6 +39,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
 
+        // Log if handler is triggered
+        logger.info("OAuth2AuthenticationSuccessHandler triggered");
+
+        // Extract OIDC user information
         DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
         String email = oidcUser.getEmail();
         String givenName = oidcUser.getGivenName();
@@ -45,43 +50,35 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         logger.info("User authenticated with OAuth2 provider. Email: {}, Given Name: {}, Family Name: {}", email, givenName, familyName);
 
-        // Check if user already exists in the database using Optional
-        Optional<User> userOpt = userService.findByEmail(email);
+        // Check if user already exists in the database
         User user;
+        String username = "USERNAMEof" + email;  // Ensure the username is formatted correctly
+        Credentials credentials = credentialsService.findByUsername(username).orElse(null);
 
-        if (userOpt.isPresent()) {
-            user = userOpt.get();
-            logger.info("User found in the database with email: {}", email);
-        } else {
-            logger.info("No existing user found with email: {}. Creating a new user.", email);
+        if (credentials == null) {
+            // Create new user and credentials if they don't exist
             user = new User();
             user.setName(givenName);
             user.setSurname(familyName);
             user.setEmail(email);
-            userService.save(user);  // Persist the new user to the database
-            logger.info("New user created and saved with email: {}", email);
-        }
 
-        // Now check if credentials exist using the username format
-        String oidcUsername = "USERNAMEof" + email;
-        Optional<Credentials> credentialsOpt = credentialsService.findByUsername(oidcUsername);
-
-        if (credentialsOpt.isPresent()) {
-            logger.info("Credentials found for username: {}", oidcUsername);
-        } else {
-            logger.info("No credentials found for username: {}. Creating new credentials.", oidcUsername);
-            Credentials credentials = new Credentials();
-            credentials.setUsername(oidcUsername);  // Use the correct username format
+            userService.save(user);  // Save the new user
+            credentials = new Credentials();
+            credentials.setUsername(username);
             credentials.setPassword(passwordEncoder.encode("OIDC_USER"));  // Placeholder password
-            credentials.setUser(user);  // Associate credentials with the user
+            credentials.setUser(user);
             credentials.setRole(Credentials.USER);
-            credentialsService.save(credentials);  // Save credentials
-            logger.info("New credentials created and saved for username: {}", oidcUsername);
+
+            credentialsService.save(credentials);  // Save the new credentials
+            logger.info("New user and credentials created for email: {}", email);
+        } else {
+            user = credentials.getUser();
+            logger.info("Existing user found for email: {}", email);
         }
 
-        // Redirect to a specific page after success
-        logger.info("OAuth2 authentication successful. Redirecting...");
-        super.onAuthenticationSuccess(request, response, authentication);
+        // Redirect manually to the index after login
+        logger.info("Redirecting to index page...");
+        // After authentication success, redirect to the home page
+        response.sendRedirect("/");
     }
-
 }

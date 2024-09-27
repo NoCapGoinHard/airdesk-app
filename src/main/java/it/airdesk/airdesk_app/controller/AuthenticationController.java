@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,36 +39,19 @@ public class AuthenticationController {
 
     @GetMapping("/success")
     public String getIndexAfterLogin(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    
-        if (authentication.getPrincipal() instanceof DefaultOidcUser) {
-            DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
-            String email = oidcUser.getEmail();
-    
-            // Handle OIDC user, using Optional to avoid exceptions
-            String oidcUsername = "USERNAMEof" + email;  // Ensure the correct username format
-            Optional<Credentials> credentialsOpt = credentialsService.findByUsername(oidcUsername);
-    
-            if (credentialsOpt.isPresent()) {
-                User user = credentialsOpt.get().getUser();
-                model.addAttribute("name", user.getName());
-                model.addAttribute("email", user.getEmail());
-            } else {
-                return "redirect:/register";  // Redirect to registration if no credentials found
-            }
-        } else if (authentication.getPrincipal() instanceof UserDetails) {
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            Optional<Credentials> credentialsOpt = credentialsService.findByUsername(userDetails.getUsername());
-    
-            if (credentialsOpt.isPresent()) {
-                User user = credentialsOpt.get().getUser();
-                model.addAttribute("name", user.getName());
-                model.addAttribute("surname", user.getSurname());
-                model.addAttribute("email", user.getEmail());
-            }
+        // Use the method to get the authenticated user's credentials
+        Optional<Credentials> credentialsOpt = credentialsService.getAuthenticatedUserCredentials();
+
+        if (credentialsOpt.isPresent()) {
+            User user = credentialsOpt.get().getUser();
+            model.addAttribute("name", user.getName());
+            model.addAttribute("email", user.getEmail());
+            model.addAttribute("surname", user.getSurname());
+        } else {
+            return "redirect:/login"; // Redirect to login if not authenticated
         }
-    
-        return "index.html";
+
+        return "redirect:/";
     }
 
 

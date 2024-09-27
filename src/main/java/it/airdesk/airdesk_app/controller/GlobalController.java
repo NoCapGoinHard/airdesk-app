@@ -45,43 +45,15 @@ public class GlobalController { // Facade controller to handle index mapping glo
         return null;  // Return null if no user is authenticated
     }
 
-//    @ModelAttribute("oidcUserInfo")
-//    public OidcUserInfo getOidcUserInfo() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-//            Object principal = authentication.getPrincipal();
-//            if (principal instanceof DefaultOidcUser) {
-//                DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
-//                OidcUserInfo oidcUserInfo = OidcUserInfo.builder() //returns new Builder()
-//                    .givenName(oidcUser.getGivenName()) 
-//                    .familyName(oidcUser.getFamilyName())
-//                    .email(oidcUser.getEmail())
-//                    .build();
-//                return oidcUserInfo;
-//            }
-//        }
-//        return null;
-//    }
-
     // Returns the credentials of the logged-in user
     @ModelAttribute("credentials")
-    public Credentials getCredentials() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            Object principal = authentication.getPrincipal();
-
-            // Handle OIDC User
-            if (principal instanceof DefaultOidcUser) {
-                DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
-                return credentialsService.findByUsername("USERNAMEof" + oidcUser.getEmail()).orElse(null);
-            }
-            // Handle standard UserDetails user
-            else if (principal instanceof UserDetails) {
-                UserDetails userDetails = (UserDetails) principal;
-                return credentialsService.findByUsername(userDetails.getUsername()).orElse(null);
-            }
+    public Credentials getAuthenticatedUserCredentials() {
+        Credentials credentials = credentialsService.getAuthenticatedUserCredentials().orElse(null);
+        if (credentials != null) {
+            System.out.println("GLOBALCONTROLLER: Credentials found: " + credentials.getUsername());
+        } else {
+            System.out.println("GLOBALCONTROLLER: No credentials found.");
         }
-        return null;  // Return null if no credentials are available
+        return credentials;
     }
 }

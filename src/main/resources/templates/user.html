@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+
+    <h1>User Profile</h1>
+
+    <!-- Display the user information -->
+    <div>
+        <p><strong>Name:</strong> <span th:text="${user.name}"></span></p>
+        <p><strong>Surname:</strong> <span th:text="${user.surname}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+        <p><strong>Birthdate:</strong> <span th:text="${user.birthDate}"></span></p>
+        
+        <!-- Display Company if available, else show a warning -->
+        <div th:if="${user.company == null or user.company.trim() == ''}">
+            <p style="color: red; font-weight: bold;">
+                You haven't added your company name yet! You can also specify if you work as a freelancer.
+            </p>
+        </div>
+        <div th:if="${user.company != null and user.company.trim() != ''}">
+            <p><strong>Company:</strong> <span th:text="${user.company}"></span></p>
+        </div>
+
+        <p><strong>Address:</strong> 
+            <span th:text="${user.address.street}"></span>, 
+            <span th:text="${user.address.city}"></span>, 
+            <span th:text="${user.address.postalCode}"></span>
+        </p>
+    </div>
+
+    <!-- Button to edit the user profile -->
+    <div>
+        <a href="/editUser">Edit your profile</a>
+    </div>
+
+</body>
+</html>
