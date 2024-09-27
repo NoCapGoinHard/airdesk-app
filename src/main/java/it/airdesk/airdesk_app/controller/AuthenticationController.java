@@ -32,6 +32,12 @@ public class AuthenticationController {
     @Autowired
     private CredentialsService credentialsService;
     
+
+    @GetMapping("/")
+    public String getIndex() {
+        return "index.html";
+    }
+    
     @GetMapping("/login")
     public String login() {
         return "auth/login.html";

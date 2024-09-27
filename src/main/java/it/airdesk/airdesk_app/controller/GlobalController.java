@@ -19,10 +19,7 @@ public class GlobalController { // Facade controller to handle index mapping glo
     @Autowired
     private CredentialsService credentialsService;
 
-    @GetMapping("/")
-    public String getIndex() {
-        return "index.html";
-    }
+
 
     // Returns the current logged-in user's details (either OIDC user or standard UserDetails)
     @ModelAttribute("userDetails")
