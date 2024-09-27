@@ -17,7 +17,6 @@ import it.airdesk.airdesk_app.model.Workstation;
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.repository.BookingRepository;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
-import it.airdesk.airdesk_app.service.auth.UserService;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -34,8 +33,6 @@ public class BookingService {
     @Autowired
     private CredentialsService credentialsService;
 
-    @Autowired
-    private UserService userService;
 
     @Transactional
     public Booking createBooking(Booking booking, Long buildingId, String workstationType) throws NoAvailableWorkstationException {

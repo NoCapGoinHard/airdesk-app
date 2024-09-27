@@ -41,7 +41,7 @@ public class AuthConfiguration {
                 return new OAuth2AuthenticationSuccessHandler(); // Register your custom success handler
         }
 
-        @SuppressWarnings({ "removal", "deprecation" })
+        //@SuppressWarnings({ "removal", "deprecation" })
         @Bean
         protected SecurityFilterChain configure(final HttpSecurity httpSecurity) throws Exception {
                 httpSecurity

@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
 import it.airdesk.airdesk_app.model.Booking;
 import it.airdesk.airdesk_app.model.Company;

@@ -21,7 +21,6 @@ import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.service.auth.AuthService;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
-import it.airdesk.airdesk_app.service.auth.UserService;
 
 @Controller
 public class AuthenticationController {
@@ -31,8 +30,6 @@ public class AuthenticationController {
     @Autowired
     private AuthService authService;
 
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private CredentialsService credentialsService;

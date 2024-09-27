@@ -1,6 +1,5 @@
 package it.airdesk.airdesk_app.model.dataTypes;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 
