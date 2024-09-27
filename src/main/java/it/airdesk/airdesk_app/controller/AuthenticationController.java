@@ -1,6 +1,6 @@
 package it.airdesk.airdesk_app.controller;
 
-import java.time.LocalDate;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import it.airdesk.airdesk_app.exceptions.NoSuchUserException;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.service.auth.AuthService;
@@ -46,30 +45,34 @@ public class AuthenticationController {
     @GetMapping("/success")
     public String getIndexAfterLogin(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
+    
         if (authentication.getPrincipal() instanceof DefaultOidcUser) {
-            // Handle OAuth2 OIDC user
             DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
-            
             String email = oidcUser.getEmail();
-            try {
-                User existingUser = userService.findByEmail(email);
-                logger.info("OAuth2 User '{}' logged in successfully", existingUser.getEmail());
-
-                model.addAttribute("name", existingUser.getName());
-                model.addAttribute("email", existingUser.getEmail());
-            } catch (NoSuchUserException e) {
-                logger.info("New OAuth2 user detected, redirecting to registration page");
-                return "redirect:/register";  // Redirect to registration
+    
+            // Handle OIDC user, using Optional to avoid exceptions
+            String oidcUsername = "USERNAMEof" + email;  // Ensure the correct username format
+            Optional<Credentials> credentialsOpt = credentialsService.findByUsername(oidcUsername);
+    
+            if (credentialsOpt.isPresent()) {
+                User user = credentialsOpt.get().getUser();
+                model.addAttribute("name", user.getName());
+                model.addAttribute("email", user.getEmail());
+            } else {
+                return "redirect:/register";  // Redirect to registration if no credentials found
             }
         } else if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            Credentials credentials = credentialsService.findByUsername(userDetails.getUsername());
-            User user = credentials.getUser();
-            model.addAttribute("name", user.getName());
-            model.addAttribute("surname", user.getSurname());
-            model.addAttribute("email", user.getEmail());
+            Optional<Credentials> credentialsOpt = credentialsService.findByUsername(userDetails.getUsername());
+    
+            if (credentialsOpt.isPresent()) {
+                User user = credentialsOpt.get().getUser();
+                model.addAttribute("name", user.getName());
+                model.addAttribute("surname", user.getSurname());
+                model.addAttribute("email", user.getEmail());
+            }
         }
+    
         return "index.html";
     }
 

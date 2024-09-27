@@ -75,18 +75,14 @@ public class GlobalController { // Facade controller to handle index mapping glo
             // Handle OIDC User
             if (principal instanceof DefaultOidcUser) {
                 DefaultOidcUser oidcUser = (DefaultOidcUser) principal;
-                String email = oidcUser.getEmail();  // Use email as username if that's the strategy
-                Credentials credentials = credentialsService.findByUsername(email);
-                return credentials;
+                return credentialsService.findByUsername("USERNAMEof" + oidcUser.getEmail()).orElse(null);
             }
             // Handle standard UserDetails user
             else if (principal instanceof UserDetails) {
                 UserDetails userDetails = (UserDetails) principal;
-                Credentials credentials = credentialsService.findByUsername(userDetails.getUsername());
-                return credentials;
+                return credentialsService.findByUsername(userDetails.getUsername()).orElse(null);
             }
         }
-
         return null;  // Return null if no credentials are available
     }
 }

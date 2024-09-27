@@ -12,7 +12,6 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
 import it.airdesk.airdesk_app.exceptions.NoAvailableWorkstationException;
-import it.airdesk.airdesk_app.exceptions.NoSuchUserException;
 import it.airdesk.airdesk_app.model.Booking;
 import it.airdesk.airdesk_app.model.Workstation;
 import it.airdesk.airdesk_app.model.auth.User;
@@ -67,23 +66,22 @@ public class BookingService {
         if (authentication.getPrincipal() instanceof UserDetails) {
             // Standard login case (from DB)
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            User currentUser = credentialsService.findByUsername(userDetails.getUsername()).getUser();
+            User currentUser = credentialsService.findByUsername(userDetails.getUsername()).orElseThrow(() ->
+                    new IllegalStateException("Credentials not found for username: " + userDetails.getUsername())
+            ).getUser();
             booking.setUser(currentUser);
             logger.info("Booking created by STANDARD user: {} {} {}", currentUser.getName(), currentUser.getSurname(), currentUser.getEmail());
+
         } else if (authentication.getPrincipal() instanceof OidcUser) {
             // OIDC login case (from OAuth provider)
             OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
-            String email = oidcUser.getEmail();
+            // Fetch user by username (based on the email)
+            User currentUser = credentialsService.findByUsername("USERNAMEof" + oidcUser.getEmail()).orElseThrow(() ->
+                    new IllegalStateException("Credentials not found for OIDC user with username: USERNAMEof" + oidcUser.getEmail())
+            ).getUser();
 
-            try {
-                User existingUser = userService.findByEmail(email);  // Throws NoSuchUserException if not found
-                booking.setUser(existingUser);
-                logger.info("Booking created by OIDC user: {} {}", existingUser.getName(), existingUser.getSurname());
-
-            } catch (NoSuchUserException e) {
-                logger.error("User not found for OIDC email: {}", email);
-                throw new IllegalStateException("User not found for OIDC login");
-            }
+            booking.setUser(currentUser);
+            logger.info("Booking created by OIDC user: {} {}", currentUser.getName(), currentUser.getSurname());
 
         } else {
             throw new IllegalStateException("Unable to determine the user type.");
