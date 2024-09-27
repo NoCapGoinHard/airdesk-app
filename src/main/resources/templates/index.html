@@ -14,7 +14,25 @@
         <div>
             <a href="/login">Login</a>
             <a href="/register">Register</a>
-        </div>
+            
+            <!-- OR section for OAuth2 login -->
+            <a th:href="@{/oauth2/authorization/google}" class="g-signin2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="18px" height="18px">
+                    <path fill="#4285F4" d="M45.12 24.14c0-1.6-.14-3.15-.41-4.64H24v9.18h11.88c-.52 2.66-2.01 4.91-4.17 6.42l6.75 5.23c3.93-3.63 6.19-8.99 6.19-16.19z"/>
+                    <path fill="#34A853" d="M24 48c5.63 0 10.35-1.87 13.8-5.07l-6.55-5.08c-1.83 1.23-4.15 1.98-7.25 1.98-5.56 0-10.26-3.75-11.94-8.78l-6.83 5.32C10.39 44.27 16.8 48 24 48z"/>
+                    <path fill="#FBBC05" d="M12.06 28.14c-.43-1.25-.67-2.59-.67-3.96 0-1.37.24-2.71.67-3.96l-6.83-5.32c-1.54 2.85-2.43 6.1-2.43 9.28s.89 6.43 2.43 9.28l6.83-5.32z"/>
+                    <path fill="#EA4335" d="M24 9.54c3.16 0 6.01 1.09 8.25 2.92l6.16-6.16C34.33 2.61 29.68 0 24 0 16.8 0 10.39 3.73 6.45 9.72l6.83 5.32C13.74 13.29 18.44 9.54 24 9.54z"/>
+                </svg>
+                Otherwise, continue with Google
+            </a>
+            <!--
+                LINKEDIN
+            <a th:href="@{/oauth2/authorization/linkedin}" class="linkedin-signin">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M0 0v24h24v-24h-24zm8 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.397-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+            </a> -->
+        
     </nav>
 
     <!-- Main Content Section -->
