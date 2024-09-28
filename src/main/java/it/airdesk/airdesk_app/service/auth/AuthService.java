@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
+import it.airdesk.airdesk_app.model.dataTypes.Address;
+import it.airdesk.airdesk_app.service.CompanyService;
 
 @Service
 public class AuthService {
@@ -19,6 +22,9 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CompanyService companyService;
+
     public String encodePassword(String password) {
         return this.passwordEncoder.encode(password);
     }
@@ -30,7 +36,7 @@ public class AuthService {
         credentials.setRole(Credentials.USER);
         credentials.setUsername(username);
         credentials.setPassword(passwordEncoder.encode(password));
-
+    
         // Save the user and credentials
         userService.save(user);
         credentialsService.save(credentials);

@@ -72,10 +72,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 companyService.save(newCompany);
                 return newCompany;
             });
-            user.setCompany(company);  // Assign "FREELANCER" as default
+            user.setCompany(company);  // Assign "UNKNOWN" as default
 
             // Handle default address if missing
-            Address address = new Address("Unknown Street", "Unknown City", "Unknown Country", "");
+            Address address = new Address("Unknown");
             user.setAddress(address);
 
             userService.save(user);  //USER'S PERSISTENCE

@@ -14,7 +14,7 @@
         </div>
 
         <!-- Form for both user and credentials -->
-        <form th:action="@{/register}" method="post">
+        <form th:action="@{/register}" method="post" onsubmit="return validateForm()">
 
             <!-- User Information Section -->
             <div>
@@ -43,6 +43,18 @@
                 <!-- Make field readonly if OIDC user (optional) -->
                 <input type="date" id="birthDate" th:field="*{user.birthDate}" th:readonly="${isOidc}">
                 <p th:if="${#fields.hasErrors('user.birthDate')}" th:errors="*{user.birthDate}"></p>
+            </div>
+
+            <!-- Company Field (wrapped in a div to show/hide) -->
+            <div id="companyFieldDiv">
+                <label for="company">Company (or Freelancer)</label>
+                <input type="text" id="companyField" th:field="*{user.company.name}" placeholder="Company Name">
+            </div>
+
+            <!-- Freelancer Checkbox -->
+            <div>
+                <input type="checkbox" id="freelancerCheckbox" name="freelancerCheckbox" onclick="toggleFreelancer()">
+                <label for="freelancerCheckbox">Check this box if working as a freelancer</label>
             </div>
 
             <!-- Credentials fields without model binding (shown only for non-OIDC users) -->
@@ -108,5 +120,19 @@
             <p>Already have an account? <a href="/login">Login here</a></p>
         </div>
     </div>
+
+    <!-- Add a script to check for either company or freelancer -->
+    <script>
+        function validateForm() {
+            const companyField = document.getElementById("companyField").value.trim();
+            const freelancerChecked = document.getElementById("freelancerCheckbox").checked;
+    
+            if (companyField === "" && !freelancerChecked) {
+                alert("Please enter a company name or select the freelancer checkbox.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </body>
 </html>

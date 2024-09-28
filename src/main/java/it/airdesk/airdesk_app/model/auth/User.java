@@ -51,14 +51,16 @@ public class User {
     @Column(nullable = true)
     private Address address;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "company_id", nullable = true) //the software logic supports freelance workers
     private Company company;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings = new ArrayList<>();
 
-    public User(){}
+    public User(){
+        this.address = new Address("UNKNOWN");
+    }
 
     /////////////       GETTERS+SETTERS       //////////////////////
     public Long getId() {

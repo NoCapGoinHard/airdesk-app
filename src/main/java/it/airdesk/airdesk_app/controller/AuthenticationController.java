@@ -5,8 +5,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,8 +13,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
+import it.airdesk.airdesk_app.service.CompanyService;
 import it.airdesk.airdesk_app.service.auth.AuthService;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
 
@@ -31,6 +31,9 @@ public class AuthenticationController {
 
     @Autowired
     private CredentialsService credentialsService;
+
+    @Autowired
+    private CompanyService companyService;
     
 
     @GetMapping("/")
@@ -64,6 +67,7 @@ public class AuthenticationController {
     @GetMapping("/register")
     public String register(Model model) {
         User user = new User();
+        user.setCompany(new Company());
         model.addAttribute("isOidc", false);
         model.addAttribute("user", user);
         return "auth/register.html";
@@ -71,11 +75,30 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") User user, BindingResult userBindingResult,
-                                @RequestParam(value = "username", required = false) String username,
-                                @RequestParam(value = "password", required = false) String password,
-                                Model model)    {
+                            @RequestParam(value = "username", required = false) String username,
+                            @RequestParam(value = "password", required = false) String password,
+                            @RequestParam(value = "freelancerCheckbox", required = false) String freelancerChecked,
+                            Model model) {
+
+        boolean isFreelancer = freelancerChecked != null && freelancerChecked.equals("on");
+
         if (!userBindingResult.hasErrors()) {
-            // Use the common registration method
+            // If the user checked the "Freelancer" box, assign the "FREELANCER" company
+            if (isFreelancer) {
+                Company freelancerCompany = companyService.findOrCreateCompanyByName("FREELANCER");
+                user.setCompany(freelancerCompany);
+            } else {
+                // If the user is not a freelancer and has not entered a company, handle the error
+                if (user.getCompany() == null || user.getCompany().getName().trim().isEmpty()) {
+                    model.addAttribute("error", "Company name must be provided unless working as a freelancer.");
+                    return "auth/register.html";
+                }
+                // Otherwise, find or create the company the user entered
+                Company company = companyService.findOrCreateCompanyByName(user.getCompany().getName());
+                user.setCompany(company);
+            }
+
+            // Use the simplified registration method
             authService.registerStandardUser(user, username, password);
             logger.info("User '{}' registered successfully", user.getEmail());
             return "redirect:/";

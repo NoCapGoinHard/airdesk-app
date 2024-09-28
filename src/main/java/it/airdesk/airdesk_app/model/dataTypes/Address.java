@@ -26,6 +26,15 @@ public class Address {
 
     public Address(){}
 
+    public Address(String defaultValue) {
+        this.country = defaultValue;
+        this.state = defaultValue;
+        this.city = defaultValue;
+        this.postalCode = defaultValue;
+        this.street = defaultValue;
+        this.number = defaultValue;
+    }
+
     /////////////       GETTERS+SETTERS       //////////////////////
 
 

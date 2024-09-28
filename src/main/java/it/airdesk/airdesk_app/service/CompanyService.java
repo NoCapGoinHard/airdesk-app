@@ -16,6 +16,10 @@ public class CompanyService {
     @Autowired
     private CompanyRepository companyRepository;
 
+    public void save(Company company) {
+        this.companyRepository.save(company);
+    }
+
     public List<Company> searchCompanyByName(String name) {
         return companyRepository.findByNameLike(name);
     }
