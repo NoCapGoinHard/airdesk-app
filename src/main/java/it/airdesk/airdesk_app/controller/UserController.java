@@ -1,5 +1,7 @@
 package it.airdesk.airdesk_app.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import it.airdesk.airdesk_app.exceptions.NotFoundException;
 import it.airdesk.airdesk_app.model.Booking;
 import it.airdesk.airdesk_app.model.Company;
+import it.airdesk.airdesk_app.model.Workstation;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.service.BookingService;
@@ -19,6 +23,8 @@ import it.airdesk.airdesk_app.service.auth.UserService;
 
 @Controller
 public class UserController {
+
+    private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
 
     @Autowired
     private CredentialsService credentialsService;
@@ -98,5 +104,22 @@ public class UserController {
         }
 
         return "redirect:/userPage";  // Redirect if booking not found
+    }
+
+    @GetMapping("/deleteBooking/{id}")
+    public String deleteBooking(@PathVariable("id") Long bookingId, Model model) throws NotFoundException{
+        Booking toDelete = bookingService.findById(bookingId);
+        if(toDelete != null) {
+            User user = credentialsService.getAuthenticatedUserCredentials().orElse(null).getUser();
+            logger.info("User {} (ID: {}) attempting to delete booking with ID: {}", user.getEmail(), user.getId(), bookingId);
+            user.removeBooking(toDelete);
+            Workstation workstation = toDelete.getWorkstation();
+            workstation.removeBooking(toDelete);
+            bookingService.deleteById(bookingId);
+            logger.info("Completed request to delete booking with ID: {}", bookingId);
+            return "redirect:/userPage";
+        }
+        else throw new NotFoundException("Booking to delete not found");
+        
     }
 }

@@ -132,6 +132,10 @@ public class User {
         this.bookings.add(booking);
     }
 
+    public void removeBooking(Booking booking) {
+        this.bookings.remove(booking);
+    }
+
     /////////////       HashCode + equals METHODS       ////////////
     @Override
     public int hashCode() {

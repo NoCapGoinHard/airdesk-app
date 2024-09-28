@@ -49,6 +49,10 @@
                     <a th:href="@{/bookingReceipt/{id}(id=${booking.id})}">
                         <span th:text="${booking.toString()}"></span>
                     </a>
+                    <a th:href="@{/deleteBooking/{id}(id=${booking.id})}" 
+                        onclick="return confirmAction('Are you sure you want to delete this booking? This action cannot be undone.');">
+                        <p><strong>DELETE BOOKING</strong></p>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -62,6 +66,9 @@
         <a href="/editUser">Edit your profile</a>
         <a href="/" class="button">Return Home</a>
     </div>
+
+
+    <script src="/js/confirmationPopup.js"></script>
 
 </body>
 </html>

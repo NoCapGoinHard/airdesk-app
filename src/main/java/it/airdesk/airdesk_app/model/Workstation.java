@@ -91,6 +91,10 @@ public class Workstation {
     public void addBooking(Booking booking) {
         this.bookings.add(booking);
     }
+
+    public void removeBooking(Booking booking) {
+        this.bookings.remove(booking);
+    }
     
     /////////////       HashCode + equals METHODS       ////////////
     @Override

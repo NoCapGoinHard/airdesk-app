@@ -34,6 +34,11 @@ public class BookingService {
         return this.bookingRepository.findById(id).orElse(null);
     }
 
+    public void deleteById(Long id) {
+        this.bookingRepository.deleteById(id);
+        logger.info("Booking with ID: {} successfully deleted.", id);
+    }
+
     @Transactional
     public Booking createBooking(Booking booking, Long buildingId, String workstationType) throws NoAvailableWorkstationException {
 
@@ -62,6 +67,8 @@ public class BookingService {
         logger.info("Booking created by user: {} {} {}", currentUser.getName(), currentUser.getSurname(), currentUser.getEmail());
 
         Booking savedBooking = bookingRepository.save(booking);
+
+
         currentUser.addBooking(savedBooking);
         assignedWorkstation.addBooking(savedBooking);
         logger.info("Booking saved: {}", savedBooking);
