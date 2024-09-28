@@ -146,7 +146,18 @@ public class Booking {
     }
 
     
-
+    @Override
+    public String toString() {
+        return String.format(
+            "%s | %s | %s | %s | %s | %s",
+            workstation.getRoom().getFloor().getBuilding().getFacility() != null ? workstation.getRoom().getFloor().getBuilding().getFacility().getName() : "N/A",
+            workstation.getRoom().getFloor().getBuilding() != null ? workstation.getRoom().getFloor().getBuilding().getName() : "N/A",
+            workstation != null ? workstation.getWorkstationId() : "N/A",
+            date != null ? date.toString() : "N/A",
+            startingTime != null ? startingTime.toString() : "N/A",
+            endingTime != null ? endingTime.toString() : "N/A"
+        );
+    }
 
 
 

@@ -103,7 +103,7 @@ public class BookingController {
             logger.info("Start Time: {}", booking.getStartingTime());
             logger.info("End Time: {}", booking.getEndingTime());
 
-            return "bookingReceipt.html";
+            return "redirect:/bookingReceipt/" + confirmedBooking.getId();
 
         } catch (NoAvailableWorkstationException exc) {
             model.addAttribute("facility", facility);

@@ -5,12 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import it.airdesk.airdesk_app.model.Booking;
 import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
+import it.airdesk.airdesk_app.service.BookingService;
 import it.airdesk.airdesk_app.service.CompanyService;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
 import it.airdesk.airdesk_app.service.auth.UserService;
@@ -27,7 +29,9 @@ public class UserController {
     @Autowired
     private CompanyService companyService;
 
-    private static final String FREELANCER_COMPANY_NAME = "FREELANCER";
+    @Autowired
+    private BookingService bookingService;
+
 
     // Display the user's profile page
     @GetMapping("/userPage")
@@ -83,5 +87,16 @@ public class UserController {
         return "redirect:/login";
     }
 
+    @GetMapping("/bookingReceipt/{id}")
+    public String viewBookingReceipt(@PathVariable("id") Long bookingId, Model model) {
+        // Fetch the booking by ID
+        Booking booking = bookingService.findById(bookingId);
+        
+        if (booking != null) {
+            model.addAttribute("booking", booking);
+            return "bookingReceipt";  // Return the receipt template
+        }
 
+        return "redirect:/userPage";  // Redirect if booking not found
+    }
 }

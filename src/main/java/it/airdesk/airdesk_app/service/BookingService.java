@@ -5,10 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Service;
 
 import it.airdesk.airdesk_app.exceptions.NoAvailableWorkstationException;
@@ -33,6 +29,10 @@ public class BookingService {
     @Autowired
     private CredentialsService credentialsService;
 
+
+    public Booking findById(Long id) {
+        return this.bookingRepository.findById(id).orElse(null);
+    }
 
     @Transactional
     public Booking createBooking(Booking booking, Long buildingId, String workstationType) throws NoAvailableWorkstationException {

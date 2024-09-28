@@ -37,6 +37,24 @@
         <div th:if="${user.address == null}">
             <p>No address information available.</p>
         </div>
+
+
+
+        <h3>My Bookings</h3>
+        
+        <!-- Display the bookings list from user.bookings -->
+        <div th:if="${user.bookings != null and user.bookings.size() > 0}">
+            <ul>
+                <li th:each="booking : ${user.bookings}">
+                    <a th:href="@{/bookingReceipt/{id}(id=${booking.id})}">
+                        <span th:text="${booking.toString()}"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div th:if="${user.bookings == null or user.bookings.size() == 0}">
+            <p>No bookings found yet! Book a workstation!</p>
+        </div>
     </div>
 
     <!-- Button to edit the user profile -->
