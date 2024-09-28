@@ -8,20 +8,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>Booking Confirmation</h1>
-        <p>Thank you for your booking! Here are the details:</p>
+        <h1>Booking Receipt</h1>
+        <p>Here are the details, thank you for your booking!</p>
 
         <!-- Display Booking Information -->
         <div class="booking-details">
             <h2>Booking Details</h2>
-            <p><strong>Facility:</strong> <span th:text="${confirmedBooking.workstation.room.floor.building.facility.name}"></span></p>
-            <p><strong>Building:</strong> <span th:text="${confirmedBooking.workstation.room.floor.building.name}"></span></p>
-            <p><strong>Address:</strong> <span th:text="${confirmedBooking.workstation.room.floor.building.address.toString()}"></span></p>
-            <p><strong>Floor:</strong> <span th:text="${confirmedBooking.workstation.room.floor.number}"></span></p>
-            <p><strong>Room:</strong> <span th:text="${confirmedBooking.workstation.room.name}"></span></p>
-            <p><strong>Workstation:</strong> <span th:text="${confirmedBooking.workstation.workstationId}"></span> (<span th:text="${confirmedBooking.workstation.workstationType}"></span>)</p>
-            <p><strong>Date:</strong> <span th:text="${confirmedBooking.date}"></span></p>
-            <p><strong>Time:</strong> <span th:text="${confirmedBooking.startingTime}"></span> - <span th:text="${confirmedBooking.endingTime}"></span></p>
+            <p><strong>Facility:</strong> <span th:text="${booking.workstation.room.floor.building.facility.name}"></span></p>
+            <p><strong>Building:</strong> <span th:text="${booking.workstation.room.floor.building.name}"></span></p>
+            <p><strong>Address:</strong> <span th:text="${booking.workstation.room.floor.building.address.toString()}"></span></p>
+            <p><strong>Floor:</strong> <span th:text="${booking.workstation.room.floor.number}"></span></p>
+            <p><strong>Room:</strong> <span th:text="${booking.workstation.room.name}"></span></p>
+            <p><strong>Workstation:</strong> <span th:text="${booking.workstation.workstationId}"></span> (<span th:text="${booking.workstation.workstationType}"></span>)</p>
+            <p><strong>Date:</strong> <span th:text="${booking.date}"></span></p>
+            <p><strong>Time:</strong> <span th:text="${booking.startingTime}"></span> - <span th:text="${booking.endingTime}"></span></p>
         </div>
 
         <!-- Display User Information (Works for both OIDC and Standard Users) -->
@@ -32,10 +32,15 @@
             <p><strong>Company:</strong> <span th:text="${credentials.user.company.name}"></span></p>
         </div>
 
+
+        <div th:if="${error != null}">
+            <p th:text="${error}"></p>
+        </div>
+
         <!-- Option to Make Another Booking or Return Home -->
         <div class="actions">
             <a href="/" class="button">Return Home</a>
-            <a th:href="@{/bookingMenu/{facility_id}(facility_id=${confirmedBooking.workstation.room.floor.building.facility.id})}" class="button">Make Another Booking</a>
+            <a th:href="@{/bookingMenu/{facility_id}(facility_id=${booking.workstation.room.floor.building.facility.id})}" class="button">Make Another Booking</a>
         </div>
     </div>
 </body>

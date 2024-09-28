@@ -88,43 +88,43 @@ public class BookingController {
             @RequestParam String workstationType,
             @RequestParam LocalDate bookingDate,
             Model model) {
-            
-            Facility facility = facilityService.findById(facilityId);
+
+        Facility facility = facilityService.findById(facilityId);
         try {
             model.addAttribute("facility", facility);
             logger.info("Attempting to book workstation for facility ID: {}, building ID: {}, date: {}, type: {}", facilityId, buildingId, bookingDate, workstationType);
+            
+            // Set the booking date
             booking.setDate(bookingDate);
+            
+            // Create the booking
             Booking confirmedBooking = bookingService.createBooking(booking, buildingId, workstationType);
             logger.info("Booking successful: {}", confirmedBooking);
-            model.addAttribute("confirmedBooking", confirmedBooking);
-            logger.info("Building ID: {}", buildingId);
-            logger.info("Workstation Type: {}", workstationType);
-            logger.info("Date: {}", booking.getDate());
-            logger.info("Start Time: {}", booking.getStartingTime());
-            logger.info("End Time: {}", booking.getEndingTime());
-
+            
+            // Redirect to a common bookingReceipt endpoint for both userPage and right after making a booking
             return "redirect:/bookingReceipt/" + confirmedBooking.getId();
 
         } catch (NoAvailableWorkstationException exc) {
             model.addAttribute("facility", facility);
             logger.error("No available workstation for facility ID: {}, building ID: {}, date: {}, type: {}. Error: {}", facilityId, buildingId, bookingDate, workstationType, exc.getMessage());
-            logger.info("Building ID: {}", buildingId);
-            logger.info("Workstation Type: {}", workstationType);
-            logger.info("Date: {}", booking.getDate());
-            logger.info("Start Time: {}", booking.getStartingTime());
-            logger.info("End Time: {}", booking.getEndingTime());
+            
+            // Add error details
             model.addAttribute("error", exc.getMessage());
             model.addAttribute("booking", booking);
             model.addAttribute("facility_id", facilityId);
             model.addAttribute("building_id", buildingId);
 
+            // Reload buildings open on the selected date
             DayOfWeek dayOfWeek = bookingDate.getDayOfWeek();
             List<Building> openBuildings = buildingRepository.findBuildingsOpenOnDateWithLogging(facilityId, dayOfWeek);
             logger.debug("Reloading open buildings: {}", openBuildings);
+            
+            // Return to the booking menu with error
             model.addAttribute("openBuildings", openBuildings);
             return "forms/bookingMenu";
         }
     }
+
     
     
 }

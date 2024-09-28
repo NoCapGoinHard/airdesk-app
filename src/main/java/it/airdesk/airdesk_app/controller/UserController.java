@@ -94,16 +94,20 @@ public class UserController {
     }
 
     @GetMapping("/bookingReceipt/{id}")
-    public String viewBookingReceipt(@PathVariable("id") Long bookingId, Model model) {
-        // Fetch the booking by ID
+    public String bookingReceipt(@PathVariable("id") Long bookingId, Model model) {
         Booking booking = bookingService.findById(bookingId);
         
-        if (booking != null) {
-            model.addAttribute("booking", booking);
-            return "bookingReceipt";  // Return the receipt template
+        if (booking == null) {
+            model.addAttribute("error", "Booking not found");
+            return "errorPage";  // Return an error page or redirect appropriately
         }
 
-        return "redirect:/userPage";  // Redirect if booking not found
+        model.addAttribute("booking", booking);  // Add the booking to the model
+
+        // Log the retrieved booking for debugging purposes
+        logger.info("Displaying receipt for booking ID: {}", bookingId);
+
+        return "bookingReceipt.html";  // Use the same template for both flows (right after making a booking and from userPage)
     }
 
     @GetMapping("/deleteBooking/{id}")
