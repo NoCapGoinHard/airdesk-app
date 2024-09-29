@@ -15,7 +15,15 @@ public class BuildingService {
     @Autowired
     private BuildingRepository buildingRepository;
 
+    public Building findById(Long id) {
+        return this.buildingRepository.findById(id).orElse(null);
+    }
+
     public List<Building> findBuildingsOpenOnDate(Long facilityId, DayOfWeek day) {
         return buildingRepository.findBuildingsOpenOnDate(facilityId, day);
+    }
+
+    public void save(Building building) {
+        buildingRepository.save(building);
     }
 }

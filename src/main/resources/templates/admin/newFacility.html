@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Facility</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/editFacility.js"></script> <!-- Reuse the JS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Create New Facility</h1>
+
+        <!-- Facility Details Form -->
+        <form th:action="@{/admin/createFacility}" method="post">
+            <!-- Basic Facility Details -->
+            <div>
+                <label for="name">Facility Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter facility name" required>
+            </div>
+
+            <div>
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" placeholder="Enter facility phone" required>
+            </div>
+
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter facility email" required>
+            </div>
+
+            <!-- Companies Section -->
+            <div>
+                <h3>Companies</h3>
+                <div>
+                    <input type="text" id="newCompany" name="newCompany" placeholder="Add a new or existing company">
+                </div>
+            </div>
+
+            <!-- Buildings Section -->
+            <div>
+                <h3>Buildings</h3>
+                <div id="buildings">
+                    <!-- Dynamically add building sections here -->
+                </div>
+                <button type="button" onclick="addBuilding()">Add Building</button>
+            </div>
+
+            <div class="actions">
+                <button type="submit">Create Facility</button>
+                <a href="/admin/manageFacilities">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

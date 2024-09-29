@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Facility</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/editFacility.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Facility</h1>
+
+        <!-- Facility Details Form -->
+        <form th:action="@{/admin/updateFacility/{id}(id=${facility.id})}" method="post">
+            <!-- Basic Facility Details -->
+            <div>
+                <label for="name">Facility Name</label>
+                <input type="text" id="name" name="name" th:value="${facility.name}" required>
+            </div>
+
+            <div>
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" th:value="${facility.phone}" required>
+            </div>
+
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" th:value="${facility.email}" required>
+            </div>
+
+            <!-- Companies Section -->
+            <div>
+                <h3>Companies</h3>
+                <ul>
+                    <li th:each="company : ${facility.companies}">
+                        <span th:text="${company.name}"></span>
+                        <a th:href="@{/admin/removeCompany/{facilityId}/{companyId}(facilityId=${facility.id}, companyId=${company.id})}"
+                           onclick="return confirm('Are you sure you want to remove this company?');">Remove</a>
+                    </li>
+                </ul>
+                <button type="button" onclick="addCompanyField()">Add Company</button>
+                <div id="newCompanyField" style="display: none;">
+                    <input type="text" id="newCompany" name="newCompany" placeholder="Enter new or existing company name">
+                </div>
+            </div>
+
+            <!-- Buildings Section -->
+            <div>
+                <h3>Buildings</h3>
+                <div id="buildings">
+                    <div th:each="building, iterStat : ${facility.buildings}">
+                        <div class="building">
+                            <h4>Building #<span th:text="${iterStat.index + 1}"></span></h4>
+
+                            <!-- Building Details -->
+                            <div>
+                                <label>Name</label>
+                                <input type="text" th:field="*{buildings[__${iterStat.index}__].name}" required>
+                            </div>
+                            <div>
+                                <label>Address</label>
+                                <input type="text" th:field="*{buildings[__${iterStat.index}__].address.street}" required>
+                                <input type="text" th:field="*{buildings[__${iterStat.index}__].address.city}" required>
+                                <input type="text" th:field="*{buildings[__${iterStat.index}__].address.state}" required>
+                                <input type="text" th:field="*{buildings[__${iterStat.index}__].address.postalCode}" required>
+                                <input type="text" th:field="*{buildings[__${iterStat.index}__].address.number}" required>
+                            </div>
+
+                            <!-- Add Floors -->
+                            <div>
+                                <h5>Floors</h5>
+                                <div th:each="floor, floorIter : ${building.floors}">
+                                    <div class="floor">
+                                        <h6>Floor #<span th:text="${floor.number}"></span></h6>
+
+                                        <!-- Add rooms for each floor -->
+                                        <div th:each="room, roomIter : ${floor.rooms}">
+                                            <h6>Room #<span th:text="${roomIter.index + 1}"></span></h6>
+                                            <input type="text" th:field="*{buildings[__${iterStat.index}__].floors[__${floorIter.index}__].rooms[__${roomIter.index}__].name}">
+
+                                            <!-- Opening Hours -->
+                                            <div>
+                                                <label>Opening Hours:</label>
+                                                <input type="time" th:field="*{buildings[__${iterStat.index}__].floors[__${floorIter.index}__].rooms[__${roomIter.index}__].openingHours[0].startingTime}">
+                                                <input type="time" th:field="*{buildings[__${iterStat.index}__].floors[__${floorIter.index}__].rooms[__${roomIter.index}__].openingHours[0].endingTime}">
+                                            </div>
+                                        </div>
+                                        <button type="button" th:onclick="'addRoom(' + ${iterStat.index} + ', ' + ${floorIter.index} + ')'">Add Room</button>
+                                    </div>
+                                </div>
+                                <button type="button" th:onclick="'addFloor(' + ${iterStat.index} + ')'">Add Floor</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" onclick="addBuilding()">Add Building</button>
+            </div>
+
+            <div class="actions">
+                <button type="submit">Save Changes</button>
+                <a href="/admin/manageFacilities">Back</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

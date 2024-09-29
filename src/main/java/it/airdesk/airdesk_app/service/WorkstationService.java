@@ -16,6 +16,10 @@ public class WorkstationService {
     @Autowired
     private WorkstationRepository workstationRepository;
 
+    public Workstation findById(Long id) {
+        return workstationRepository.findById(id).orElse(null);
+    }
+
     List<Workstation> findAvailableWorkstations(
         Long buildingId,
         String workstationType,
@@ -30,6 +34,10 @@ public class WorkstationService {
             startingTime,
             endingTime,
             dayOfWeek);
+    }
+
+    public void save(Workstation workstation) {
+        this.workstationRepository.save(workstation);
     }
 
 }
