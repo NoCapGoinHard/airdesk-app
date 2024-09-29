@@ -72,10 +72,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             user.setSurname(familyName);
             user.setEmail(email);
 
-            // Fetch the 'UNKNOWN' company from the database
-            Company unknownCompany = companyService.findByName("UNKNOWN")
-                    .orElseThrow(() -> new IllegalStateException("Unknown company must exist in the database"));
-            user.setCompany(unknownCompany);  // Assign "UNKNOWN" as default
+
+            // Find or create the 'UNKNOWN' company using the CompanyService method
+            Company unknownCompany = companyService.findOrCreateCompanyByName("UNKNOWN");
+            user.setCompany(unknownCompany);// Assign "UNKNOWN" as default
 
             // Set a default address
             Address address = new Address("Unknown");
