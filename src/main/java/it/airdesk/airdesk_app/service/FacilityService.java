@@ -24,7 +24,7 @@ public class FacilityService {
     public List<Facility> findAllByCity(String city) {
         return facilityRepository.findByBuildingCityContainingIgnoreCase(city);
     }
-
+    
     public Map<Long, Integer> findWorkstationCountByFacility() {
         List<Object[]> results = facilityRepository.findWorkstationCountByFacility();
         Map<Long, Integer> facility2workstations = new HashMap<>();
@@ -36,8 +36,9 @@ public class FacilityService {
         return facility2workstations;
     }
 
-    public List<Facility> findByCompany(Company company) {
-        return facilityRepository.findByCompany(company);
+    // Fetch all facilities for a given company
+    public List<Facility> findByCompanyId(Long companyId) {
+        return facilityRepository.findByCompanyId(companyId);
     }
 
 }

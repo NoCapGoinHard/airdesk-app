@@ -53,13 +53,12 @@ public class AuthenticationController {
 
         if (credentialsOpt.isPresent()) {
             Credentials credentials = credentialsOpt.get();
-            String role = credentials.getRole();
 
             // Redirect based on role
-            if (role.equals(Credentials.ADMIN)) {
+            if (credentials.isAdmin()) {
                 logger.info("Admin logged in, redirecting to the admin dashboard");
                 return "redirect:/admin/dashboard";
-            } else if (role.equals(Credentials.USER)) {
+            } else {
                 logger.info("User logged in, redirecting to index");
                 return "redirect:/";
             }

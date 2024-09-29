@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Facility Details</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 th:text="${facility.name}">Facility Name</h1>
+
+        <p><strong>Phone:</strong> <span th:text="${facility.phone}"></span></p>
+        <p><strong>Email:</strong> <span th:text="${facility.email}"></span></p>
+
+        <!-- Edit and Delete Actions -->
+        <div class="actions">
+            <a th:href="@{/admin/editFacility/{id}(id=${facility.id})}">Edit Facility</a>
+            <a th:href="@{/admin/deleteFacility/{id}(id=${facility.id})}" 
+               onclick="return confirm('Are you sure you want to delete this facility?');">Delete Facility</a>
+        </div>
+
+        <!-- Link to go back to manage facilities -->
+        <div class="actions">
+            <a href="/admin/manageFacilities">Back to Manage Facilities</a>
+        </div>
+    </div>
+</body>
+</html>

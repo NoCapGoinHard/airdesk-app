@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Facilities</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Your Facilities</h1>
+
+        <!-- Display list of facilities -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Facility Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="facility : ${facilities}" th:onclick="|window.location.href='/admin/facility/' + ${facility.id}|">
+                    <td th:text="${facility.name}"></td>
+                    <td th:text="${facility.phone}"></td>
+                    <td th:text="${facility.email}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Link to return to the admin dashboard -->
+        <div class="actions">
+            <a href="/admin/dashboard">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        // Make table rows clickable
+        const rows = document.querySelectorAll('tr[th\\:onclick]');
+        rows.forEach(row => {
+            row.style.cursor = 'pointer';
+        });
+    </script>
+</body>
+</html>

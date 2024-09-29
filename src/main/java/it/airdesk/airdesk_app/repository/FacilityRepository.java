@@ -25,6 +25,6 @@ public interface FacilityRepository extends CrudRepository<Facility, Long>{
     public List<Object[]> findWorkstationCountByFacility();
 
 
-    @Query("SELECT f FROM Facility f JOIN f.companies c WHERE c = :company")
-    public List<Facility> findByCompany(@Param("company") Company company);
+    @Query("SELECT f FROM Facility f JOIN f.companies c WHERE c.id = :companyId")
+    List<Facility> findByCompanyId(@Param("companyId") Long companyId);
 }
