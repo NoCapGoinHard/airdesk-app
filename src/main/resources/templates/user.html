@@ -15,7 +15,7 @@
         <p><strong>Birthdate:</strong> <span th:text="${user.birthDate}"></span></p>
         
         <!-- Display Company if available, else show a warning -->
-        <div th:if="${user.company == null or user.company == 'UNKNOWN' or (user.company.name != null and user.company.name.trim() == '')}">
+        <div th:if="${user.company == null or user.company.name == 'UNKNOWN' or (user.company.name != null and user.company.name.trim() == '')}">
             <p style="color: red; font-weight: bold;">
                 You haven't added your company name yet! You can also specify if you work as a freelancer.
             </p>

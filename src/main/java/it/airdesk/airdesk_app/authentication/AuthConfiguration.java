@@ -66,11 +66,11 @@ public class AuthConfiguration {
                                                 // solo gli utenti autenticati con ruolo ADMIN possono accedere a
                                                 // risorse
                                                 // con
-                                                // path /formNewStruttura
+                                                // path
                                                 .requestMatchers(HttpMethod.GET, "/admin/**")
-                                                .hasAnyAuthority("USER", "ADMIN")
+                                                .hasAnyAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.POST, "/admin/**")
-                                                .hasAnyAuthority("ADMIN", "USER")
+                                                .hasAnyAuthority("ADMIN")
                                                 // tutti gli utenti autenticati possono accere alle pag
                                                 .anyRequest().authenticated())
                                                 

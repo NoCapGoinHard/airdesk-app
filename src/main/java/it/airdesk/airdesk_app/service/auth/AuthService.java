@@ -22,8 +22,6 @@ public class AuthService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private CompanyService companyService;
 
     public String encodePassword(String password) {
         return this.passwordEncoder.encode(password);

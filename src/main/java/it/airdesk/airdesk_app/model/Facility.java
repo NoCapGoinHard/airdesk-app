@@ -98,9 +98,15 @@ public class Facility {
     public void addBuilding(Building building) {
         this.buildings.add(building);
     }
+    public void removeBuilding(Building building) {
+        this.buildings.remove(building);
+    }
 
     public void addCompany(Company company) {
         this.companies.add(company);
+    }
+    public void removeCompany(Company company) {
+        this.companies.remove(company);
     }
 
     /////////////       HashCode + equals METHODS       ////////////

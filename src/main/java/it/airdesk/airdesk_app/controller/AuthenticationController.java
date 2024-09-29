@@ -52,15 +52,21 @@ public class AuthenticationController {
         Optional<Credentials> credentialsOpt = credentialsService.getAuthenticatedUserCredentials();
 
         if (credentialsOpt.isPresent()) {
-            User user = credentialsOpt.get().getUser();
-            model.addAttribute("name", user.getName());
-            model.addAttribute("email", user.getEmail());
-            model.addAttribute("surname", user.getSurname());
-        } else {
-            return "redirect:/login"; // Redirect to login if not authenticated
+            Credentials credentials = credentialsOpt.get();
+            String role = credentials.getRole();
+
+            // Redirect based on role
+            if (role.equals(Credentials.ADMIN)) {
+                logger.info("Admin logged in, redirecting to the admin dashboard");
+                return "redirect:/admin/dashboard";
+            } else if (role.equals(Credentials.USER)) {
+                logger.info("User logged in, redirecting to index");
+                return "redirect:/";
+            }
         }
 
-        return "redirect:/";
+        // If not authenticated, redirect to login
+        return "redirect:/login";
     }
 
 

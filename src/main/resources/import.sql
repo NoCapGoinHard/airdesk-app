@@ -37,3 +37,12 @@ INSERT INTO office_hours (id, day, starting_time, ending_time, building_id) VALU
 INSERT INTO office_hours (id, day, starting_time, ending_time, building_id) VALUES (2, 'TUESDAY', '09:00', '18:00', 1);
 INSERT INTO office_hours (id, day, starting_time, ending_time, building_id) VALUES (3, 'WEDNESDAY', '09:00', '18:00', 2);
 
+
+-- Insert the 'UNKNOWN' company for OIDC users
+INSERT INTO company (id, name) VALUES (1, 'UNKNOWN');
+-- Insert a new test company
+INSERT INTO company (id, name) VALUES (2, 'Test Company');
+
+-- Link Test Company to existing facilities
+INSERT INTO company_facility (company_id, facility_id) VALUES (2, 1);  -- Test Company linked to Facility 1 (New York)
+INSERT INTO company_facility (company_id, facility_id) VALUES (2, 2);  -- Test Company linked to Facility 2 (Cali)

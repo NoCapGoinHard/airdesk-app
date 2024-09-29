@@ -7,6 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.Facility;
 @Repository
 public interface FacilityRepository extends CrudRepository<Facility, Long>{
@@ -22,4 +23,8 @@ public interface FacilityRepository extends CrudRepository<Facility, Long>{
             "JOIN r.workstations w " +
             "GROUP BY fc.id ")
     public List<Object[]> findWorkstationCountByFacility();
+
+
+    @Query("SELECT f FROM Facility f JOIN f.companies c WHERE c = :company")
+    public List<Facility> findByCompany(@Param("company") Company company);
 }
