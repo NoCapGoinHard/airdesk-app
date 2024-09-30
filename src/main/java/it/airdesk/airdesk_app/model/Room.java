@@ -90,6 +90,16 @@ public class Room {
     public void addWorkstation(Workstation workstation) {
         this.workstations.add(workstation);
     }
+    public void removeWorkstation(Workstation workstation) {
+        this.workstations.remove(workstation);
+    }
+
+    public void addOpeningHours(OfficeHours openingHours) {
+        this.openingHours.add(openingHours);
+    }
+    public void removeOpeningHours(OfficeHours openingHours) {
+        this.openingHours.remove(openingHours);
+    }
 
 
     /////////////       HashCode + equals METHODS       ////////////

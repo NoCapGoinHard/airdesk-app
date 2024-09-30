@@ -104,6 +104,14 @@ public class Building {
     public void addFloor(Floor floor) {
         this.floors.add(floor);
     }
+
+    public void addOpeningHours(OfficeHours openingHours) {
+        this.openingHours.add(openingHours);
+    }
+
+    public void removeOpeningHours(OfficeHours openingHours) {
+        this.openingHours.remove(openingHours);
+    }
     
     /////////////       HashCode + equals METHODS       ////////////
     @Override
