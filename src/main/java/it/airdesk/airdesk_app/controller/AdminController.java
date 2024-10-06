@@ -119,7 +119,7 @@ public class AdminController {
         // Now save buildings, floors, rooms, and workstations
         saveBuildingsAndRelatedEntities(facility);
 
-        return "redirect:/admin/manageFacilities";
+        return "redirect:/admin/facilityPage/" + facility.getId();
     }
 
     private void saveBuildingsAndRelatedEntities(Facility facility) {

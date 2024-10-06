@@ -70,6 +70,9 @@ public class Company {
     public void addFacility(Facility facility) {
         this.facilities.add(facility);
     }
+    public void removeFacility(Facility facility) {
+        this.facilities.remove(facility);
+    }
     /////////////       HashCode + equals METHODS       ////////////
     @Override
     public int hashCode() {

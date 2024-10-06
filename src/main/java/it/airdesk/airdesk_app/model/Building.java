@@ -40,7 +40,6 @@ public class Building {
 
     @NotNull(message = "opening hours must not be null")
     @Column(nullable = false)
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "building_id")
     private List<OfficeHours> openingHours = new ArrayList<>();

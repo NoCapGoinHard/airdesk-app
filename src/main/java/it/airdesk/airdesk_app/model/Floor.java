@@ -74,6 +74,10 @@ public class Floor {
         this.rooms.add(room);
     }
 
+    public void removeRoom(Room room) {
+        this.rooms.remove(room);
+    }
+
     /////////////       HashCode + equals METHODS       ////////////
     @Override
     public int hashCode() {
