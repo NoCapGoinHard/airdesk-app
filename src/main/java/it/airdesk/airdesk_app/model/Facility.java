@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -31,6 +32,7 @@ public class Facility {
     private String phone;
 
     @NotBlank(message = "email field must not be blank")
+    @Email(message = "email field must be valid")
     @Column(nullable = false)
     private String email;
 

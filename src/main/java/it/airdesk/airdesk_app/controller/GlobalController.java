@@ -14,7 +14,7 @@ import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
 
 @ControllerAdvice
-public class GlobalController { // Facade controller to handle index mapping globally
+public class GlobalController {
 
     @Autowired
     private CredentialsService credentialsService;
