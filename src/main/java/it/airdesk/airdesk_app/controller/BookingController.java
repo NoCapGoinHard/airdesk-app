@@ -27,7 +27,7 @@ import it.airdesk.airdesk_app.service.FacilityService;
 
 
 @Controller
-public class BookingController {
+public class BookingController { //class that handles the bookWorkstation event in Facility Registration system operation
 
     private static final Logger logger = LoggerFactory.getLogger(BookingController.class);
     

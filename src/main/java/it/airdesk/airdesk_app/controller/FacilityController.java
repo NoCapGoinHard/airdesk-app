@@ -13,7 +13,7 @@ import it.airdesk.airdesk_app.model.Facility;
 import it.airdesk.airdesk_app.service.FacilityService;
 
 @Controller
-public class FacilityController {
+public class FacilityController { //this class, actually just handles the starting of the Workstation Booking system operation
 
     @Autowired
     private FacilityService facilityService;

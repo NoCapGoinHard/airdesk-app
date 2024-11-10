@@ -28,7 +28,7 @@ public class Workstation {
 
     @NotBlank(message = "workstationId field must not be blank")
     @Column(nullable = false)
-    private String workstationId;   //common name in the office for employees
+    private String workstationId;   //FAR DIFFERENT FROM THE Database ID, this is the workstation name in the actual workplace
 
     @NotNull(message = "room field must not be null")
     @ManyToOne

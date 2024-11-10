@@ -25,7 +25,7 @@ public class FacilityService {
         return facilityRepository.findByBuildingCityContainingIgnoreCase(city);
     }
 
-    public Map<Long, Integer> findWorkstationCountByFacility() {
+    public Map<Long, Integer> findWorkstationCountByFacility() { //not invoked, but you can use it to have the overall amount of workstations in a facility
         List<Object[]> results = facilityRepository.findWorkstationCountByFacility();
         Map<Long, Integer> facility2workstations = new HashMap<>();
         for (Object[] result : results) {

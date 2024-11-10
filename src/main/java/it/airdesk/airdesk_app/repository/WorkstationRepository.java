@@ -14,6 +14,7 @@ import it.airdesk.airdesk_app.model.Workstation;
 @Repository
 public interface WorkstationRepository extends CrudRepository<Workstation, Long> {
     
+    //
     @Query(
         "SELECT w FROM Workstation w " +
         "JOIN w.room r " +
@@ -24,7 +25,7 @@ public interface WorkstationRepository extends CrudRepository<Workstation, Long>
         "AND oh.startingTime <= :startingTime " +
         "AND oh.endingTime >= :endingTime " +
         "AND w.id NOT IN ( " +
-            "SELECT b.workstation.id FROM Booking b " +
+            "SELECT b.workstation.id FROM Booking b " +  //subset of already occupied workstations
             "WHERE b.date = :date " +
             "AND ( " +
             "(:startingTime < b.endingTime AND :endingTime > b.startingTime)" +

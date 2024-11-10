@@ -3,8 +3,8 @@ package it.airdesk.airdesk_app.model.dataTypes;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 
-@Embeddable
-public class Address {
+@Embeddable // instead of using @Entity, this annotation lets the class'information to be put besides the attributes of any other table
+public class Address { //since it's Embeddable, you can create an Address field in whatever class you need, and embed it by annotating @Embedded on top of it
     
     @NotBlank(message = "country field must not be blank")
     private String country;

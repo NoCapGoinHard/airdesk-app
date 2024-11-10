@@ -24,7 +24,7 @@ public class CompanyService {
         return companyRepository.findByNameLike(name);
     }
 
-    public List<String> findCompanyNamesLike(String query) {
+    public List<String> findCompanyNamesLike(String query) { //search engine behavior for inserting a company name
         return companyRepository.findByNameLike(query)
                 .stream()
                 .map(company -> company.getName())  // Extract the names
@@ -32,7 +32,7 @@ public class CompanyService {
     }
 
     // Find an existing company by name or create a new one
-    public Company findOrCreateCompanyByName(String companyName) {
+    public Company findOrCreateCompanyByName(String companyName) { //if the company exists it returns the company, otherwise it gets added to the DB
         return companyRepository.findByName(companyName)
             .orElseGet(() -> {
                 // Create a new company if not found

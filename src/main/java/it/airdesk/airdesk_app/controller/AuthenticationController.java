@@ -21,7 +21,7 @@ import it.airdesk.airdesk_app.service.auth.AuthService;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
 
 @Controller
-public class AuthenticationController {
+public class AuthenticationController { //this class handles the authentication procedure for STANDARD USERS
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
@@ -85,6 +85,7 @@ public class AuthenticationController {
                             @RequestParam(value = "freelancerCheckbox", required = false) String freelancerChecked,
                             Model model) {
 
+        //Users can register themselves as freelancers, by ticking the checkbox related to this variable
         boolean isFreelancer = freelancerChecked != null && freelancerChecked.equals("on");
 
         if (!userBindingResult.hasErrors()) {

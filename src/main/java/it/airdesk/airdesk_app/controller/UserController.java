@@ -22,7 +22,7 @@ import it.airdesk.airdesk_app.service.auth.CredentialsService;
 import it.airdesk.airdesk_app.service.auth.UserService;
 
 @Controller
-public class UserController {
+public class UserController { //this class handles all the system operations available in the user page
 
     private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
 

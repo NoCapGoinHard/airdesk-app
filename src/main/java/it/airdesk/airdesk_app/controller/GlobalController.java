@@ -7,14 +7,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
 
-@ControllerAdvice
-public class GlobalController {
+@ControllerAdvice //this annotation makes the attributes defined inside it, gain global visibility in every template
+public class GlobalController { 
 
     @Autowired
     private CredentialsService credentialsService;

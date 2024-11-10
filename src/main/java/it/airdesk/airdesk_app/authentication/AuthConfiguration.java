@@ -17,7 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class AuthConfiguration {
+public class AuthConfiguration { //Spring Authentication configuration class
 
         @Autowired
         private DataSource dataSource;
@@ -75,8 +75,7 @@ public class AuthConfiguration {
                                                 .anyRequest().authenticated())
                                                 
 
-                                // LOGIN: here we define how the authentication gets handled
-                                // usiamo il protocollo formlogin
+                                // LOGIN: here it's defined how the authentication gets handled
                                 .formLogin(formLogin -> formLogin
                                                 // the login page is /login
                                                 .loginPage("/login")
@@ -85,10 +84,10 @@ public class AuthConfiguration {
                                                 .defaultSuccessUrl("/success", true)
                                                 .failureUrl("/login?error=true"))
                                 
-                                //OAUTH: here we define the OAuth2.0 login
+                                //OAUTH: here it's defined the OAuth2.0 login
                                 .oauth2Login(oauth2Login -> oauth2Login
                                                 .loginPage("/login")
-                                                .successHandler(oAuth2AuthenticationSuccessHandler()))
+                                                .successHandler(oAuth2AuthenticationSuccessHandler())) //this is a constructor of a specific class (the other in this same package)
 
                                 // LOGOUT: here we define the logout
                                 .logout(logout -> logout

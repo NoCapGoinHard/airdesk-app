@@ -30,7 +30,7 @@ import it.airdesk.airdesk_app.service.auth.CredentialsService;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminController {
+public class AdminController { //class which handles the Administrator's reserved operations
 
     @Autowired
     private CredentialsService credentialsService;

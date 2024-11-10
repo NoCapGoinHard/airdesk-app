@@ -7,11 +7,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.Facility;
 @Repository
 public interface FacilityRepository extends CrudRepository<Facility, Long>{
 
+    //query structure is meant to be case sensitive and not requiring the exact string to be typed (search engine behavior)
     @Query("SELECT f FROM Facility f JOIN f.buildings b WHERE LOWER(b.address.city) LIKE LOWER(CONCAT('%', :city, '%'))")
     public List<Facility> findByBuildingCityContainingIgnoreCase(@Param("city") String city); //it will search in the embedded addresses for the facilities
 

@@ -30,8 +30,8 @@ public class Building {
     private String name;
 
     @NotNull(message = "address field must not be null")
-    @Embedded
-    private Address address;
+    @Embedded //more details available in the Address class (package dataTypes)
+    private Address address; 
 
     @NotNull(message = "facility field must not be null")
     @ManyToOne

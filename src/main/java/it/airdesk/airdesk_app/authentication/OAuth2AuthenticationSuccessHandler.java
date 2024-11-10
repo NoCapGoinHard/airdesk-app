@@ -52,7 +52,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // Log that the handler is triggered
         logger.info("OAuth2AuthenticationSuccessHandler triggered");
 
-        // Extract OIDC user information
+        // Extract OIDC user information in order to fill the User's attributes
         DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
         String email = oidcUser.getEmail();
         String givenName = oidcUser.getGivenName();
@@ -61,6 +61,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         logger.info("User authenticated with OAuth2 provider. Email: {}, Given Name: {}, Family Name: {}", email, givenName, familyName);
 
         // Check if user already exists in the database
+        // this is the DEFAULT USERNAME PATTERN assigned to users who don't register with standard procedure
         String username = "USERNAMEof" + email; // Ensure the username is formatted correctly
         Credentials credentials = credentialsService.findByUsername(username).orElse(null);
 
