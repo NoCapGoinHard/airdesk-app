@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.airdesk.airdesk_app.model.Company;
+import it.airdesk.airdesk_app.model.auth.Admin;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.service.CompanyService;
@@ -27,7 +28,6 @@ public class AuthenticationController { //this class handles the authentication 
 
     @Autowired
     private AuthService authService;
-
 
     @Autowired
     private CredentialsService credentialsService;
@@ -68,7 +68,7 @@ public class AuthenticationController { //this class handles the authentication 
         return "redirect:/login";
     }
 
-
+    /* Methods to register a normal user*/
     @GetMapping("/register")
     public String register(Model model) {
         User user = new User();
@@ -111,6 +111,52 @@ public class AuthenticationController { //this class handles the authentication 
         } else {
             logger.warn("User registration failed due to validation errors");
             return "auth/register.html";
+        }
+    }
+    
+    /* Methods to register an Admin user */
+    @GetMapping("/adminRegister")
+    public String register2(Model model) {
+        Admin admin = new Admin();
+        admin.setCompany(new Company());
+        model.addAttribute("isOidc", false);
+        model.addAttribute("admin", admin);
+        return "auth/registerAdmin.html";
+    }
+
+    @PostMapping("/adminRegister")
+    public String registerAdmin(@ModelAttribute("admin") Admin admin, BindingResult userBindingResult,
+                            @RequestParam(value = "username", required = false) String username,
+                            @RequestParam(value = "password", required = false) String password,
+                            @RequestParam(value = "freelancerCheckbox", required = false) String freelancerChecked,
+                            Model model) {
+
+        //Users can register themselves as freelancers, by ticking the checkbox related to this variable
+        boolean isFreelancer = freelancerChecked != null && freelancerChecked.equals("on");
+
+        if (!userBindingResult.hasErrors()) {
+            // If the user checked the "Freelancer" box, assign the "FREELANCER" company
+            if (isFreelancer) {
+                Company freelancerCompany = companyService.findOrCreateCompanyByName("FREELANCER");
+                admin.setCompany(freelancerCompany);
+            } else {
+                // If the user is not a freelancer and has not entered a company, handle the error
+                if (admin.getCompany() == null || admin.getCompany().getName().trim().isEmpty()) {
+                    model.addAttribute("error", "Company name must be provided unless working as a freelancer.");
+                    return "auth/registerAdmin.html";
+                }
+                // Otherwise, find or create the company the user entered
+                Company company = companyService.findOrCreateCompanyByName(admin.getCompany().getName());
+                admin.setCompany(company);
+            }
+
+            // Use the simplified registration method
+            authService.registerAdminUser(admin, username, password);
+            logger.info("Admin '{}' registered successfully", admin.getEmail());
+            return "redirect:/";
+        } else {
+            logger.warn("Admin registration failed due to validation errors");
+            return "auth/registerAdmin.html";
         }
     }
 }

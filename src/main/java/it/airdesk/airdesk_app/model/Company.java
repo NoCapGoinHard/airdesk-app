@@ -33,6 +33,7 @@ public class Company {
         joinColumns = @JoinColumn(name = "company_id"),
         inverseJoinColumns = @JoinColumn(name = "facility_id")
     )
+    
     private List<Facility> facilities = new ArrayList<>();
 
     public Company(){}

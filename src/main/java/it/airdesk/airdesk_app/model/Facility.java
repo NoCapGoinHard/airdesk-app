@@ -44,9 +44,12 @@ public class Facility {
     @ManyToMany(mappedBy = "facilities")
     private List<Company> companies = new ArrayList<>();
 
+    // COSTRUTTORE PULBIC VUOTO
     public Facility(){}
     
     /////////////       GETTERS+SETTERS       //////////////////////
+    /* Aggiungere getters, setters, toString, equals e hashCode di admins */
+    
     public Long getId() {
         return id;
     }

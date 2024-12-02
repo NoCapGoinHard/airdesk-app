@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>AdminRegister</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>AdminRegister</h2>
+
+        <!-- Display validation errors for user -->
+        <div th:if="${#fields.hasErrors('admin')}">
+            <p th:each="error : ${#fields.errors('admin')}" th:text="${error}"></p>
+        </div>
+
+        <!-- Form for both user and credentials -->
+        <form th:action="@{/registerAdmin}" method="post" onsubmit="return validateForm()">
+
+            <!-- User Information Section -->
+            <div>
+                <label for="name">First Name</label>
+                <!-- Make field readonly if OIDC user -->
+                <input type="text" id="name" th:field="*{admin.name}" th:readonly="${isOidc}" placeholder="Enter your first name" required>
+                <p th:if="${#fields.hasErrors('admin.name')}" th:errors="*{admin.name}"></p>
+            </div>
+
+            <div>
+                <label for="surname">Last Name</label>
+                <!-- Make field readonly if OIDC user -->
+                <input type="text" id="surname" th:field="*{admin.surname}" th:readonly="${isOidc}" placeholder="Enter your last name" required>
+                <p th:if="${#fields.hasErrors('admin.surname')}" th:errors="*{admin.surname}"></p>
+            </div>
+
+            <div>
+                <label for="email">Email</label>
+                <!-- Make field readonly if OIDC user -->
+                <input type="email" id="email" th:field="*{admin.email}" th:readonly="${isOidc}" placeholder="Enter your email" required>
+                <p th:if="${#fields.hasErrors('admin.email')}" th:errors="*{admin.email}"></p>
+            </div>
+            
+            <div>
+                <label for="birthDate">Birth Date</label>
+                <!-- Make field readonly if OIDC user (optional) -->
+                <input type="date" id="birthDate" th:field="*{admin.birthDate}" th:readonly="${isOidc}">
+                <p th:if="${#fields.hasErrors('admin.birthDate')}" th:errors="*{admin.birthDate}"></p>
+            </div>
+
+            <!-- Company Field (wrapped in a div to show/hide) -->
+            <div id="companyFieldDiv">
+                <label for="company">Company (or Freelancer)</label>
+                <input type="text" id="companyField" th:field="*{admin.company.name}" placeholder="Company Name">
+            </div>
+
+            <!-- Freelancer Checkbox -->
+            <div>
+                <input type="checkbox" id="freelancerCheckbox" name="freelancerCheckbox" onclick="toggleFreelancer()">
+                <label for="freelancerCheckbox">Check this box if working as a freelancer</label>
+            </div>
+
+            <!-- Credentials fields without model binding (shown only for non-OIDC users) -->
+            <div th:if="${!isOidc}">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Choose a username" required>
+            </div>
+
+            <div th:if="${!isOidc}">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Choose a password" required>
+            </div>
+
+            <!-- Address Information Section -->
+            <h3>Address Information</h3>
+            <h4>not mandatory, but entering this information will be helpful to suggest facilities in the area where you live!</h4>
+
+            <div>
+                <label for="country">Country</label>
+                <input type="text" id="country" th:field="*{admin.address.country}" placeholder="Enter your country">
+                <p th:if="${#fields.hasErrors('admin.address.country')}" th:errors="*{admin.address.country}"></p>
+            </div>
+
+            <div>
+                <label for="state">State</label>
+                <input type="text" id="state" th:field="*{admin.address.state}" placeholder="Enter your state">
+                <p th:if="${#fields.hasErrors('admin.address.state')}" th:errors="*{admin.address.state}"></p>
+            </div>
+
+            <div>
+                <label for="city">City</label>
+                <input type="text" id="city" th:field="*{admin.address.city}" placeholder="Enter your city">
+                <p th:if="${#fields.hasErrors('admin.address.city')}" th:errors="*{admin.address.city}"></p>
+            </div>
+
+            <div>
+                <label for="postalCode">Postal Code</label>
+                <input type="text" id="postalCode" th:field="*{admin.address.postalCode}" placeholder="Enter your postal code">
+                <p th:if="${#fields.hasErrors('admin.address.postalCode')}" th:errors="*{admin.address.postalCode}"></p>
+            </div>
+
+            <div>
+                <label for="street">Street</label>
+                <input type="text" id="street" th:field="*{admin.address.street}" placeholder="Enter your street">
+                <p th:if="${#fields.hasErrors('admin.address.street')}" th:errors="*{admin.address.street}"></p>
+            </div>
+
+            <div>
+                <label for="number">Street Number</label>
+                <input type="text" id="number" th:field="*{admin.address.number}" placeholder="Enter your street number">
+                <p th:if="${#fields.hasErrors('admin.address.number')}" th:errors="*{admin.address.number}"></p>
+            </div>
+
+
+            <!-- Submit Button -->
+            <div>
+                <button type="submit">Register</button>
+            </div>
+
+        </form>
+
+        <div>
+            <p>Already have an account? <a href="/login">Login here</a></p>
+        </div>
+    </div>
+
+    <!-- Add a script to check for either company or freelancer -->
+    <script>
+        function validateForm() {
+            const companyField = document.getElementById("companyField").value.trim();
+            const freelancerChecked = document.getElementById("freelancerCheckbox").checked;
+    
+            if (companyField === "" && !freelancerChecked) {
+                alert("Please enter a company name or select the freelancer checkbox.");
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

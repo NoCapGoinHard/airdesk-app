@@ -33,10 +33,15 @@ public class Credentials {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private User user;
+    
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private Admin admin;
 
     public Credentials(){}
 
     /////////////       GETTERS+SETTERS       //////////////////////
+    /* Scrivere getters, setters, toString, equals e hashCode per un admin */
+    
     public Long getId() {
         return id;
     }
@@ -76,6 +81,15 @@ public class Credentials {
     public void setUser(User user) {
         this.user = user;
     }
+    
+    public Admin getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
+    
     /////////////       AUXILIARY METHODS       ////////////////////
     public boolean isAdmin(){
         return this.role.equals("ADMIN");
