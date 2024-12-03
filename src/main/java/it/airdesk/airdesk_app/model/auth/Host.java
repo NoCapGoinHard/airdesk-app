@@ -20,8 +20,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 
 @Entity
-@Table(name = "admin")
-public class Admin {
+@Table(name = "host")
+public class Host {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,7 +51,7 @@ public class Admin {
     private Company company;
     
     /* COSTRUTTORE PUBLIC VUOTO */
-    public Admin() {
+    public Host() {
 		super();
 	}
 
@@ -125,7 +125,7 @@ public class Admin {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Admin other = (Admin) obj;
+		Host other = (Host) obj;
 		return Objects.equals(address, other.address) && Objects.equals(birthDate, other.birthDate)
 				&& Objects.equals(company, other.company) && Objects.equals(email, other.email)
 				&& Objects.equals(id, other.id) && Objects.equals(name, other.name)
@@ -134,7 +134,7 @@ public class Admin {
 
 	@Override
 	public String toString() {
-		return "Admin [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", birthDate="
+		return "Host [id=" + id + ", name=" + name + ", surname=" + surname + ", email=" + email + ", birthDate="
 				+ birthDate + ", address=" + address + ", company=" + company + "]";
 	}
 	

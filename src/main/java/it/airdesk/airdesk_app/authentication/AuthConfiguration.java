@@ -48,17 +48,19 @@ public class AuthConfiguration { // Spring Authentication configuration class
 				.authorizeHttpRequests(authorize -> authorize
 						// chiunque (autenticato o no) può accedere alle pagine index, login,
 						// register ai css e alle immagini
-						.requestMatchers(HttpMethod.GET, "/", "/oauth2/**", "/index", "/register", "/adminRegister",
-								"/css/**", "/images/**", "/searchFacilities", "/bookingMenu/**", "favicon.ico", "/error")
+						.requestMatchers(HttpMethod.GET, "/", "/oauth2/**", "/index", "/register",
+								"/hostRegister", "/css/**", "/images/**", "/searchFacilities",
+								"/bookingMenu/**", "favicon.ico", "/error", "/dashboard")
 						.permitAll()
 						// chiunque (autenticato o no) può mandare richieste POST al punto di
 						// accesso per login e register
-						.requestMatchers(HttpMethod.POST, "/register", "adminRegister", "/login", "/bookingMenu/**", "/bookWorkstation")
+						.requestMatchers(HttpMethod.POST, "/register", "hostRegister", "/login",
+								"/bookingMenu/**", "/bookWorkstation", "/dashboard")
 						.permitAll()
 						// solo gli utenti autenticati con ruolo ADMIN possono accedere a
 						// risorse con path
-						.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority("ADMIN")
-						.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/host/**").hasAnyAuthority("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/host/**").hasAnyAuthority("ADMIN")
 						// tutti gli utenti autenticati possono accere alle pag
 						.anyRequest().authenticated())
 

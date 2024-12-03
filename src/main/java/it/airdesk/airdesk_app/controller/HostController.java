@@ -29,8 +29,8 @@ import it.airdesk.airdesk_app.service.WorkstationService;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
 
 @Controller
-@RequestMapping("/admin")
-public class AdminController { //class which handles the Administrator's reserved operations
+@RequestMapping("/host")
+public class HostController { //class which handles the Host's reserved operations
 
     @Autowired
     private CredentialsService credentialsService;
@@ -57,15 +57,15 @@ public class AdminController { //class which handles the Administrator's reserve
     private WorkstationService workstationService;
 
 
-    // Render the Admin Dashboard page
+    // Render the Host Dashboard page
 
     @GetMapping("/dashboard")
-    public String getAdminDashboard(Model model) {
+    public String getHostDashboard(Model model) {
         Credentials credentials = credentialsService.getAuthenticatedUserCredentials().orElse(null);
 
         if (credentials != null && credentials.getRole().equals(Credentials.ADMIN)) {
-            // Admin is authenticated, show the dashboard
-            return "admin/adminDashboard";
+            // Host is authenticated, show the dashboard
+            return "host/hostDashboard";
         }
 
         return "redirect:/login";  // Redirect to login if not authenticated
@@ -74,7 +74,7 @@ public class AdminController { //class which handles the Administrator's reserve
     // Route to manage facilities (shows the list of facilities)
     @GetMapping("/manageFacilities")
     public String manageFacilities(Model model) {
-        // Get the authenticated admin's credentials
+        // Get the authenticated host's credentials
         Credentials credentials = credentialsService.getAuthenticatedUserCredentials().orElse(null);
         
         if (credentials == null || !credentials.isAdmin()) {
@@ -85,7 +85,7 @@ public class AdminController { //class which handles the Administrator's reserve
         Long companyId = credentials.getUser().getCompany().getId();
         model.addAttribute("facilities", facilityService.findByCompanyId(companyId));
 
-        return "admin/manageFacilities";
+        return "host/manageFacilities";
     }
 
     // View facility details
@@ -93,13 +93,13 @@ public class AdminController { //class which handles the Administrator's reserve
     public String facilityPage(@PathVariable Long id, Model model) {
         Facility facility = facilityService.findById(id);
         model.addAttribute("facility", facility);
-        return "admin/facilityPage";
+        return "host/facilityPage";
     }
 
     @GetMapping("/newFacility")
     public String newFacility(Model model) {
         model.addAttribute("facility", new Facility());  // Empty facility object for form binding
-        return "admin/newFacility";
+        return "host/newFacility";
     }
 
     // Save the New Facility
@@ -119,7 +119,7 @@ public class AdminController { //class which handles the Administrator's reserve
         // Now save buildings, floors, rooms, and workstations
         saveBuildingsAndRelatedEntities(facility);
 
-        return "redirect:/admin/facilityPage/" + facility.getId();
+        return "redirect:/host/facilityPage/" + facility.getId();
     }
 
     private void saveBuildingsAndRelatedEntities(Facility facility) {
@@ -176,9 +176,9 @@ public class AdminController { //class which handles the Administrator's reserve
     }
 
     // Delete facility
-    @PostMapping("/admin/deleteFacility/{id}")
+    @PostMapping("/host/deleteFacility/{id}")
     public String deleteFacility(@PathVariable Long id) {
         facilityService.deleteById(id);
-        return "redirect:/admin/manageFacilities";
+        return "redirect:/host/manageFacilities";
     }
 }

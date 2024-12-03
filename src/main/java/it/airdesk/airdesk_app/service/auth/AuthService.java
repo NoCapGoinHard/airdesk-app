@@ -5,7 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import it.airdesk.airdesk_app.model.Company;
-import it.airdesk.airdesk_app.model.auth.Admin;
+import it.airdesk.airdesk_app.model.auth.Host;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.model.dataTypes.Address;
@@ -21,7 +21,7 @@ public class AuthService {
     private UserService userService;
     
     @Autowired
-    private AdminService adminService;
+    private HostService hostService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -45,15 +45,15 @@ public class AuthService {
     }
     
     // Register admin users with username and password ONLY
-    public void registerAdminUser(Admin admin, String username, String password) {
+    public void registerHostUser(Host host, String username, String password) {
         Credentials credentials = new Credentials();
-        credentials.setAdmin(admin);
+        credentials.setHost(host);
         credentials.setRole(Credentials.ADMIN);
         credentials.setUsername(username);
         credentials.setPassword(passwordEncoder.encode(password));
     
         // Save the user and credentials
-        adminService.save(admin);
+        hostService.save(host);
         credentialsService.save(credentials);
     }
 }

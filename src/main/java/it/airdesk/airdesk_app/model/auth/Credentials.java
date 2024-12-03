@@ -35,7 +35,7 @@ public class Credentials {
     private User user;
     
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private Admin admin;
+    private Host host;
 
     public Credentials(){}
 
@@ -82,12 +82,12 @@ public class Credentials {
         this.user = user;
     }
     
-    public Admin getAdmin() {
-		return admin;
+    public Host getHost() {
+		return host;
 	}
 
-	public void setAdmin(Admin admin) {
-		this.admin = admin;
+	public void setHost(Host host) {
+		this.host = host;
 	}
     
     /////////////       AUXILIARY METHODS       ////////////////////
