@@ -1,0 +1,90 @@
+2024-12-11 18:02:26 - HV000001: Hibernate Validator 8.0.1.Final
+2024-12-11 18:02:26 - Starting AirdeskAppApplication using Java 17.0.13 with PID 5603 (/home/gabriele/eclipse-workspace/airdesk/target/classes started by gabriele in /home/gabriele/eclipse-workspace/airdesk)
+2024-12-11 18:02:26 - No active profile set, falling back to 1 default profile: "default"
+2024-12-11 18:02:26 - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-12-11 18:02:26 - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-12-11 18:02:27 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-11 18:02:27 - Finished Spring Data repository scanning in 57 ms. Found 11 JPA repository interfaces.
+2024-12-11 18:02:28 - An incompatible version [1.2.23] of the Apache Tomcat Native library is installed, while Tomcat requires version [1.2.34]
+2024-12-11 18:02:28 - Tomcat initialized with port 8081 (http)
+2024-12-11 18:02:28 - Initializing ProtocolHandler ["http-nio-8081"]
+2024-12-11 18:02:28 - Starting service [Tomcat]
+2024-12-11 18:02:28 - Starting Servlet engine: [Apache Tomcat/10.1.26]
+2024-12-11 18:02:28 - Initializing Spring embedded WebApplicationContext
+2024-12-11 18:02:28 - Root WebApplicationContext: initialization completed in 1812 ms
+2024-12-11 18:02:28 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-11 18:02:28 - HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-12-11 18:02:28 - HHH000026: Second-level cache disabled
+2024-12-11 18:02:29 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-11 18:02:29 - HikariPool-1 - Starting...
+2024-12-11 18:02:29 - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@584beb23
+2024-12-11 18:02:29 - HikariPool-1 - Start completed.
+2024-12-11 18:02:29 - HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-12-11 18:02:29 - addDescriptor(2003, org.hibernate.type.descriptor.sql.internal.ArrayDdlTypeImpl@3e224c3e) replaced previous registration(org.hibernate.type.descriptor.sql.internal.ArrayDdlTypeImpl@1ff7854b)
+2024-12-11 18:02:29 - addDescriptor(6, org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType@1a96dfc9) replaced previous registration(org.hibernate.type.descriptor.sql.internal.DdlTypeImpl@ad33139)
+2024-12-11 18:02:31 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-12-11 18:02:31 - alter table if exists booking drop constraint if exists FK7udbel7q86k041591kj6lfmvw
+2024-12-11 18:02:31 - alter table if exists booking drop constraint if exists FKbqdxuwt92lekj2b67bucfy564
+2024-12-11 18:02:31 - alter table if exists building drop constraint if exists FK7po72w4ttjonoros62ab2amud
+2024-12-11 18:02:31 - alter table if exists company_facility drop constraint if exists FKnak18du603s9tvkmhy1hjp6f
+2024-12-11 18:02:31 - alter table if exists company_facility drop constraint if exists FK8t7gq3iw4pgd76a3ithufq89m
+2024-12-11 18:02:31 - alter table if exists credentials drop constraint if exists FK8m3khygjogpyrgjojmq7hie20
+2024-12-11 18:02:31 - alter table if exists credentials drop constraint if exists FKcbcgksvnqvqxrrc4dwv3qys65
+2024-12-11 18:02:31 - alter table if exists floor drop constraint if exists FKfvb11l7lpgqc6qdrg3bm24kr3
+2024-12-11 18:02:31 - alter table if exists host drop constraint if exists FK4dfxkyybcwgu5wry7bg8xbwb9
+2024-12-11 18:02:31 - alter table if exists office_hours drop constraint if exists FK1dvll6d13qapg6nkpb8re7pjr
+2024-12-11 18:02:31 - alter table if exists office_hours drop constraint if exists FK1nu6tkf6kbb1xxi7vjy7lbn8n
+2024-12-11 18:02:31 - alter table if exists room drop constraint if exists FKstlo96g0nkwp4urd4e0ki5b3h
+2024-12-11 18:02:31 - alter table if exists users drop constraint if exists FKbwv4uspmyi7xqjwcrgxow361t
+2024-12-11 18:02:31 - alter table if exists workstation drop constraint if exists FKt20ck7kt1tb9vmmlg1uxai3s2
+2024-12-11 18:02:31 - drop table if exists booking cascade
+2024-12-11 18:02:31 - drop table if exists building cascade
+2024-12-11 18:02:31 - drop table if exists company cascade
+2024-12-11 18:02:31 - drop table if exists company_facility cascade
+2024-12-11 18:02:31 - drop table if exists credentials cascade
+2024-12-11 18:02:31 - drop table if exists facility cascade
+2024-12-11 18:02:31 - drop table if exists floor cascade
+2024-12-11 18:02:31 - drop table if exists host cascade
+2024-12-11 18:02:31 - drop table if exists office_hours cascade
+2024-12-11 18:02:31 - drop table if exists room cascade
+2024-12-11 18:02:31 - drop table if exists users cascade
+2024-12-11 18:02:31 - drop table if exists workstation cascade
+2024-12-11 18:02:31 - create table booking (date date not null, ending_time time(6) not null, starting_time time(6) not null, id bigint generated by default as identity, user_id bigint not null, workstation_id bigint not null, primary key (id))
+2024-12-11 18:02:31 - create table building (facility_id bigint not null, id bigint generated by default as identity, city varchar(255), country varchar(255), name varchar(255) not null, number varchar(255), postal_code varchar(255), state varchar(255), street varchar(255), primary key (id))
+2024-12-11 18:02:31 - create table company (id bigint generated by default as identity, name varchar(255) not null, primary key (id))
+2024-12-11 18:02:31 - create table company_facility (company_id bigint not null, facility_id bigint not null)
+2024-12-11 18:02:31 - create table credentials (host_id bigint unique, id bigint generated by default as identity, user_id bigint unique, password varchar(255) not null, role varchar(255) not null, username varchar(255) not null unique, primary key (id))
+2024-12-11 18:02:31 - create table facility (id bigint generated by default as identity, email varchar(255) not null, name varchar(255) not null, phone varchar(255) not null, primary key (id))
+2024-12-11 18:02:31 - create table floor (number integer not null, building_id bigint not null, id bigint generated by default as identity, primary key (id))
+2024-12-11 18:02:31 - create table host (birth_date date, company_id bigint, id bigint generated by default as identity, city varchar(255), country varchar(255), email varchar(255) not null unique, name varchar(255) not null, number varchar(255), postal_code varchar(255), state varchar(255), street varchar(255), surname varchar(255) not null, primary key (id))
+2024-12-11 18:02:32 - create table office_hours (ending_time time(6) not null, starting_time time(6) not null, building_id bigint, id bigint generated by default as identity, room_id bigint, day varchar(255) not null check (day in ('MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY')), primary key (id))
+2024-12-11 18:02:32 - create table room (floor_id bigint not null, id bigint generated by default as identity, name varchar(255) not null, primary key (id))
+2024-12-11 18:02:32 - create table users (birth_date date, company_id bigint, id bigint generated by default as identity, city varchar(255), country varchar(255), email varchar(255) not null unique, name varchar(255) not null, number varchar(255), postal_code varchar(255), state varchar(255), street varchar(255), surname varchar(255) not null, primary key (id))
+2024-12-11 18:02:32 - create table workstation (id bigint generated by default as identity, room_id bigint not null, workstation_id varchar(255) not null, workstation_type varchar(255) not null, primary key (id))
+2024-12-11 18:02:32 - alter table if exists booking add constraint FK7udbel7q86k041591kj6lfmvw foreign key (user_id) references users
+2024-12-11 18:02:32 - alter table if exists booking add constraint FKbqdxuwt92lekj2b67bucfy564 foreign key (workstation_id) references workstation
+2024-12-11 18:02:32 - alter table if exists building add constraint FK7po72w4ttjonoros62ab2amud foreign key (facility_id) references facility
+2024-12-11 18:02:32 - alter table if exists company_facility add constraint FKnak18du603s9tvkmhy1hjp6f foreign key (facility_id) references facility
+2024-12-11 18:02:32 - alter table if exists company_facility add constraint FK8t7gq3iw4pgd76a3ithufq89m foreign key (company_id) references company
+2024-12-11 18:02:32 - alter table if exists credentials add constraint FK8m3khygjogpyrgjojmq7hie20 foreign key (host_id) references host
+2024-12-11 18:02:32 - alter table if exists credentials add constraint FKcbcgksvnqvqxrrc4dwv3qys65 foreign key (user_id) references users
+2024-12-11 18:02:32 - alter table if exists floor add constraint FKfvb11l7lpgqc6qdrg3bm24kr3 foreign key (building_id) references building
+2024-12-11 18:02:32 - alter table if exists host add constraint FK4dfxkyybcwgu5wry7bg8xbwb9 foreign key (company_id) references company
+2024-12-11 18:02:32 - alter table if exists office_hours add constraint FK1dvll6d13qapg6nkpb8re7pjr foreign key (room_id) references room
+2024-12-11 18:02:32 - alter table if exists office_hours add constraint FK1nu6tkf6kbb1xxi7vjy7lbn8n foreign key (building_id) references building
+2024-12-11 18:02:32 - alter table if exists room add constraint FKstlo96g0nkwp4urd4e0ki5b3h foreign key (floor_id) references floor
+2024-12-11 18:02:32 - alter table if exists users add constraint FKbwv4uspmyi7xqjwcrgxow361t foreign key (company_id) references company
+2024-12-11 18:02:32 - alter table if exists workstation add constraint FKt20ck7kt1tb9vmmlg1uxai3s2 foreign key (room_id) references room
+2024-12-11 18:02:32 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-11 18:02:33 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-12-11 18:02:33 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-11 18:02:33 - Adding welcome page template: index
+2024-12-11 18:02:34 - LiveReload server is running on port 35729
+2024-12-11 18:02:34 - Starting ProtocolHandler ["http-nio-8081"]
+2024-12-11 18:02:34 - Tomcat started on port 8081 (http) with context path '/'
+2024-12-11 18:02:34 - Started AirdeskAppApplication in 8.023 seconds (process running for 8.708)
+2024-12-11 18:03:09 - Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2024-12-11 18:03:09 - Stopping ProtocolHandler ["http-nio-8081"]
+2024-12-11 18:03:09 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-12-11 18:03:09 - HikariPool-1 - Shutdown initiated...
+2024-12-11 18:03:09 - HikariPool-1 - Shutdown completed.

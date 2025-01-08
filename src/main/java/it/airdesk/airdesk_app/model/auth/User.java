@@ -25,7 +25,7 @@ import jakarta.validation.constraints.Past;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -179,5 +179,4 @@ public class User {
         return "User [name=" + name + ", surname=" + surname + ", company=" + company + "]";
     }
 
-    
 }

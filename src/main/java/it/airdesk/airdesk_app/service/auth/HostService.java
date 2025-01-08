@@ -1,7 +1,6 @@
 package it.airdesk.airdesk_app.service.auth;
 
-import java.util.Optional;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,19 @@ public class HostService {
     }
     
     // Find administrator by email or throw NoSuchUserException if not found
-    public Optional<Host> findByEmail(String email) {
+    public List<Host> findByEmail(String email) {
         return hostRepository.findByEmail(email);
     }
+
+    /*
+     * Metodo di aiuto alla classe Validator per il controllo della non esistenza nella lista degli host 
+     * gia' registrati di un altro host registrato con la stessa email dell'host da inserire
+     */
+	public boolean alreadyExists(Host host) {
+		List<Host> hosts = this.hostRepository.findByEmail(host.getEmail());
+		if (hosts.size() > 0)
+			return true;
+		else 
+			return false;
+	}
 }

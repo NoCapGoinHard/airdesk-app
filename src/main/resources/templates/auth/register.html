@@ -1,128 +1,175 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Register</title>
-    <link rel="stylesheet" href="/css/style.css">
+	<title>Register</title>
+	<link rel="stylesheet" href="/css/style.css">
+	
+	<!-- Script di controllo sulla corrispondenza dei dati inseriti nei campi password e conferma password -->
+	<script>
+		// Funzione per verificare che le password coincidano
+		function validatePassword() {
+			var password = document.getElementById("password");
+			var confirmPassword = document.getElementById("confirmPassword");
+
+			// Controlla se le password corrispondono
+			if (password.value !== confirmPassword.value) {
+                alert("Le password non coincidono!");
+                //return false; // Impedisce l'invio del modulo
+            }
+            return true; // Permette l'invio del modulo
+		}
+	</script>
+	
 </head>
 <body>
-    <div class="container">
-        <h2>Register</h2>
+	<div class="container">
+		<h2>Register</h2>
 
-        <!-- Display validation errors for user -->
-        <div th:if="${#fields.hasErrors('user')}">
-            <p th:each="error : ${#fields.errors('user')}" th:text="${error}"></p>
-        </div>
+		<!-- Display validation errors for user -->
+		<div th:if="${#fields.hasErrors('user')}">
+			<p th:each="error : ${#fields.errors('user')}" th:text="${error}"></p>
+		</div>
 
-        <!-- Form for both user and credentials -->
-        <form th:action="@{/register}" method="post" onsubmit="return validateForm()">
+		<!-- Form for both user and credentials -->
+		<form th:action="@{/register}" method="post"
+			onsubmit="return validateForm() && validatePassword()">
+		
+			<!-- User Information Section -->
+			<div>
+				<label for="name">First Name</label>
+				<!-- Make field readonly if OIDC user -->
+				<input type="text" id="name" th:field="*{user.name}"
+					th:readonly="${isOidc}" placeholder="Enter your first name"
+					required>
+				<p th:if="${#fields.hasErrors('user.name')}"
+					th:errors="*{user.name}"></p>
+			</div>
 
-            <!-- User Information Section -->
-            <div>
-                <label for="name">First Name</label>
-                <!-- Make field readonly if OIDC user -->
-                <input type="text" id="name" th:field="*{user.name}" th:readonly="${isOidc}" placeholder="Enter your first name" required>
-                <p th:if="${#fields.hasErrors('user.name')}" th:errors="*{user.name}"></p>
-            </div>
+			<div>
+				<label for="surname">Last Name</label>
+				<!-- Make field readonly if OIDC user -->
+				<input type="text" id="surname" th:field="*{user.surname}"
+					th:readonly="${isOidc}" placeholder="Enter your last name" required>
+				<p th:if="${#fields.hasErrors('user.surname')}"
+					th:errors="*{user.surname}"></p>
+			</div>
 
-            <div>
-                <label for="surname">Last Name</label>
-                <!-- Make field readonly if OIDC user -->
-                <input type="text" id="surname" th:field="*{user.surname}" th:readonly="${isOidc}" placeholder="Enter your last name" required>
-                <p th:if="${#fields.hasErrors('user.surname')}" th:errors="*{user.surname}"></p>
-            </div>
+			<div>
+				<label for="email">Email</label>
+				<!-- Make field readonly if OIDC user -->
+				<input type="email" id="email" th:field="*{user.email}"
+					th:readonly="${isOidc}" placeholder="Enter your email" required>
+				<p th:if="${#fields.hasErrors('user.email')}"
+					th:errors="*{user.email}"></p>
+			</div>
 
-            <div>
-                <label for="email">Email</label>
-                <!-- Make field readonly if OIDC user -->
-                <input type="email" id="email" th:field="*{user.email}" th:readonly="${isOidc}" placeholder="Enter your email" required>
-                <p th:if="${#fields.hasErrors('user.email')}" th:errors="*{user.email}"></p>
-            </div>
-            
-            <div>
-                <label for="birthDate">Birth Date</label>
-                <!-- Make field readonly if OIDC user (optional) -->
-                <input type="date" id="birthDate" th:field="*{user.birthDate}" th:readonly="${isOidc}">
-                <p th:if="${#fields.hasErrors('user.birthDate')}" th:errors="*{user.birthDate}"></p>
-            </div>
+			<div>
+				<label for="birthDate">Birth Date</label>
+				<!-- Make field readonly if OIDC user (optional) -->
+				<input type="date" id="birthDate" th:field="*{user.birthDate}"
+					th:readonly="${isOidc}">
+				<p th:if="${#fields.hasErrors('user.birthDate')}"
+					th:errors="*{user.birthDate}"></p>
+			</div>
 
-            <!-- Company Field (wrapped in a div to show/hide) -->
-            <div id="companyFieldDiv">
-                <label for="company">Company (or Freelancer)</label>
-                <input type="text" id="companyField" th:field="*{user.company.name}" placeholder="Company Name">
-            </div>
+			<!-- Company Field (wrapped in a div to show/hide) -->
+			<div id="companyFieldDiv">
+				<label for="company">Company (or Freelancer)</label> <input
+					type="text" id="companyField" th:field="*{user.company.name}"
+					placeholder="Company Name">
+			</div>
 
-            <!-- Freelancer Checkbox -->
-            <div>
-                <input type="checkbox" id="freelancerCheckbox" name="freelancerCheckbox" onclick="toggleFreelancer()">
-                <label for="freelancerCheckbox">Check this box if working as a freelancer</label>
-            </div>
+			<!-- Freelancer Checkbox -->
+			<div>
+				<input type="checkbox" id="freelancerCheckbox"
+					name="freelancerCheckbox" onclick="toggleFreelancer()"> <label
+					for="freelancerCheckbox">Check this box if working as a
+					freelancer</label>
+			</div>
 
-            <!-- Credentials fields without model binding (shown only for non-OIDC users) -->
-            <div th:if="${!isOidc}">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Choose a username" required>
-            </div>
+			<!-- Credentials fields without model binding (shown only for non-OIDC users) -->
+			<div th:if="${!isOidc}">
+				<label for="username">Username</label> <input type="text"
+					id="username" name="username" placeholder="Choose a username"
+					required>
+			</div>
+ 
+			<div th:if="${!isOidc}">
+				<label for="password">Password</label> <input type="password"
+					id="password" name="password" placeholder="Choose a password" required>
+			</div>
 
-            <div th:if="${!isOidc}">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Choose a password" required>
-            </div>
+			<div th:if="${!isOidc}">
+				<label for="confirmPassword">Confirm Password</label> <input
+					type="password" id="confirmPassword" name="confirmPpassword"
+					placeholder="Confirm password" required>
+			</div>
 
-            <!-- Address Information Section -->
-            <h3>Address Information</h3>
-            <h4>not mandatory, but entering this information will be helpful to suggest facilities in the area where you live!</h4>
+			<!-- Address Information Section -->
+			<h3>Address Information</h3>
+			<h4>not mandatory, but entering this information will be helpful
+				to suggest facilities in the area where you live!</h4>
 
-            <div>
-                <label for="country">Country</label>
-                <input type="text" id="country" th:field="*{user.address.country}" placeholder="Enter your country">
-                <p th:if="${#fields.hasErrors('user.address.country')}" th:errors="*{user.address.country}"></p>
-            </div>
+			<div>
+				<label for="country">Country</label> <input type="text" id="country"
+					th:field="*{user.address.country}" placeholder="Enter your country">
+				<p th:if="${#fields.hasErrors('user.address.country')}"
+					th:errors="*{user.address.country}"></p>
+			</div>
 
-            <div>
-                <label for="state">State</label>
-                <input type="text" id="state" th:field="*{user.address.state}" placeholder="Enter your state">
-                <p th:if="${#fields.hasErrors('user.address.state')}" th:errors="*{user.address.state}"></p>
-            </div>
+			<div>
+				<label for="state">State</label> <input type="text" id="state"
+					th:field="*{user.address.state}" placeholder="Enter your state">
+				<p th:if="${#fields.hasErrors('user.address.state')}"
+					th:errors="*{user.address.state}"></p>
+			</div>
 
-            <div>
-                <label for="city">City</label>
-                <input type="text" id="city" th:field="*{user.address.city}" placeholder="Enter your city">
-                <p th:if="${#fields.hasErrors('user.address.city')}" th:errors="*{user.address.city}"></p>
-            </div>
+			<div>
+				<label for="city">City</label> <input type="text" id="city"
+					th:field="*{user.address.city}" placeholder="Enter your city">
+				<p th:if="${#fields.hasErrors('user.address.city')}"
+					th:errors="*{user.address.city}"></p>
+			</div>
 
-            <div>
-                <label for="postalCode">Postal Code</label>
-                <input type="text" id="postalCode" th:field="*{user.address.postalCode}" placeholder="Enter your postal code">
-                <p th:if="${#fields.hasErrors('user.address.postalCode')}" th:errors="*{user.address.postalCode}"></p>
-            </div>
+			<div>
+				<label for="postalCode">Postal Code</label> <input type="text"
+					id="postalCode" th:field="*{user.address.postalCode}"
+					placeholder="Enter your postal code">
+				<p th:if="${#fields.hasErrors('user.address.postalCode')}"
+					th:errors="*{user.address.postalCode}"></p>
+			</div>
 
-            <div>
-                <label for="street">Street</label>
-                <input type="text" id="street" th:field="*{user.address.street}" placeholder="Enter your street">
-                <p th:if="${#fields.hasErrors('user.address.street')}" th:errors="*{user.address.street}"></p>
-            </div>
+			<div>
+				<label for="street">Street</label> <input type="text" id="street"
+					th:field="*{user.address.street}" placeholder="Enter your street">
+				<p th:if="${#fields.hasErrors('user.address.street')}"
+					th:errors="*{user.address.street}"></p>
+			</div>
 
-            <div>
-                <label for="number">Street Number</label>
-                <input type="text" id="number" th:field="*{user.address.number}" placeholder="Enter your street number">
-                <p th:if="${#fields.hasErrors('user.address.number')}" th:errors="*{user.address.number}"></p>
-            </div>
+			<div>
+				<label for="number">Street Number</label> <input type="text"
+					id="number" th:field="*{user.address.number}"
+					placeholder="Enter your street number">
+				<p th:if="${#fields.hasErrors('user.address.number')}"
+					th:errors="*{user.address.number}"></p>
+			</div>
 
 
-            <!-- Submit Button -->
-            <div>
-                <button type="submit">Register</button>
-            </div>
+			<!-- Submit Button -->
+			<div>
+				<button type="submit">Register</button>
+			</div>
+		</form>
 
-        </form>
+		<div>
+			<p>
+				Already have an account? <a href="/login">Login here</a>
+			</p>
+		</div>
+	</div>
 
-        <div>
-            <p>Already have an account? <a href="/login">Login here</a></p>
-        </div>
-    </div>
-
-    <!-- Add a script to check for either company or freelancer -->
-    <script>
+	<!-- Add a script to check for either company or freelancer -->
+	<script>
         function validateForm() {
             const companyField = document.getElementById("companyField").value.trim();
             const freelancerChecked = document.getElementById("freelancerCheckbox").checked;
@@ -134,5 +181,22 @@
             return true;
         }
     </script>
+    
+     <!-- Script di controllo sulla corrispondenza dei dati inseriti nei campi password e conferma password -->
+	<script>
+		// Funzione per verificare che le password coincidano
+		function validatePassword() {
+			var password = document.getElementById("password");
+			var confirmPassword = document.getElementById("confirmPassword");
+
+			// Controlla se le password corrispondono
+			if (password.value !== confirmPassword.value) {
+                alert("Le password non coincidono!");
+                return false; // Impedisce l'invio del modulo
+            }
+            return true; // Permette l'invio del modulo
+		}
+	</script>
+    
 </body>
 </html>

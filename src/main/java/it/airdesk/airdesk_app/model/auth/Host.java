@@ -21,7 +21,8 @@ import jakarta.validation.constraints.Past;
 
 @Entity
 @Table(name = "host")
-public class Host {
+public class Host{
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

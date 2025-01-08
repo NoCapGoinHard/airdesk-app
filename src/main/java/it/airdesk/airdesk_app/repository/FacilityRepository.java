@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import it.airdesk.airdesk_app.model.Facility;
+
 @Repository
 public interface FacilityRepository extends CrudRepository<Facility, Long>{
 
@@ -27,4 +28,7 @@ public interface FacilityRepository extends CrudRepository<Facility, Long>{
 
     @Query("SELECT f FROM Facility f JOIN f.companies c WHERE c.id = :companyId")
     List<Facility> findByCompanyId(@Param("companyId") Long companyId);
+    
+    public List<Facility> findByName(String name);
+
 }

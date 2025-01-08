@@ -60,8 +60,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         logger.info("User authenticated with OAuth2 provider. Email: {}, Given Name: {}, Family Name: {}", email, givenName, familyName);
 
-        // Check if user already exists in the database
-        // this is the DEFAULT USERNAME PATTERN assigned to users who don't register with standard procedure
+        /* Check if user already exists in the database this is the DEFAULT USERNAME PATTERN assigned to
+         * users who don't register with standard procedure */
         String username = "USERNAMEof" + email; // Ensure the username is formatted correctly
         Credentials credentials = credentialsService.findByUsername(username).orElse(null);
 
@@ -108,10 +108,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         OAuth2AuthenticationToken newAuth = new OAuth2AuthenticationToken(oidcUser, authorities, authorizedClientRegistrationId);
         SecurityContextHolder.getContext().setAuthentication(newAuth);
-
-        if (role.equals(Credentials.ADMIN)) {
-            logger.info("Redirecting admin to the admin dashboard");
-            response.sendRedirect("/admin/dashboard");
+        
+        /* Se viene passato il ruolo di un utente USER, sarà certo che il suo ruolo sarà proprio quello di
+         * USER e quindi è inutile questo controllo, almeno per ora, coi due utenti ben distinti */
+        if (role.equals(Credentials.HOST)) {
+            logger.info("Redirecting host to the admin dashboard");
+            response.sendRedirect("/host/dashboard");
         } else {
             logger.info("Redirecting user to index");
             response.sendRedirect("/");

@@ -18,6 +18,7 @@ import it.airdesk.airdesk_app.model.Floor;
 import it.airdesk.airdesk_app.model.Room;
 import it.airdesk.airdesk_app.model.Workstation;
 import it.airdesk.airdesk_app.model.auth.Credentials;
+import it.airdesk.airdesk_app.model.auth.Host;
 import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
 import it.airdesk.airdesk_app.service.BuildingService;
 import it.airdesk.airdesk_app.service.CompanyService;
@@ -63,9 +64,11 @@ public class HostController { //class which handles the Host's reserved operatio
     public String getHostDashboard(Model model) {
         Credentials credentials = credentialsService.getAuthenticatedUserCredentials().orElse(null);
 
-        if (credentials != null && credentials.getRole().equals(Credentials.ADMIN)) {
+        if (credentials != null && credentials.getRole().equals(Credentials.HOST)) {
             // Host is authenticated, show the dashboard
-            return "host/hostDashboard";
+        	Host host = credentials.getHost();
+            model.addAttribute("host", host);  // Add user to the model for display
+            return "host/hostDashboard.html";
         }
 
         return "redirect:/login";  // Redirect to login if not authenticated
@@ -77,7 +80,7 @@ public class HostController { //class which handles the Host's reserved operatio
         // Get the authenticated host's credentials
         Credentials credentials = credentialsService.getAuthenticatedUserCredentials().orElse(null);
         
-        if (credentials == null || !credentials.isAdmin()) {
+        if (credentials == null || !credentials.isHost()) {
             return "redirect:/login";
         }
 
@@ -120,6 +123,7 @@ public class HostController { //class which handles the Host's reserved operatio
         saveBuildingsAndRelatedEntities(facility);
 
         return "redirect:/host/facilityPage/" + facility.getId();
+//        return "/host/hostDashboard.html";
     }
 
     private void saveBuildingsAndRelatedEntities(Facility facility) {

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacchetti Servizi</title>
+    <style>
+        /* Reset e stili di base */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* Card dei pacchetti */
+        .package-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 30%;
+            padding: 10px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .package-card h2 {
+            font-size: 24px;
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 30px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .benefits {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .benefits ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .benefits li {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .package-card {
+                width: 45%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .package-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Scopri i Nostri Pacchetti</h1>
+
+    <div class="container">
+        <!-- Pacchetto Base -->
+        <div class="package-card">
+            <h2>Pacchetto Base</h2>
+            <div class="price">€ 49/mese</div>
+            <div class="benefits">
+                <ul>
+                    <li>Supporto via email</li>
+                    <li>Accesso limitato al servizio</li>
+                    <li>Backup settimanale</li>
+                    <li>Gestione dati dei tuoi dipendenti (fino ad un massimo di 50)</li>
+                </ul>
+            </div>
+            <a href="/hostRegister" class="btn">Scegli Base</a>
+        </div>
+
+		<!-- Pacchetto Intermedio -->
+        <div class="package-card">
+            <h2>Pacchetto intermedio</h2>
+            <div class="price">€ 99/mese</div>
+            <div class="benefits">
+                <ul>
+                    <li>Supporto via email</li>
+                    <li>Accesso limitato al servizio</li>
+                    <li>Backup settimanale</li>
+                    <li>Gestione dati dei tuoi dipendenti (fino ad un massimo di 200)</li>
+                </ul>
+            </div>
+            <a href="/intermediateHostRegister" class="btn">Scegli Intermedio</a>
+        </div>
+
+        <!-- Pacchetto Premium -->
+        <div class="package-card">
+            <h2>Pacchetto Premium (COMING SOON)</h2>
+            <div class="price">€ 149/mese</div>
+            <div class="benefits">
+                <ul>
+                    <li>Supporto 24/7 via chat</li>
+                    <li>Accesso completo al servizio</li>
+                    <li>Backup giornaliero</li>
+                    <li>Gestione dati dei tuoi dipendenti (fino ad un massimo di 1000)</li>
+                    <li>Funzionalità avanzate</li>
+                </ul>
+            </div>
+            <a href="/" class="btn">Scegli Premium</a>
+        </div>
+
+		<!--
+         Pacchetto Deluxe
+        <div class="package-card">
+            <h2>Pacchetto Deluxe</h2>
+            <div class="price">€ 149/mese</div>
+            <div class="benefits">
+                <ul>
+                    <li>Supporto VIP 24/7</li>
+                    <li>Accesso illimitato al servizio</li>
+                    <li>Backup in tempo reale</li>
+                    <li>Funzionalità premium illimitate</li>
+                    <li>Consulenza personalizzata</li>
+                </ul>
+            </div>
+            <a href="/hostRegister" class="btn">Scegli Deluxe</a>
+        </div>
+        
+        Pacchetto Full
+        <div class="package-card">
+            <h2>Pacchetto Full</h2>
+            <div class="price">€ 199/mese</div>
+            <div class="benefits">
+                <ul>
+                    <li>Supporto VIP 24/7 via chat</li>
+                    <li>Accesso illimitato al servizio</li>
+                    <li>Backup in tempo reale</li>
+                    <li>Funzionalità premium illimitate</li>
+                    <li>Consulenza personalizzata</li>
+                    <li>Supporto negli orari d'ufficio</li>
+                </ul>
+            </div>
+            <a href="/hostRegister" class="btn">Scegli Full</a>
+        </div>
+        -->   
+    </div>     
+  
+</body>
+</html>

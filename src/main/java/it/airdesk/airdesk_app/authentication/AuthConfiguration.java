@@ -46,21 +46,24 @@ public class AuthConfiguration { // Spring Authentication configuration class
 				.cors(cors -> cors.disable()) // Disabilita CORS se necessario, o lo configura come richiesto
 				// AUTORIZZAZIONE: here we define who can access what
 				.authorizeHttpRequests(authorize -> authorize
-						// chiunque (autenticato o no) può accedere alle pagine index, login,
-						// register ai css e alle immagini
-						.requestMatchers(HttpMethod.GET, "/", "/oauth2/**", "/index", "/register",
-								"/hostRegister", "/css/**", "/images/**", "/searchFacilities",
-								"/bookingMenu/**", "favicon.ico", "/error", "/dashboard")
+						/* chiunque (autenticato o no) può accedere alle pagine index, login,
+						register ai css e alle immagini */
+						.requestMatchers(HttpMethod.GET, "/", "/oauth2/**", "/index", "/chooseService",
+								"/register", "/intermediateHostRegister", "/emailErrorRegister",
+								"/emailErrorHostRegister","/hostRegister", "/css/**", "/images/**",
+								"/searchFacilities", "/bookingMenu/**", "favicon.ico", "/error")
 						.permitAll()
-						// chiunque (autenticato o no) può mandare richieste POST al punto di
-						// accesso per login e register
-						.requestMatchers(HttpMethod.POST, "/register", "hostRegister", "/login",
-								"/bookingMenu/**", "/bookWorkstation", "/dashboard")
+						/* chiunque (autenticato o no) può mandare richieste POST al punto di
+						accesso per login e register */
+						.requestMatchers(HttpMethod.POST, "/register", "/hostRegister",
+								"/intermediateHostRegister", "/login", "/chooseService",
+								"/emailErrorRegister", "/emailErrorHostRegister", "/bookingMenu/**",
+								"/bookWorkstation")
 						.permitAll()
-						// solo gli utenti autenticati con ruolo ADMIN possono accedere a
-						// risorse con path
-						.requestMatchers(HttpMethod.GET, "/host/**").hasAnyAuthority("ADMIN")
-						.requestMatchers(HttpMethod.POST, "/host/**").hasAnyAuthority("ADMIN")
+						/* solo gli utenti autenticati con ruolo HOST e INTERMEDIATE_HOST possono accedere a
+						risorse con path */
+						.requestMatchers(HttpMethod.GET, "/host/**").hasAnyAuthority("HOST", "INTERMEDIATE_HOST")
+						.requestMatchers(HttpMethod.POST, "/host/**").hasAnyAuthority("HOST", "INTERMEDIATE_HOST")
 						// tutti gli utenti autenticati possono accere alle pag
 						.anyRequest().authenticated())
 

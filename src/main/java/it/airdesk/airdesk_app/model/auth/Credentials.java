@@ -12,10 +12,11 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Credentials {
-    
-    public static final String ADMIN = "ADMIN";
-    public static final String USER = "USER";
 
+	 public static final String HOST = "HOST";
+	 public static final String INTERMEDIATE_HOST = "INTERMEDIATE_HOST";
+	 public static final String USER = "USER";
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,7 +28,7 @@ public class Credentials {
     @NotBlank(message = "password must not be blank")
     @Column(nullable = false)
     private String password;
-
+    
     @Column(nullable = false)
     private String role;
 
@@ -40,7 +41,6 @@ public class Credentials {
     public Credentials(){}
 
     /////////////       GETTERS+SETTERS       //////////////////////
-    /* Scrivere getters, setters, toString, equals e hashCode per un admin */
     
     public Long getId() {
         return id;
@@ -65,7 +65,7 @@ public class Credentials {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    
     public String getRole() {
         return role;
     }
@@ -91,10 +91,22 @@ public class Credentials {
 	}
     
     /////////////       AUXILIARY METHODS       ////////////////////
-    public boolean isAdmin(){
-        return this.role.equals("ADMIN");
-    }
-
+	
+	// Per ora è un metodo superfluo
+	public boolean isUser(){
+        return this.role.equals("USER");
+	}
+	
+	// Anche questo metodo è superfluo, seppur usato da qualche parte, perché è già presente il metodo
+	// getRole()
+	public boolean isHost(){
+	        return this.role.equals("HOST");
+	}
+	
+	public boolean isIntermediateHost() {
+		return this.role.equals("INTERMEDIATE_HOST");
+	}
+	
     @Override
     public int hashCode() {
         final int prime = 31;

@@ -10,7 +10,7 @@
         <h1>Edit Facility</h1>
 
         <!-- Facility Details Form -->
-        <form th:action="@{/admin/updateFacility/{id}(id=${facility.id})}" method="post">
+        <form th:action="@{/host/updateFacility/{id}(id=${facility.id})}" method="post">
             <!-- Basic Facility Details -->
             <div>
                 <label for="name">Facility Name</label>
@@ -33,7 +33,7 @@
                 <ul>
                     <li th:each="company : ${facility.companies}">
                         <span th:text="${company.name}"></span>
-                        <a th:href="@{/admin/removeCompany/{facilityId}/{companyId}(facilityId=${facility.id}, companyId=${company.id})}"
+                        <a th:href="@{/host/removeCompany/{facilityId}/{companyId}(facilityId=${facility.id}, companyId=${company.id})}"
                            onclick="return confirm('Are you sure you want to remove this company?');">Remove</a>
                     </li>
                 </ul>
@@ -97,7 +97,7 @@
 
             <div class="actions">
                 <button type="submit">Save Changes</button>
-                <a href="/admin/manageFacilities">Back</a>
+                <a href="/host/manageFacilities">Back</a>
             </div>
         </form>
     </div>

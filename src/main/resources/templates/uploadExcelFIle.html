@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Upload File Excel</title>
+</head>
+<body>
+
+<h2>Carica un file Excel</h2>
+<div> Per una corretta registrazione, assicurati di caricare
+un file Excel con i soli campi: "nome" "cognome" e "email" del dipendente.</div>
+
+<form action="/upload" method="post" enctype="multipart/form-data">
+    <label for="file">Seleziona un file Excel:</label>
+    <input type="file" id="file" name="file" accept=".xls,.xlsx" required>
+    <button type="submit">Carica</button>
+</form>
+
+<p th:text="${message}"></p> <!-- Mostra il messaggio -->
+
+</body>
+</html>

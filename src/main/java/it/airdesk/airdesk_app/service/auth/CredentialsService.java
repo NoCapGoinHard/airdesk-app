@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.repository.auth.CredentialsRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class CredentialsService {
@@ -30,12 +31,18 @@ public class CredentialsService {
         this.credentialsRepository.save(credentials);
     }
 
+    @Transactional
+   	public Credentials getCredentials(String username) {
+   		Optional<Credentials> result = this.credentialsRepository.findByUsername(username);
+   		return result.orElse(null);
+   	}
 
     /**
      * Utility method to retrieve authenticated user's credentials.
      * INSERTED HERE FOR FURTHER INVOCATION, FROM PATTERN INDIRECTION
      * @return Optional<Credentials> - authenticated user's credentials, if available
      */
+    
     public Optional<Credentials> getAuthenticatedUserCredentials() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
@@ -75,7 +82,7 @@ public class CredentialsService {
      */
     /* QUESTO È PER ORA UN METODO SUPERFLUO*/
     
-    public Optional<Credentials> getAuthenticatedAdminCredentials() {
+    public Optional<Credentials> getAuthenticatedHostCredentials() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
         if (authentication != null && authentication.isAuthenticated()) {

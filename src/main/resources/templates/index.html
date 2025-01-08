@@ -17,8 +17,9 @@
             <!-- Show My Profile and Logout when user is logged in -->
             <div th:if="${credentials == null}">
                 <a href="/login">Login</a>
-                <a href="/register">Register</a>
-                <a href="/hostRegister">HostRegister</a>             
+                <a href="/register">Register User</a>
+                <!-- <a href="/hostRegister">HostRegister</a>  -->
+                <a href="/chooseService">Choose Service</a>             
 
                 <!-- OR section for OAuth2 login -->
                 <a th:href="@{/oauth2/authorization/google}" class="g-signin2">

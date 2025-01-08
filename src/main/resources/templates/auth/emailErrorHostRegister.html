@@ -1,8 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>HostRegister</title>
-    <link rel="stylesheet" href="/css/style.css">    
+    <title>emailErrorHostRegister</title>
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <!-- Script di controllo sulla corrispondenza dei dati inseriti nei campi password e conferma password -->
+	<script>
+		// Funzione per verificare che le password coincidano
+		function validatePassword() {
+			var password = document.getElementById("password");
+			var confirmPassword = document.getElementById("confirmPassword");
+
+			// Controlla se le password corrispondono
+			if (password.value !== confirmPassword.value) {
+                alert("Le password non coincidono!");
+                //return false; // Impedisce l'invio del modulo
+            }
+            return true; // Permette l'invio del modulo
+		}
+	</script>
+    
 </head>
 <body>
     <div class="container">
@@ -14,7 +31,7 @@
         </div>
 
         <!-- Form for both user and credentials -->
-        <form th:action="@{/hostRegister}" method="post" onsubmit="return validateForm()">
+        <form th:action="@{/emailErrorHostRegister}" method="post" onsubmit="return validateForm()">
 
             <!-- User Information Section -->
             <div>
@@ -34,8 +51,10 @@
             <div>
                 <label for="email">Email</label>
                 <!-- Make field readonly if OIDC user -->
-                <input type="email" id="email" th:field="*{host.email}" th:readonly="${isOidc}" placeholder="Enter your email" required>
+                <input type="email" id="email" th:field="*{user.email}" th:readonly="${isOidc}" placeholder="Enter your email" required>
                 <p th:if="${#fields.hasErrors('host.email')}" th:errors="*{host.email}"></p>
+                <p style="color: red;">email gia' in uso</p>
+    			<p>Scegline un'altra o effettua il login se sei gia' registrato.</p>                
             </div>
             
             <div>
@@ -65,13 +84,14 @@
 
             <div th:if="${!isOidc}">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Choose a password" required>
+                <input type="password" id="password" name="password" placeholder="Choose a password"
+                onblur="validatePassword()" required>
             </div>
             
-            <div th:if="${!isOidc}">
+              <div th:if="${!isOidc}">
 				<label for="confirmPassword">Confirm Password</label> <input
 					type="password" id="confirmPassword" name="confirmPpassword"
-					placeholder="Confirm password" required>
+					placeholder="Confirm password" onblur="validatePassword()" required>
 			</div>
 
             <!-- Address Information Section -->
@@ -80,19 +100,19 @@
 
             <div>
                 <label for="country">Country</label>
-                <input type="text" id="country" th:field="*{host.address.country}" placeholder="Enter your country">
+                <input type="text" id="country" th:field="*{user.address.country}" placeholder="Enter your country">
                 <p th:if="${#fields.hasErrors('host.address.country')}" th:errors="*{host.address.country}"></p>
             </div>
 
             <div>
                 <label for="state">State</label>
-                <input type="text" id="state" th:field="*{host.address.state}" placeholder="Enter your state">
+                <input type="text" id="state" th:field="*{user.address.state}" placeholder="Enter your state">
                 <p th:if="${#fields.hasErrors('host.address.state')}" th:errors="*{host.address.state}"></p>
             </div>
 
             <div>
                 <label for="city">City</label>
-                <input type="text" id="city" th:field="*{host.address.city}" placeholder="Enter your city">
+                <input type="text" id="city" th:field="*{user.address.city}" placeholder="Enter your city">
                 <p th:if="${#fields.hasErrors('host.address.city')}" th:errors="*{host.address.city}"></p>
             </div>
 
@@ -104,7 +124,7 @@
 
             <div>
                 <label for="street">Street</label>
-                <input type="text" id="street" th:field="*{host.address.street}" placeholder="Enter your street">
+                <input type="text" id="street" th:field="*{user.address.street}" placeholder="Enter your street">
                 <p th:if="${#fields.hasErrors('host.address.street')}" th:errors="*{host.address.street}"></p>
             </div>
 
@@ -113,8 +133,7 @@
                 <input type="text" id="number" th:field="*{host.address.number}" placeholder="Enter your street number">
                 <p th:if="${#fields.hasErrors('host.address.number')}" th:errors="*{host.address.number}"></p>
             </div>
-			
-			<!-- AGGIUNTA DEI CAMPI PER L'INSERIMENTO DI UN METODO DI PAGAMENTO DA IMPLEMENTARE -->
+
 
             <!-- Submit Button -->
             <div>
@@ -133,10 +152,7 @@
         function validateForm() {
             const companyField = document.getElementById("companyField").value.trim();
             const freelancerChecked = document.getElementById("freelancerCheckbox").checked;
-			
-            if(!validatePassword()) {
-            	return false;
-            }
+    
             if (companyField === "" && !freelancerChecked) {
                 alert("Please enter a company name or select the freelancer checkbox.");
                 return false;
@@ -144,22 +160,5 @@
             return true;
         }
     </script>
-    
-    <!-- Script di controllo sulla corrispondenza dei dati inseriti nei campi password e conferma password -->
-	<script>
-		// Funzione per verificare che le password coincidano
-		function validatePassword() {
-			var password = document.getElementById("password");
-			var confirmPassword = document.getElementById("confirmPassword");
-
-			// Controlla se le password corrispondono
-			if (password.value !== confirmPassword.value) {
-                alert("Le password non coincidono!");
-                return false; // Impedisce l'invio del modulo
-            }
-            return true; // Permette l'invio del modulo
-		}
-	</script>
-    
 </body>
 </html>

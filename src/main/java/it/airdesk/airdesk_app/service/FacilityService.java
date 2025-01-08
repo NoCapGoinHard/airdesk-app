@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.Facility;
 import it.airdesk.airdesk_app.repository.FacilityRepository;
 
@@ -48,5 +47,13 @@ public class FacilityService {
     public void deleteById(Long id) {
         this.facilityRepository.deleteById(id);
     }
+
+	public boolean alreadyExists(Facility facility) {
+		List<Facility> facilities = this.facilityRepository.findByName(facility.getEmail());
+		if (facilities.size() > 0)
+			return true;
+		else 
+			return false;
+	}
 
 }

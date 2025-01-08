@@ -1,6 +1,6 @@
 package it.airdesk.airdesk_app.service.auth;
 
-import java.util.Optional;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +20,25 @@ public class UserService {
     }
     
     // Find user by email or throw NoSuchUserException if not found
-    public Optional<User> findByEmail(String email) {
+    public List<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+    
+    // Metodo che verifica l'esistenza pregressa di una email uguale nel database
+    public boolean checkIfEmailExists(String email) {
+        return userRepository.existsByEmail(email);
+    }
+    
+    /*
+     * Metodo di aiuto alla classe Validator per il controllo della non esistenza nella lista degli users 
+     * gia' registrati di un altro user registrato con la stessa email dell'user da inserire
+     */
+	public boolean alreadyExists(User user) {
+		List<User> users = this.userRepository.findByEmail(user.getEmail());
+		if (users.size() > 0)
+			return true;
+		else 
+			return false;
+	}
 
 }

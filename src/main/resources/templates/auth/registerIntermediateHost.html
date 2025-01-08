@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>HostRegister</title>
+    <title>IntermediateHostRegister</title>
     <link rel="stylesheet" href="/css/style.css">    
 </head>
 <body>
     <div class="container">
-        <h2>HostRegister</h2>
+        <h2>IntermediateHostRegister</h2>
 
         <!-- Display validation errors for user -->
         <div th:if="${#fields.hasErrors('host')}">
@@ -14,7 +14,7 @@
         </div>
 
         <!-- Form for both user and credentials -->
-        <form th:action="@{/hostRegister}" method="post" onsubmit="return validateForm()">
+        <form th:action="@{/intermediateHostRegister}" method="post" onsubmit="return validateForm()">
 
             <!-- User Information Section -->
             <div>
