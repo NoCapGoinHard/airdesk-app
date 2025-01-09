@@ -37,6 +37,9 @@ public class Credentials {
     
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Host host;
+    
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private IntermediateHost intermediateHost;
 
     public Credentials(){}
 
@@ -89,9 +92,17 @@ public class Credentials {
 	public void setHost(Host host) {
 		this.host = host;
 	}
+	
+	public IntermediateHost getIntermediateHost() {
+		return intermediateHost;
+	}
+
+	public void setIntermediateHost(IntermediateHost intermediateHost) {
+		this.intermediateHost = intermediateHost;
+	}	
     
     /////////////       AUXILIARY METHODS       ////////////////////
-	
+
 	// Per ora è un metodo superfluo
 	public boolean isUser(){
         return this.role.equals("USER");

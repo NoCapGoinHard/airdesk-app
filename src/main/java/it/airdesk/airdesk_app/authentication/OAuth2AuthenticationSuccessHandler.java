@@ -114,6 +114,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if (role.equals(Credentials.HOST)) {
             logger.info("Redirecting host to the admin dashboard");
             response.sendRedirect("/host/dashboard");
+        } else if (role.equals(Credentials.INTERMEDIATE_HOST)) {
+            logger.info("Redirecting host to the admin dashboard");
+            response.sendRedirect("/intermediateHost/dashboard");
         } else {
             logger.info("Redirecting user to index");
             response.sendRedirect("/");

@@ -62,8 +62,10 @@ public class AuthConfiguration { // Spring Authentication configuration class
 						.permitAll()
 						/* solo gli utenti autenticati con ruolo HOST e INTERMEDIATE_HOST possono accedere a
 						risorse con path */
-						.requestMatchers(HttpMethod.GET, "/host/**").hasAnyAuthority("HOST", "INTERMEDIATE_HOST")
-						.requestMatchers(HttpMethod.POST, "/host/**").hasAnyAuthority("HOST", "INTERMEDIATE_HOST")
+						.requestMatchers(HttpMethod.GET, "/host/**").hasAnyAuthority("HOST")
+						.requestMatchers(HttpMethod.POST, "/host/**").hasAnyAuthority("HOST")
+						.requestMatchers(HttpMethod.GET, "/intermediateHost/**").hasAnyAuthority("INTERMEDIATE_HOST")
+						.requestMatchers(HttpMethod.POST, "/intermediateHost/**").hasAnyAuthority("INTERMEDIATE_HOST")						
 						// tutti gli utenti autenticati possono accere alle pag
 						.anyRequest().authenticated())
 

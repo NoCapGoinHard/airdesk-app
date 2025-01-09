@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import it.airdesk.airdesk_app.model.auth.Host;
+import it.airdesk.airdesk_app.model.auth.IntermediateHost;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
 
@@ -19,6 +20,9 @@ public class AuthService {
 
 	@Autowired
     private HostService hostService;
+	
+	@Autowired
+    private IntermediateHostService intermediateHostService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -55,15 +59,15 @@ public class AuthService {
     }
     
     // Register intermediate host users with username and password ONLY
-    public void registerIntermediateHostUser(Host host, String username, String password) {
+    public void registerIntermediateHostUser(IntermediateHost intermediateHost, String username, String password) {
         Credentials credentials = new Credentials();
-        credentials.setHost(host);
+        credentials.setIntermediateHost(intermediateHost);
         credentials.setRole(Credentials.INTERMEDIATE_HOST);
         credentials.setUsername(username);
         credentials.setPassword(passwordEncoder.encode(password));
     
         // Save the user and credentials
-        hostService.save(host);
+        intermediateHostService.save(intermediateHost);
         credentialsService.save(credentials);
     }
     
@@ -82,4 +86,13 @@ public class AuthService {
 	public void setHostService(HostService hostService) {
 		this.hostService = hostService;
 	}
+
+	public IntermediateHostService getIntermediateHostService() {
+		return intermediateHostService;
+	}
+
+	public void setIntermediateHostService(IntermediateHostService intermediateHostService) {
+		this.intermediateHostService = intermediateHostService;
+	}
+		
 }

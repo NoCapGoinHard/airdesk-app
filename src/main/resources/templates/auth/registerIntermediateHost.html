@@ -9,8 +9,8 @@
         <h2>IntermediateHostRegister</h2>
 
         <!-- Display validation errors for user -->
-        <div th:if="${#fields.hasErrors('host')}">
-            <p th:each="error : ${#fields.errors('host')}" th:text="${error}"></p>
+        <div th:if="${#fields.hasErrors('intermediateHost')}">
+            <p th:each="error : ${#fields.errors('intermediateHost')}" th:text="${error}"></p>
         </div>
 
         <!-- Form for both user and credentials -->
@@ -20,35 +20,35 @@
             <div>
                 <label for="name">First Name</label>
                 <!-- Make field readonly if OIDC user -->
-                <input type="text" id="name" th:field="*{host.name}" th:readonly="${isOidc}" placeholder="Enter your first name" required>
-                <p th:if="${#fields.hasErrors('host.name')}" th:errors="*{host.name}"></p>
+                <input type="text" id="name" th:field="*{intermediateHost.name}" th:readonly="${isOidc}" placeholder="Enter your first name" required>
+                <p th:if="${#fields.hasErrors('intermediateHost.name')}" th:errors="*{intermediateHost.name}"></p>
             </div>
 
             <div>
                 <label for="surname">Last Name</label>
                 <!-- Make field readonly if OIDC user -->
-                <input type="text" id="surname" th:field="*{host.surname}" th:readonly="${isOidc}" placeholder="Enter your last name" required>
-                <p th:if="${#fields.hasErrors('host.surname')}" th:errors="*{host.surname}"></p>
+                <input type="text" id="surname" th:field="*{intermediateHost.surname}" th:readonly="${isOidc}" placeholder="Enter your last name" required>
+                <p th:if="${#fields.hasErrors('intermediateHost.surname')}" th:errors="*{intermediateHost.surname}"></p>
             </div>
 
             <div>
                 <label for="email">Email</label>
                 <!-- Make field readonly if OIDC user -->
-                <input type="email" id="email" th:field="*{host.email}" th:readonly="${isOidc}" placeholder="Enter your email" required>
-                <p th:if="${#fields.hasErrors('host.email')}" th:errors="*{host.email}"></p>
+                <input type="email" id="email" th:field="*{intermediateHost.email}" th:readonly="${isOidc}" placeholder="Enter your email" required>
+                <p th:if="${#fields.hasErrors('intermediateHost.email')}" th:errors="*{intermediateHost.email}"></p>
             </div>
             
             <div>
                 <label for="birthDate">Birth Date</label>
                 <!-- Make field readonly if OIDC user (optional) -->
-                <input type="date" id="birthDate" th:field="*{host.birthDate}" th:readonly="${isOidc}">
-                <p th:if="${#fields.hasErrors('host.birthDate')}" th:errors="*{host.birthDate}"></p>
+                <input type="date" id="birthDate" th:field="*{intermediateHost.birthDate}" th:readonly="${isOidc}">
+                <p th:if="${#fields.hasErrors('intermediateHost.birthDate')}" th:errors="*{intermediateHost.birthDate}"></p>
             </div>
 
             <!-- Company Field (wrapped in a div to show/hide) -->
             <div id="companyFieldDiv">
                 <label for="company">Company (or Freelancer)</label>
-                <input type="text" id="companyField" th:field="*{host.company.name}" placeholder="Company Name">
+                <input type="text" id="companyField" th:field="*{intermediateHost.company.name}" placeholder="Company Name">
             </div>
 
             <!-- Freelancer Checkbox -->
@@ -80,38 +80,38 @@
 
             <div>
                 <label for="country">Country</label>
-                <input type="text" id="country" th:field="*{host.address.country}" placeholder="Enter your country">
-                <p th:if="${#fields.hasErrors('host.address.country')}" th:errors="*{host.address.country}"></p>
+                <input type="text" id="country" th:field="*{intermediateHost.address.country}" placeholder="Enter your country">
+                <p th:if="${#fields.hasErrors('intermediateHost.address.country')}" th:errors="*{intermediateHost.address.country}"></p>
             </div>
 
             <div>
                 <label for="state">State</label>
-                <input type="text" id="state" th:field="*{host.address.state}" placeholder="Enter your state">
-                <p th:if="${#fields.hasErrors('host.address.state')}" th:errors="*{host.address.state}"></p>
+                <input type="text" id="state" th:field="*{intermediateHost.address.state}" placeholder="Enter your state">
+                <p th:if="${#fields.hasErrors('intermediateHost.address.state')}" th:errors="*{intermediateHost.address.state}"></p>
             </div>
 
             <div>
                 <label for="city">City</label>
-                <input type="text" id="city" th:field="*{host.address.city}" placeholder="Enter your city">
-                <p th:if="${#fields.hasErrors('host.address.city')}" th:errors="*{host.address.city}"></p>
+                <input type="text" id="city" th:field="*{intermediateHost.address.city}" placeholder="Enter your city">
+                <p th:if="${#fields.hasErrors('intermediateHost.address.city')}" th:errors="*{intermediateHost.address.city}"></p>
             </div>
 
             <div>
                 <label for="postalCode">Postal Code</label>
-                <input type="text" id="postalCode" th:field="*{host.address.postalCode}" placeholder="Enter your postal code">
-                <p th:if="${#fields.hasErrors('host.address.postalCode')}" th:errors="*{host.address.postalCode}"></p>
+                <input type="text" id="postalCode" th:field="*{intermediateHost.address.postalCode}" placeholder="Enter your postal code">
+                <p th:if="${#fields.hasErrors('intermediateHost.address.postalCode')}" th:errors="*{intermediateHost.address.postalCode}"></p>
             </div>
 
             <div>
                 <label for="street">Street</label>
-                <input type="text" id="street" th:field="*{host.address.street}" placeholder="Enter your street">
-                <p th:if="${#fields.hasErrors('host.address.street')}" th:errors="*{host.address.street}"></p>
+                <input type="text" id="street" th:field="*{intermediateHost.address.street}" placeholder="Enter your street">
+                <p th:if="${#fields.hasErrors('intermediateHost.address.street')}" th:errors="*{intermediateHost.address.street}"></p>
             </div>
 
             <div>
                 <label for="number">Street Number</label>
-                <input type="text" id="number" th:field="*{host.address.number}" placeholder="Enter your street number">
-                <p th:if="${#fields.hasErrors('host.address.number')}" th:errors="*{host.address.number}"></p>
+                <input type="text" id="number" th:field="*{intermediateHost.address.number}" placeholder="Enter your street number">
+                <p th:if="${#fields.hasErrors('intermediateHost.address.number')}" th:errors="*{intermediateHost.address.number}"></p>
             </div>
 			
 			<!-- AGGIUNTA DEI CAMPI PER L'INSERIMENTO DI UN METODO DI PAGAMENTO DA IMPLEMENTARE -->

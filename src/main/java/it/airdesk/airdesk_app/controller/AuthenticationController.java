@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import it.airdesk.airdesk_app.model.Company;
 import it.airdesk.airdesk_app.model.auth.Host;
+import it.airdesk.airdesk_app.model.auth.IntermediateHost;
 import it.airdesk.airdesk_app.model.auth.Credentials;
 import it.airdesk.airdesk_app.model.auth.User;
 import it.airdesk.airdesk_app.service.CompanyService;
 import it.airdesk.airdesk_app.service.auth.AuthService;
 import it.airdesk.airdesk_app.service.auth.CredentialsService;
 import it.airdesk.airdesk_app.service.auth.HostService;
+import it.airdesk.airdesk_app.service.auth.IntermediateHostService;
 import it.airdesk.airdesk_app.service.auth.UserService;
 
 @Controller
@@ -35,6 +37,9 @@ public class AuthenticationController { //this class handles the authentication 
     
     @Autowired
     private HostService hostService;
+    
+    @Autowired
+    private IntermediateHostService intermediateHostService;
 
     @Autowired
     private CredentialsService credentialsService;
@@ -244,15 +249,15 @@ public class AuthenticationController { //this class handles the authentication 
     
     @GetMapping("/intermediateHostRegister")
     public String registerIntermediate(Model model) {
-        Host host = new Host();
-        host.setCompany(new Company());
+        IntermediateHost intermediateHost = new IntermediateHost();
+        intermediateHost.setCompany(new Company());
         model.addAttribute("isOidc", false);
-        model.addAttribute("host", host);
+        model.addAttribute("intermediateHost", intermediateHost);
         return "auth/registerIntermediateHost.html";
     }
 
     @PostMapping("/intermediateHostRegister")
-    public String registerIntermediateHost(@ModelAttribute("host") Host host, BindingResult userBindingResult,
+    public String registerIntermediateHost(@ModelAttribute("intermediateHost") IntermediateHost intermediateHost, BindingResult userBindingResult,
                             @RequestParam(value = "username", required = false) String username,
                             @RequestParam(value = "password", required = false) String password,
                             @RequestParam(value = "freelancerCheckbox", required = false) String freelancerChecked,
@@ -261,25 +266,25 @@ public class AuthenticationController { //this class handles the authentication 
         //Hosts can register themselves as freelancers, by ticking the checkbox related to this variable
         boolean isFreelancer = freelancerChecked != null && freelancerChecked.equals("on");
 
-        if (!userBindingResult.hasErrors() && !hostService.alreadyExists(host)) {
+        if (!userBindingResult.hasErrors() && !intermediateHostService.alreadyExists(intermediateHost)) {
             // If the user checked the "Freelancer" box, assign the "FREELANCER" company
             if (isFreelancer) {
                 Company freelancerCompany = companyService.findOrCreateCompanyByName("FREELANCER");
-                host.setCompany(freelancerCompany);
+                intermediateHost.setCompany(freelancerCompany);
             } else {
                 // If the user is not a freelancer and has not entered a company, handle the error
-                if (host.getCompany() == null || host.getCompany().getName().trim().isEmpty()) {
+                if (intermediateHost.getCompany() == null || intermediateHost.getCompany().getName().trim().isEmpty()) {
                     model.addAttribute("error", "Company name must be provided unless working as a freelancer.");
                     return "auth/registerIntermediateHost.html";
                 }
                 // Otherwise, find or create the company the user entered
-                Company company = companyService.findOrCreateCompanyByName(host.getCompany().getName());
-                host.setCompany(company);
+                Company company = companyService.findOrCreateCompanyByName(intermediateHost.getCompany().getName());
+                intermediateHost.setCompany(company);
             }
 
             // Use the simplified registration method
-            authService.registerIntermediateHostUser(host, username, password);
-            logger.info("Host '{}' registered successfully", host.getEmail());
+            authService.registerIntermediateHostUser(intermediateHost, username, password);
+            logger.info("Host '{}' registered successfully", intermediateHost.getEmail());
             return "redirect:/";
         } else {
             logger.warn("Host registration failed due to validation errors");
