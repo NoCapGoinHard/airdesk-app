@@ -1,5 +1,14 @@
 package it.airdesk.airdesk_app.controller;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.InputStream;
+import java.util.Iterator;
+
+import org.apache.poi.sl.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,9 +19,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.airdesk.airdesk_app.model.Building;
 import it.airdesk.airdesk_app.model.Company;
+import it.airdesk.airdesk_app.model.Employee;
 import it.airdesk.airdesk_app.model.Facility;
 import it.airdesk.airdesk_app.model.Floor;
 import it.airdesk.airdesk_app.model.Room;
@@ -22,6 +33,7 @@ import it.airdesk.airdesk_app.model.auth.IntermediateHost;
 import it.airdesk.airdesk_app.model.dataTypes.OfficeHours;
 import it.airdesk.airdesk_app.service.BuildingService;
 import it.airdesk.airdesk_app.service.CompanyService;
+import it.airdesk.airdesk_app.service.EmployeeService;
 import it.airdesk.airdesk_app.service.FacilityService;
 import it.airdesk.airdesk_app.service.FloorService;
 import it.airdesk.airdesk_app.service.OfficeHoursService;
@@ -56,10 +68,11 @@ public class IntermediateHostController { //class which handles the Host's reser
 
     @Autowired
     private WorkstationService workstationService;
-
+    
+    @Autowired
+    private EmployeeService employeeService; // Servizio per salvare i dipendenti nel database
 
     // Render the Host Dashboard page
-
     @GetMapping("/dashboard")
     public String getIntermediateHostDashboard(Model model) {
         Credentials credentials = credentialsService.getAuthenticatedUserCredentials().orElse(null);
@@ -68,10 +81,49 @@ public class IntermediateHostController { //class which handles the Host's reser
             // Host is authenticated, show the dashboard
         	IntermediateHost intermediateHost = credentials.getIntermediateHost();
             model.addAttribute("intermediateHost", intermediateHost);  // Add user to the model for display
-            return "host/intermediateHostDashboard.html";
+            return "intermediateHost/intermediateHostDashboard.html";
         }
 
         return "redirect:/login";  // Redirect to login if not authenticated
+    }
+    
+    // Route to upload an Excel file to register the employees
+    @GetMapping("/uploadExcelFile")
+    public String uploadExcelFile() {        
+        return "intermediateHost/uploadExcelFile.html";
+    }
+    
+    // Endpoint per gestire l'upload del file Excel.
+    @PostMapping("/uploadExcel")
+    public String uploadExcel(@RequestParam("file") MultipartFile file) {
+        try {
+            InputStream inputStream = file.getInputStream();
+            Workbook workbook = new XSSFWorkbook(inputStream); // Usa XSSFWorkbook per .xlsx, HSSFWorkbook per .xls
+            Sheet sheet = (Sheet) workbook.getSheetAt(0); // Prende il primo foglio
+
+            Iterator<Row> rows = sheet.iterator();
+            while (rows.hasNext()) {
+                Row row = rows.next();
+                if (row.getRowNum() == 0) {
+                    continue; // Salta la prima riga (header)
+                }
+
+                // Estrai i dati delle celle (nome, cognome, email)
+                String firstName = row.getCell(0).getStringCellValue(); // Prima colonna
+                String lastName = row.getCell(1).getStringCellValue(); // Seconda colonna
+                String email = row.getCell(2).getStringCellValue(); // Terza colonna
+
+                // Crea un oggetto Employee (modello) e salvalo nel database
+                Employee employee = new Employee(firstName, lastName, email);
+                employeeService.save(employee); // Salva nel database
+            }
+
+            workbook.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error"; // Ritorna una pagina di errore in caso di problemi
+        }
+        return "redirect:/intermediateHost/dashboard"; // Redirect al dashboard dopo l'upload
     }
 
     // Route to manage facilities (shows the list of facilities)

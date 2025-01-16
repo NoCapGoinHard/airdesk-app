@@ -1,10 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <title> Intermediate Host Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <div class="container">
+        <h1>Welcome to the Host Dashboard</h1>
+        <p>You are logged in as an host.</p>
 
+        <ul>
+            <li><a href="/host/newFacility">Create New Facility</a></li>
+            <li><a href="/host/manageFacilities">Manage Your Facilities</a></li>
+            <li><a href="/intermediateHost/uploadExcelFile">Upload an Excel file to register your employees</a></li>
+        </ul>
+
+        <div class="actions">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
 </body>
 </html>

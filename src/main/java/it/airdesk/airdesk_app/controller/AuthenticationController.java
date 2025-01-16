@@ -72,9 +72,12 @@ public class AuthenticationController { //this class handles the authentication 
             Credentials credentials = credentialsOpt.get();
 
             // Redirect based on role
-            if (credentials.isHost() || credentials.isIntermediateHost()) {
+            if (credentials.isHost()) {
                 logger.info("Host logged in, redirecting to the admin dashboard");
                 return "redirect:/host/dashboard";
+            } if(credentials.isIntermediateHost()) {
+            	logger.info("Host logged in, redirecting to the admin dashboard");
+                return "redirect:/intermediateHost/dashboard";
             } else {
                 logger.info("User logged in, redirecting to index");
                 return "redirect:/";
