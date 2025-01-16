@@ -2,12 +2,10 @@ package it.airdesk.airdesk_app.controller;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.web.bind.annotation.*;
-
 import java.io.InputStream;
 import java.util.Iterator;
 
-import org.apache.poi.sl.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -99,7 +97,7 @@ public class IntermediateHostController { //class which handles the Host's reser
         try {
             InputStream inputStream = file.getInputStream();
             Workbook workbook = new XSSFWorkbook(inputStream); // Usa XSSFWorkbook per .xlsx, HSSFWorkbook per .xls
-            Sheet sheet = (Sheet) workbook.getSheetAt(0); // Prende il primo foglio
+            Sheet sheet = workbook.getSheetAt(0); // Prende il primo foglio
 
             Iterator<Row> rows = sheet.iterator();
             while (rows.hasNext()) {
